@@ -2,10 +2,12 @@ import { ConnectButton } from "@rainbow-me/rainbowkit"
 import Head from "next/head"
 import styles from "../styles/Home.module.css"
 import { Button } from "@/components/ui/button"
+import { SiteHeader } from "@/components/site-header"
 
 const Home = () => {
   return (
     <div className={styles.container}>
+      <SiteHeader />
       <Head>
         <title>Dapp Forge</title>
         <meta

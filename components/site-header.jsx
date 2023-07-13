@@ -1,0 +1,50 @@
+import {
+  GitHubLogoIcon,
+  TwitterLogoIcon,
+  DiscordLogoIcon
+} from "@radix-ui/react-icons"
+import Link from "next/link"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
+
+export function SiteHeader() {
+  return (
+    <header className="bg-background sticky top-0 z-40 w-full border-b">
+      <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
+        <div className="flex flex-row justify-between gap-8 items-center text-base font-medium text-muted-foreground">
+          <Link href="/">
+            <Image src="/logo.svg" alt="Logo" width={32} height={32} />
+          </Link>
+          <Link href="/whitePaper">WhitePaper</Link>
+        </div>
+        <div className="flex flex-row items-center space-x-4 text-muted-foreground">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => window.open("https://github.com/GasLockR", "_blank")}
+          >
+            <GitHubLogoIcon className="h-6 w-6" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() =>
+              window.open("https://twitter.com/gaslockr", "_blank")
+            }
+          >
+            <TwitterLogoIcon className="h-6 w-6" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => window.open("https://discord.gg/sBAaqfxR", "_blank")}
+          >
+            <DiscordLogoIcon className="h-6 w-6" />
+          </Button>
+          <ConnectButton />
+        </div>
+      </div>
+    </header>
+  )
+}

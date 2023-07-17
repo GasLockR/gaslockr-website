@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 
 const Features = () => {
   return (
-    <div className="flex flex-col justify-center items-center gap-4 m-14">
+    <div className="flex flex-col justify-center items-center gap-4 p-14">
       <h1 className="font-bold text-4xl">Welcome to GasLockR</h1>
       <h1>The first trustless GasFi protocol for EVM-based chains</h1>
       <div className="flex flex-row gap-2">

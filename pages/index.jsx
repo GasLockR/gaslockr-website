@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header"
 import Features from "@/components/features/Features"
 import Teams from "@/components/teams/Teams"
 import TimeLine from "@/components/timeline/Timeline"
+import Footer from "@/components/footer/Footer"
 
 const Home = () => {
   return (
@@ -23,6 +24,7 @@ const Home = () => {
       <Features />
       <Teams />
       <TimeLine />
+      <Footer />
     </div>
   )
 }

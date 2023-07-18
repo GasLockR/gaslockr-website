@@ -1,8 +1,4 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit"
 import Head from "next/head"
-import styles from "../styles/Home.module.css"
-import { Button } from "@/components/ui/button"
-import { SiteHeader } from "@/components/site-header"
 import Features from "@/components/features/Features"
 import Teams from "@/components/teams/Teams"
 import TimeLine from "@/components/timeline/Timeline"
@@ -19,8 +15,6 @@ const Home = () => {
         />
         <link href="/favicon.ico" rel="icon" />
       </Head>
-      <SiteHeader />
-
       <Features />
       <Teams />
       <TimeLine />

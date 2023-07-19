@@ -110,7 +110,7 @@ const Pricing = () => {
               </ul>
             </CardContent>
             <CardFooter className="flex justify-center items-center">
-              <Button className="w-3/4 bg-black">Get Started</Button>
+              <Button className="w-3/4 bg-black">Contact Us</Button>
             </CardFooter>
           </Card>
         </div>

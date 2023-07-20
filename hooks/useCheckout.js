@@ -11,16 +11,13 @@ export const usePersonalCheckout = () => {
   const handleCheckout = async (ethereumAddress) => {
     setIsPersonalCheckoutLoading(true)
     try {
-      const response = await fetch(
-        "https://stripe-server-beta.vercel.app/create-personal-checkout",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ ethAddress: ethereumAddress })
-        }
-      )
+      const response = await fetch("/api/create-personal-checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ ethAddress: ethereumAddress })
+      })
       if (!response.ok) {
         throw new Error("Network response was not ok")
       }
@@ -45,16 +42,13 @@ export const useProfessionalCheckout = () => {
   const handleCheckout = async (ethereumAddress) => {
     setProfessionalLoading(true)
     try {
-      const response = await fetch(
-        "https://stripe-server-beta.vercel.app/create-professional-checkout",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ ethAddress: ethereumAddress })
-        }
-      )
+      const response = await fetch("/api/create-professional-checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ ethAddress: ethereumAddress })
+      })
       if (!response.ok) {
         throw new Error("Network response was not ok")
       }

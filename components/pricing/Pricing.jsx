@@ -8,8 +8,15 @@ import {
   CardHeader,
   CardTitle
 } from "@/components/ui/card"
+import {
+  usePersonalCheckout,
+  useProfessionalCheckout
+} from "../../hooks/useCheckout"
 
 const Pricing = () => {
+  const handlePersonalCheckout = usePersonalCheckout()
+  const handleProfessionalCheckout = useProfessionalCheckout()
+
   return (
     <div>
       <div className="flex flex-col justify-center items-center gap-4 p-14">
@@ -49,12 +56,7 @@ const Pricing = () => {
             <CardFooter className="flex justify-center items-center">
               <Button
                 className="w-3/4 bg-black"
-                onClick={() => {
-                  window.open(
-                    "https://buy.stripe.com/test_4gw3fO6W37am50s288",
-                    "_blank"
-                  )
-                }}
+                onClick={handlePersonalCheckout}
               >
                 Get Started
               </Button>
@@ -93,12 +95,7 @@ const Pricing = () => {
             <CardFooter className="flex justify-center items-center">
               <Button
                 className="w-3/4 bg-black"
-                onClick={() => {
-                  window.open(
-                    "https://buy.stripe.com/test_cN2cQogwD7amgJa6op",
-                    "_blank"
-                  )
-                }}
+                onClick={handleProfessionalCheckout}
               >
                 Get Started
               </Button>

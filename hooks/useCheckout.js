@@ -12,7 +12,7 @@ export const usePersonalCheckout = () => {
     setIsPersonalCheckoutLoading(true)
     try {
       const response = await fetch(
-        "http://localhost:5252/create-personal-checkout",
+        "https://stripe-server-beta.vercel.app/create-personal-checkout",
         {
           method: "POST",
           headers: {
@@ -46,7 +46,7 @@ export const useProfessionalCheckout = () => {
     setProfessionalLoading(true)
     try {
       const response = await fetch(
-        "http://localhost:5252/create-professional-checkout",
+        "https://stripe-server-beta.vercel.app/create-professional-checkout",
         {
           method: "POST",
           headers: {

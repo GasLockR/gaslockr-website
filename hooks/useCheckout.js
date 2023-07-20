@@ -30,7 +30,6 @@ export const usePersonalCheckout = () => {
       setIsPersonalCheckoutLoading(false)
     }
   }
-
   return {
     personalCheckout: handleCheckout,
     isPersonalCheckoutLoading: isPersonalCheckoutLoading

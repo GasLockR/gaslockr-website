@@ -47,7 +47,17 @@ const Pricing = () => {
               </ul>
             </CardContent>
             <CardFooter className="flex justify-center items-center">
-              <Button className="w-3/4 bg-black">Get Started</Button>
+              <Button
+                className="w-3/4 bg-black"
+                onClick={() => {
+                  window.open(
+                    "https://buy.stripe.com/test_4gw3fO6W37am50s288",
+                    "_blank"
+                  )
+                }}
+              >
+                Get Started
+              </Button>
             </CardFooter>
           </Card>
 
@@ -81,7 +91,17 @@ const Pricing = () => {
               </ul>
             </CardContent>
             <CardFooter className="flex justify-center items-center">
-              <Button className="w-3/4 bg-black">Get Started</Button>
+              <Button
+                className="w-3/4 bg-black"
+                onClick={() => {
+                  window.open(
+                    "https://buy.stripe.com/test_cN2cQogwD7amgJa6op",
+                    "_blank"
+                  )
+                }}
+              >
+                Get Started
+              </Button>
             </CardFooter>
           </Card>
 

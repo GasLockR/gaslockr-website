@@ -12,10 +12,16 @@ import {
   usePersonalCheckout,
   useProfessionalCheckout
 } from "../../hooks/useCheckout"
+import { useAccount } from "wagmi"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
 
 const Pricing = () => {
   const handlePersonalCheckout = usePersonalCheckout()
   const handleProfessionalCheckout = useProfessionalCheckout()
+
+  const { address } = useAccount()
+
+  console.log(address, "address")
 
   return (
     <div>
@@ -54,12 +60,16 @@ const Pricing = () => {
               </ul>
             </CardContent>
             <CardFooter className="flex justify-center items-center">
-              <Button
-                className="w-3/4 bg-black"
-                onClick={handlePersonalCheckout}
-              >
-                Get Started
-              </Button>
+              {address ? (
+                <Button
+                  className="w-3/4 bg-black text-white transform hover:scale-105 hover:bg-black"
+                  onClick={handlePersonalCheckout}
+                >
+                  Get Started
+                </Button>
+              ) : (
+                <ConnectButton />
+              )}
             </CardFooter>
           </Card>
 
@@ -93,12 +103,16 @@ const Pricing = () => {
               </ul>
             </CardContent>
             <CardFooter className="flex justify-center items-center">
-              <Button
-                className="w-3/4 bg-black"
-                onClick={handleProfessionalCheckout}
-              >
-                Get Started
-              </Button>
+              {address ? (
+                <Button
+                  className="w-3/4 bg-black text-white transform hover:scale-105 hover:bg-black"
+                  onClick={handleProfessionalCheckout}
+                >
+                  Get Started
+                </Button>
+              ) : (
+                <ConnectButton />
+              )}
             </CardFooter>
           </Card>
 
@@ -127,7 +141,9 @@ const Pricing = () => {
               </ul>
             </CardContent>
             <CardFooter className="flex justify-center items-center">
-              <Button className="w-3/4 bg-black">Contact Us</Button>
+              <Button className="w-3/4 bg-black text-white transform hover:scale-105 hover:bg-black">
+                Contact Us
+              </Button>
             </CardFooter>
           </Card>
         </div>

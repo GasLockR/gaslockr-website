@@ -14,10 +14,12 @@ import {
 } from "../../hooks/useCheckout"
 import { useAccount } from "wagmi"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
+import { Loader2 } from "lucide-react"
 
 const Pricing = () => {
-  const handlePersonalCheckout = usePersonalCheckout()
-  const handleProfessionalCheckout = useProfessionalCheckout()
+  const { personalCheckout, isPersonalCheckoutLoading } = usePersonalCheckout()
+  const { professionalCheckout, isProfessionalLoading } =
+    useProfessionalCheckout()
 
   const { address } = useAccount()
 
@@ -61,8 +63,12 @@ const Pricing = () => {
               {address ? (
                 <Button
                   className="w-3/4 bg-black text-white transform hover:scale-105 hover:bg-black"
-                  onClick={() => handlePersonalCheckout(address)}
+                  onClick={() => personalCheckout(address)}
+                  disabled={isPersonalCheckoutLoading}
                 >
+                  {isPersonalCheckoutLoading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : null}
                   Get Started
                 </Button>
               ) : (
@@ -104,8 +110,12 @@ const Pricing = () => {
               {address ? (
                 <Button
                   className="w-3/4 bg-black text-white transform hover:scale-105 hover:bg-black"
-                  onClick={() => handleProfessionalCheckout(address)}
+                  onClick={() => professionalCheckout(address)}
+                  disabled={isProfessionalLoading}
                 >
+                  {isProfessionalLoading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : null}
                   Get Started
                 </Button>
               ) : (

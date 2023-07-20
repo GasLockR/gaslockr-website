@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { loadStripe } from "@stripe/stripe-js"
 
 const stripePromise = loadStripe(
@@ -5,7 +6,10 @@ const stripePromise = loadStripe(
 )
 
 export const usePersonalCheckout = () => {
+  const [isPersonalCheckoutLoading, setIsPersonalCheckoutLoading] =
+    useState(false)
   const handleCheckout = async (ethereumAddress) => {
+    setIsPersonalCheckoutLoading(true)
     try {
       const response = await fetch(
         "http://localhost:5252/create-personal-checkout",
@@ -25,14 +29,21 @@ export const usePersonalCheckout = () => {
       await stripe.redirectToCheckout({ sessionId: session.id })
     } catch (error) {
       console.error("There was an error creating the checkout session:", error)
+    } finally {
+      setIsPersonalCheckoutLoading(false)
     }
   }
 
-  return handleCheckout
+  return {
+    personalCheckout: handleCheckout,
+    isPersonalCheckoutLoading: isPersonalCheckoutLoading
+  }
 }
 
 export const useProfessionalCheckout = () => {
+  const [isProfessionalLoading, setProfessionalLoading] = useState(false)
   const handleCheckout = async (ethereumAddress) => {
+    setProfessionalLoading(true)
     try {
       const response = await fetch(
         "http://localhost:5252/create-professional-checkout",
@@ -52,8 +63,13 @@ export const useProfessionalCheckout = () => {
       await stripe.redirectToCheckout({ sessionId: session.id })
     } catch (error) {
       console.error("There was an error creating the checkout session:", error)
+    } finally {
+      setProfessionalLoading(false)
     }
   }
 
-  return handleCheckout
+  return {
+    professionalCheckout: handleCheckout,
+    isProfessionalLoading: isProfessionalLoading
+  }
 }

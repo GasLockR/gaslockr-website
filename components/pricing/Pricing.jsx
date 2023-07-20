@@ -21,8 +21,6 @@ const Pricing = () => {
 
   const { address } = useAccount()
 
-  console.log(address, "address")
-
   return (
     <div>
       <div className="flex flex-col justify-center items-center gap-4 p-14">
@@ -63,7 +61,7 @@ const Pricing = () => {
               {address ? (
                 <Button
                   className="w-3/4 bg-black text-white transform hover:scale-105 hover:bg-black"
-                  onClick={handlePersonalCheckout}
+                  onClick={() => handlePersonalCheckout(address)}
                 >
                   Get Started
                 </Button>
@@ -106,7 +104,7 @@ const Pricing = () => {
               {address ? (
                 <Button
                   className="w-3/4 bg-black text-white transform hover:scale-105 hover:bg-black"
-                  onClick={handleProfessionalCheckout}
+                  onClick={() => handleProfessionalCheckout(address)}
                 >
                   Get Started
                 </Button>

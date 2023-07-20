@@ -5,7 +5,7 @@ const stripePromise = loadStripe(
 )
 
 export const usePersonalCheckout = () => {
-  const handleCheckout = async () => {
+  const handleCheckout = async (ethereumAddress) => {
     try {
       const response = await fetch(
         "http://localhost:5252/create-personal-checkout",
@@ -13,7 +13,8 @@ export const usePersonalCheckout = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
-          }
+          },
+          body: JSON.stringify({ ethAddress: ethereumAddress })
         }
       )
       if (!response.ok) {
@@ -31,7 +32,7 @@ export const usePersonalCheckout = () => {
 }
 
 export const useProfessionalCheckout = () => {
-  const handleCheckout = async () => {
+  const handleCheckout = async (ethereumAddress) => {
     try {
       const response = await fetch(
         "http://localhost:5252/create-professional-checkout",
@@ -39,7 +40,8 @@ export const useProfessionalCheckout = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
-          }
+          },
+          body: JSON.stringify({ ethAddress: ethereumAddress })
         }
       )
       if (!response.ok) {

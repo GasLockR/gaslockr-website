@@ -47,8 +47,6 @@ const AllClaimLists = () => {
     }
   }, [address])
 
-  console.log(data, "data")
-
   const columns = [
     {
       accessorKey: "productName",

@@ -36,8 +36,8 @@ export default async function handler(req, res) {
         }
       ],
       mode: "payment",
-      success_url: "https://gaslockr-website.vercel.app",
-      cancel_url: "https://gaslockr-website.vercel.app",
+      success_url: "https://gaslockr-website.vercel.app/ClaimList",
+      cancel_url: "https://gaslockr-website.vercel.app/ClaimList",
       metadata: {
         ethAddress
       }

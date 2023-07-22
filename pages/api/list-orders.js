@@ -2,6 +2,18 @@ import Stripe from "stripe"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
+const formatDate = (date) => {
+  const d = new Date(date)
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, "0") // Add 1 to month as it's 0 indexed
+  const day = String(d.getDate()).padStart(2, "0")
+  const hour = String(d.getHours()).padStart(2, "0")
+  const minute = String(d.getMinutes()).padStart(2, "0")
+  const second = String(d.getSeconds()).padStart(2, "0")
+
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`
+}
+
 export default async function handler(req, res) {
   if (req.method === "GET") {
     const { ethAddress } = req.query
@@ -34,7 +46,8 @@ export default async function handler(req, res) {
           productId: productId,
           productName: product.name,
           purchaseCount: productData.quantity,
-          status: session.metadata.status || "active"
+          status: session.metadata.status || "active",
+          created: formatDate(new Date(session.created * 1000))
         })
       }
     }

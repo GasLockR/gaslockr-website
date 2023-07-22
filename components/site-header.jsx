@@ -7,8 +7,11 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
+import { useAccount } from "wagmi"
 
 export function SiteHeader() {
+  const { address } = useAccount()
+
   return (
     <header className="bg-background sticky top-0 z-40 w-full border-b">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
@@ -19,6 +22,11 @@ export function SiteHeader() {
           <Link href="/whitePaper" target="_blank">
             WhitePaper
           </Link>
+          {address ? (
+            <Link href="/ClaimList" >
+              Purchase History
+            </Link>
+          ) : null}
         </div>
         <div className="flex flex-row items-center space-x-4 text-muted-foreground">
           <Button

@@ -8,7 +8,7 @@ const timelineData = [
     description: "ETH Shanghai 2023 Hackathon",
     achivements: "Runner-Up",
     content: "Main Track - Layer 2 & On-Chain Gaming",
-    url: "Read More"
+    url: "https://app.buidlbox.io/projects/gassubscribe"
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ const timelineData = [
     description: "ETH Shanghai 2023 Hackathon",
     achivements: "Sponsor Award",
     content: "- Build Web3 with Chainlink",
-    url: "Read More"
+    url: "https://app.buidlbox.io/projects/gassubscribe"
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ const timelineData = [
     description: "CHAINLINK HACKATHON SPRING 2023",
     achivements: "Winner",
     content: "- Total of $200k in AWS credits",
-    url: "Read More"
+    url: "https://devpost.com/software/gaslockr"
   },
   {
     id: 4,
@@ -32,7 +32,7 @@ const timelineData = [
     description: "ETH Beijing 2023 Hackathon",
     achivements: "Champion",
     content: "Main Track - Innovative Layer2 Dapp",
-    url: "Read More"
+    url: "https://www.ethbeijing.xyz/"
   },
   {
     id: 5,
@@ -40,7 +40,7 @@ const timelineData = [
     description: "ETH Beijing 2023 Hackathon",
     achivements: "Sponsor Award",
     content: "- Deploy smart contracts on Scroll",
-    url: "Read More"
+    url: "https://www.ethbeijing.xyz/"
   }
 ]
 

@@ -45,7 +45,13 @@ const TimelineItem = ({
             <div>{content}</div>
           </CardContent>
           <CardFooter className="flex flex-row-reverse">
-            <Button>{url}</Button>
+            <Button
+              onClick={() => {
+                window.open(url, "_blank")
+              }}
+            >
+              Read More
+            </Button>
           </CardFooter>
         </Card>
       </div>

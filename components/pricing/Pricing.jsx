@@ -50,13 +50,19 @@ const Pricing = () => {
             </CardHeader>
             <CardContent className="flex justify-center items-center">
               <ul className="flex flex-col gap-2">
-                <li>Max Coverage:1 ETH</li>
-                <li>Min Fluctuation:5%</li>
-                <li>Flexible coverage</li>
-                <li>Affordable rate</li>
-                <li>Instant protection</li>
-                <li>Easy claims process</li>
-                <li>Fast transaction</li>
+                <li className="flex flex-row gap-2">
+                  <div>Max Payout:</div>
+                  <div className="text-emerald-500">0.2 ETH</div>
+                </li>
+                <li className="flex flex-row gap-2">
+                  <div>Min Claim Fluctuation:</div>
+                  <div className="text-emerald-500">5%</div>
+                </li>
+                <li>Flexible Coverage</li>
+                <li>Affordable Rates</li>
+                <li>Immediate Protection</li>
+                <li>Automated Claims Process</li>
+                <li>Speedy Transactions</li>
               </ul>
             </CardContent>
             <CardFooter className="flex justify-center items-center">
@@ -97,13 +103,19 @@ const Pricing = () => {
             </CardHeader>
             <CardContent className="flex justify-center items-center">
               <ul className="flex flex-col gap-2">
-                <li>Max Coverage:1 ETH</li>
-                <li>Min Fluctuation:5%</li>
-                <li>Flexible coverage</li>
-                <li>Affordable rate</li>
-                <li>Instant protection</li>
-                <li>Easy claims process</li>
-                <li>Fast transaction</li>
+                <li className="flex flex-row gap-2">
+                  <div>Max Payout:</div>
+                  <div className="text-emerald-500"> 1 ETH</div>
+                </li>
+                <li className="flex flex-row gap-2">
+                  <div>Min Claim Fluctuation:</div>
+                  <div className="text-emerald-500"> 5%</div>
+                </li>
+                <li>Multiple Purchases Allowed</li>
+                <li>Enhanced Payouts</li>
+                <li>Elevated Returns</li>
+                <li>Automated Claims Process</li>
+                <li>Speedy Transactions</li>
               </ul>
             </CardContent>
             <CardFooter className="flex justify-center items-center">
@@ -139,13 +151,13 @@ const Pricing = () => {
             </CardHeader>
             <CardContent className="flex justify-center items-center">
               <ul className="flex flex-col gap-2">
-                <li>Max Coverage:1 ETH</li>
-                <li>Min Fluctuation:5%</li>
-                <li>Flexible coverage</li>
-                <li>Affordable rate</li>
-                <li>Instant protection</li>
-                <li>Easy claims process</li>
-                <li>Fast transaction</li>
+                <li>Customizable Coverage Options</li>
+                <li>Dedicated Enterprise Support</li>
+                <li>Advanced Analytics Suite</li>
+                <li>Streamlined Claims Process</li>
+                <li>Integrated Payment Solutions</li>
+                <li>Enhanced Security Protocols</li>
+                <li>Integrated Payment Solutions</li>
               </ul>
             </CardContent>
             <CardFooter className="flex justify-center items-center">

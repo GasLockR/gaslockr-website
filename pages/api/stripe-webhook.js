@@ -52,6 +52,27 @@ export default async function handler(req, res) {
             const product = await stripe.products.retrieve(productId)
             console.log("Product Name:", product.name)
             console.log("Product Description:", product.description)
+
+            // call chainlinkAdapter
+            // https://gaslockr-website.vercel.app/api/chainlinkAdapter
+            const chainlinkResponse = await fetch(
+              `http://${req.headers.host}/api/chainlinkAdapter`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  productId: productId,
+                  quantity: productData.quantity,
+                  productName: product.name,
+                  productDescription: product.description
+                })
+              }
+            )
+
+            const chainlinkData = await chainlinkResponse.json()
+            console.log("Chainlink Adapter Response:", chainlinkData)
           } else {
             console.log("No products found for this session.")
           }

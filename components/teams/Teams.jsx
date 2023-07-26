@@ -17,28 +17,18 @@ import {
 const Teams = () => {
   const teamMembers = [
     {
-      title: "John Doe",
+      title: "Jenkin Qin",
       avatar: "https://github.com/shadcn.png",
-      position: "Software Engineer",
+      position: "Founder",
       description:
-        "John is a software engineer with over 5 years of experience.",
-      email: "john.doe@example.com"
+        "John is a software engineer with over 5 years of experience."
     },
     {
-      title: "John Doe",
+      title: "Ethan Ye",
       avatar: "https://github.com/shadcn.png",
-      position: "Software Engineer",
+      position: "Co-Founder",
       description:
-        "John is a software engineer with over 5 years of experience.",
-      email: "john.doe@example.com"
-    },
-    {
-      title: "John Doe",
-      avatar: "https://github.com/shadcn.png",
-      position: "Software Engineer",
-      description:
-        "John is a software engineer with over 5 years of experience.",
-      email: "john.doe@example.com"
+        "John is a software engineer with over 5 years of experience."
     }
   ]
 

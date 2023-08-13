@@ -87,7 +87,10 @@ const Pricing = () => {
           </Card>
 
           {/* Advanced User Card */}
-          <Card className="w-[300px]">
+          <Card className="w-[300px] relative">
+            <div className="absolute inset-0 bg-white bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-10">
+              <span className="text-lg font-bold">Coming Soon</span>
+            </div>
             <CardHeader>
               <CardTitle className="text-base text-gray-400">
                 Professional
@@ -122,7 +125,7 @@ const Pricing = () => {
               </ul>
             </CardContent>
             <CardFooter className="flex justify-center items-center">
-              {address ? (
+              {/* {address ? (
                 <Button
                   className="w-3/4 bg-black text-white transform hover:scale-105 hover:bg-black"
                   onClick={() => professionalCheckout(address)}
@@ -135,12 +138,18 @@ const Pricing = () => {
                 </Button>
               ) : (
                 <ConnectButton />
-              )}
+              )} */}
+              <Button className="w-3/4 bg-black text-white transform hover:scale-105 hover:bg-black">
+                Coming Soon
+              </Button>
             </CardFooter>
           </Card>
 
           {/* Enterprise Card */}
-          <Card className="w-[300px]">
+          <Card className="w-[300px] relative">
+            <div className="absolute inset-0 bg-white bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-10">
+              <span className="text-lg font-bold">Coming Soon</span>
+            </div>
             <CardHeader>
               <CardTitle className="text-base text-gray-400">
                 Business

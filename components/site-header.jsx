@@ -19,9 +19,9 @@ export function SiteHeader() {
           <Link href="/">
             <Image src="/logo.png" alt="Logo" width={128} height={128} />
           </Link>
-          <Link href="/whitePaper" target="_blank">
+          {/* <Link href="/whitePaper" target="_blank">
             WhitePaper
-          </Link>
+          </Link> */}
           {address ? <Link href="/ClaimList">Purchase History</Link> : null}
         </div>
         <div className="flex flex-row items-center space-x-4 text-muted-foreground">

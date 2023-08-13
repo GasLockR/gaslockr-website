@@ -14,9 +14,9 @@ const Footer = () => {
           <Link href="https://github.com/GasLockR" target="_blank">
             GitHub
           </Link>
-          <Link href="/whitePaper" target="_blank">
+          {/* <Link href="/whitePaper" target="_blank">
             WhitePaper
-          </Link>
+          </Link> */}
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-2xl">Contact Us</p>

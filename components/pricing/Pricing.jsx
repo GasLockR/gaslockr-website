@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle
 } from "@/components/ui/card"
+
 import {
   usePersonalCheckout,
   useProfessionalCheckout
@@ -15,6 +16,7 @@ import {
 import { useAccount } from "wagmi"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { Loader2 } from "lucide-react"
+import InsuranceSheet from "../insuranceSheet/InsuranceSheet"
 
 const Pricing = () => {
   const { personalCheckout, isPersonalCheckoutLoading } = usePersonalCheckout()
@@ -67,16 +69,17 @@ const Pricing = () => {
             </CardContent>
             <CardFooter className="flex justify-center items-center">
               {address ? (
-                <Button
-                  className="w-3/4 bg-black text-white transform hover:scale-105 hover:bg-black"
-                  onClick={() => personalCheckout(address)}
-                  disabled={isPersonalCheckoutLoading}
-                >
-                  {isPersonalCheckoutLoading ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  ) : null}
-                  Get Started
-                </Button>
+                // <Button
+                //   className="w-3/4 bg-black text-white transform hover:scale-105 hover:bg-black"
+                //   onClick={() => personalCheckout(address)}
+                //   disabled={isPersonalCheckoutLoading}
+                // >
+                //   {isPersonalCheckoutLoading ? (
+                //     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                //   ) : null}
+                //   Get Started
+                // </Button>
+                <InsuranceSheet />
               ) : (
                 <ConnectButton />
               )}

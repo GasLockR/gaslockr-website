@@ -5,19 +5,22 @@ import { useRouter } from "next/router"
 const Features = () => {
   const router = useRouter()
   return (
-    <div className="flex flex-col justify-center items-center gap-4 p-14">
+    <div className="flex flex-col justify-center items-center gap-4 p-14 m-60">
       <h1 className="font-bold text-4xl">Welcome to GasLockR</h1>
       <h1>The first trustless GasFi protocol for EVM-based chains</h1>
       <div className="flex flex-row gap-4">
         <Button
-          className="bg-black text-white transform hover:scale-105 hover:bg-black"
+          className="bg-[#1A5F7A] text-white transform hover:scale-105 hover:bg-[#002B5B]"
           onClick={() => {
             router.push("/GasSubscribe")
           }}
         >
           Try it Now
         </Button>
-        <Button className="bg-gray-200 transform hover:scale-105 hover:bg-gray-200 text-black">
+        <Button
+          disabled
+          className="bg-gray-200 transform hover:scale-105 hover:bg-gray-200 text-black"
+        >
           Learn More
         </Button>
       </div>

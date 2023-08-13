@@ -47,7 +47,7 @@ const timelineData = [
 const TimeLine = () => {
   return (
     <div className="p-14 mx-auto w-full h-full">
-      <p className="p-4 font-bold text-3xl">Milestones and Victories</p>
+      <p className="p-4 font-bold text-3xl">Our Achivements</p>
       <p className="p-4 text-1xl">
         Discover the milestones we've achieved along our journey. Our team has
         distinguished itself in numerous competitions and hackathons,

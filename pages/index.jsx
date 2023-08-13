@@ -14,7 +14,7 @@ const Home = () => {
         />
         <link href="/favicon.ico" rel="icon" />
       </Head>
-      <Features />
+      <Features/>
       {/* <Teams /> */}
       <TimeLine />
     </div>

@@ -38,19 +38,19 @@ const InsuranceSheet = () => {
         <div className="flex flex-col gap-10 my-24">
           <div className="flex flex-row justify-between items-center">
             <Label htmlFor="policyPrice">Policy Price</Label>
-            <p>0.01 ETH</p>
+            <p className="text-[#57C5B6]">0.01 ETH</p>
           </div>
           <div className="flex flex-row justify-between items-center">
             <Label htmlFor="fluctuation">Lock Fluctuation</Label>
-            <p>15 %</p>
+            <p className="text-[#57C5B6]">15 %</p>
           </div>
           <div className="flex flex-row justify-between items-center">
             <Label htmlFor="activeDays">Active Days</Label>
-            <p>7 Days</p>
+            <p className="text-[#57C5B6]">7 Days</p>
           </div>
           <div className="flex flex-row justify-between items-center">
             <Label htmlFor="compensationAmount">Compensation Amount</Label>
-            <p>0.23 ETH</p>
+            <p className="text-[#57C5B6]">0.23 ETH</p>
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="payerAddress">Payer Address</Label>
@@ -58,7 +58,7 @@ const InsuranceSheet = () => {
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="insuredAddress">Insured Address</Label>
-            <p>0x3F28BECCd4CFf6548600cA62446D7aa6381a37B7</p>
+            <p>{address}</p>
           </div>
           <div className="flex flex-row justify-between items-center">
             <Label htmlFor="policyAmount">Policy Amount</Label>

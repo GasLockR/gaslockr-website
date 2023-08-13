@@ -17,7 +17,7 @@ export function SiteHeader() {
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <div className="flex flex-row justify-between gap-8 items-center text-base font-medium text-muted-foreground">
           <Link href="/">
-            <Image src="/logo.png" alt="Logo" width={128} height={128} />
+            <Image src="/logo.png" alt="Logo" width={48} height={48} />
           </Link>
           {/* <Link href="/whitePaper" target="_blank">
             WhitePaper

@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="flex flex-col m-24">
       <div className="flex flex-row justify-between">
         <div>
-          <Image src="/logo.png" alt="Logo" width={128} height={128} />
+          <Image src="/logo.png" alt="Logo" width={48} height={48} />
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-2xl">Resource</p>

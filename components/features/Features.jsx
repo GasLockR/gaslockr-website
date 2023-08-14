@@ -25,8 +25,9 @@ const Features = () => {
                 onClick={() => {
                   router.push("/GasSubscribe")
                 }}
+                disabled
               >
-                Try it Now
+                Try it Now Coming soon...
               </Button>
               <Button
                 disabled

@@ -7,12 +7,17 @@ const Footer = () => {
     <footer className="flex flex-col m-24">
       <div className="flex flex-row justify-between">
         <div>
-          <Image src="/logo.png" alt="Logo" width={48} height={48} />
+          <Link href="/" className="flex flex-row gap-4 items-center">
+            <Image src="/logo.png" alt="Logo" width={48} height={48} />
+            <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-300 via-blue-500 to-blue-300">
+              GasLockR
+            </div>
+          </Link>
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-2xl">Resource</p>
-          <Link href="https://github.com/GasLockR" target="_blank">
-            GitHub
+          <Link href="https://gaslockr.gitbook.io/gaslockr" target="_blank">
+            GitBook
           </Link>
           {/* <Link href="/whitePaper" target="_blank">
             WhitePaper

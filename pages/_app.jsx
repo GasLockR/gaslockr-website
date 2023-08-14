@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/site-header"
 import "../styles/globals.css"
+import "../styles/layout.css"
 
 import { Web3Provider } from "providers/Web3"
 import Footer from "@/components/footer/Footer"

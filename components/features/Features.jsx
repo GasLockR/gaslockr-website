@@ -15,7 +15,9 @@ const Features = () => {
               Welcome to GasLockR
             </h1>
             <p className="mt-6 text-lg text-gray-600">
-              The first trustless GasFi protocol for EVM-based chains
+              The first trustless GasFi protocol for EVM-based chains The first
+              trustless GasFi protocol for EVM-based chainsThe first trustless
+              GasFi protocol for EVM-based chains
             </p>
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
               <Button

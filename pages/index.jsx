@@ -2,10 +2,11 @@ import Head from "next/head"
 import Features from "@/components/features/Features"
 import Teams from "@/components/teams/Teams"
 import TimeLine from "@/components/timeline/Timeline"
+import PrimaryFeatures from "@/components/primaryFeatures/PrimaryFeatures"
 
 const Home = () => {
   return (
-    <div className="container">
+    <div>
       <Head>
         <title>GasLockR - The First Trustless GasFi Protocol </title>
         <meta
@@ -14,7 +15,8 @@ const Home = () => {
         />
         <link href="/favicon.ico" rel="icon" />
       </Head>
-      <Features/>
+      <Features />
+      <PrimaryFeatures />
       {/* <Teams /> */}
       <TimeLine />
     </div>

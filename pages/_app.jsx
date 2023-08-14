@@ -8,7 +8,7 @@ import Footer from "@/components/footer/Footer"
 function MyApp({ Component, pageProps }) {
   return (
     <Web3Provider>
-      <div className="container">
+      <div>
         <SiteHeader />
         <Component {...pageProps} />
         <Footer />

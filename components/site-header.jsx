@@ -8,16 +8,20 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { useAccount } from "wagmi"
+import { Container } from "./Container"
 
 export function SiteHeader() {
   const { address } = useAccount()
 
   return (
-    <header className="bg-background sticky top-0 z-40 w-full border-b">
+    <Container className="top-0 z-40 w-full">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <div className="flex flex-row justify-between gap-8 items-center text-base font-medium text-muted-foreground">
-          <Link href="/">
+          <Link href="/" className="flex flex-row gap-4 items-center">
             <Image src="/logo.png" alt="Logo" width={48} height={48} />
+            <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-300 via-blue-500 to-blue-300">
+              GasLockR
+            </div>
           </Link>
           {/* <Link href="/whitePaper" target="_blank">
             WhitePaper
@@ -25,13 +29,13 @@ export function SiteHeader() {
           {address ? <Link href="/ClaimList">Purchase History</Link> : null}
         </div>
         <div className="flex flex-row items-center space-x-4 text-muted-foreground">
-          <Button
+          {/* <Button
             variant="ghost"
             size="icon"
             onClick={() => window.open("https://github.com/GasLockR", "_blank")}
           >
             <GitHubLogoIcon className="h-6 w-6" />
-          </Button>
+          </Button> */}
           <Button
             variant="ghost"
             size="icon"
@@ -53,6 +57,6 @@ export function SiteHeader() {
           <ConnectButton />
         </div>
       </div>
-    </header>
+    </Container>
   )
 }

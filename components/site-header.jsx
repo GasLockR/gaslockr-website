@@ -26,7 +26,7 @@ export function SiteHeader() {
           {/* <Link href="/whitePaper" target="_blank">
             WhitePaper
           </Link> */}
-          {address ? <Link href="/ClaimList">Purchase History</Link> : null}
+          {/* {address ? <Link href="/ClaimList">Purchase History</Link> : null} */}
         </div>
         <div className="flex flex-row items-center space-x-4 text-muted-foreground">
           {/* <Button

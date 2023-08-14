@@ -33,9 +33,9 @@ const PrimaryFeatures = () => {
             it.
           </p>
         </div>
-        <div className="flex flex-col gap-16 py-20">
+        <div className="flex flex-col gap-24 py-20">
           <div className="flex flex-row justify-between">
-            <div className="w-2/5">
+            <div className="w-1/2">
               <Card className="bg-gray-800 border-0">
                 <CardHeader>
                   <CardTitle className="font-bold text-3xl bg-clip-text text-transparent bg-gradient-to-r from-green-300 via-blue-500 to-blue-300">
@@ -80,7 +80,7 @@ const PrimaryFeatures = () => {
           </div>
           <div className="flex flex-row justify-between">
             <div></div>
-            <div className="w-2/5">
+            <div className="w-1/2">
               <Card className="bg-gray-800 border-0">
                 <CardHeader>
                   <CardTitle className="font-bold text-3xl bg-clip-text text-transparent bg-gradient-to-r from-green-300 via-blue-500 to-blue-300">

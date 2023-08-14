@@ -26,12 +26,12 @@ const TimelineItem = ({
       } items-center w-full`}
     >
       <div className="order-1 w-5/12"></div>
-      <div className="z-20 flex items-center order-1 bg-[#002B5B] shadow-xl w-8 h-8 rounded-full">
+      <div className="z-20 flex items-center order-1 bg-black shadow-xl w-8 h-8 rounded-full">
         <h1 className="mx-auto font-semibold text-lg text-white">{id}</h1>
       </div>
 
       <div className="order-1 w-5/12">
-        <Card className="w-[370px] border-[#002B5B]">
+        <Card className="w-[370px]">
           <CardHeader>
             <CardTitle>
               <Image src={title} alt="Logo" width={128} height={128} />

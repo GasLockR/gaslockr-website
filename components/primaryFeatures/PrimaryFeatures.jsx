@@ -39,7 +39,8 @@ const PrimaryFeatures = () => {
         <div className="flex flex-col gap-24 py-20">
           <div className="flex flex-row justify-between">
             <div className="w-1/2">
-              <Card className="bg-gray-800 border-0">
+              <Card className="bg-transparent relative backdrop-blur-md border-0">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#57C5B6] via-blue-500 to-[#8878d5] opacity-10"></div>
                 <CardHeader>
                   <CardTitle className="font-bold text-3xl bg-clip-text text-transparent bg-gradient-to-r from-green-300 via-blue-500 to-blue-300">
                     GasInsure
@@ -84,7 +85,8 @@ const PrimaryFeatures = () => {
           <div className="flex flex-row justify-between">
             <div></div>
             <div className="w-1/2">
-              <Card className="bg-gray-800 border-0">
+              <Card className="bg-transparent relative backdrop-blur-md border-0">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#57C5B6] via-blue-500 to-[#8878d5] opacity-10"></div>
                 <CardHeader>
                   <CardTitle className="font-bold text-3xl bg-clip-text text-transparent bg-gradient-to-r from-green-300 via-blue-500 to-blue-300">
                     GasSubscribe

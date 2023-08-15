@@ -22,10 +22,12 @@ const PrimaryFeatures = () => {
       className="bg-gray-900 py-20 sm:py-32"
     >
       <Container>
-        <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-3xl">
-          <h2 className="text-3xl font-medium tracking-tight text-white">
-            Our New Feature
+        <div className="flex items-center justify-center mb-12">
+          <h2 className="text-6xl font-medium tracking-tight text-white">
+            GasFi Products
           </h2>
+        </div>
+        <div className="flex items-center justify-center">
           <p className="mt-2 text-lg text-gray-400">
             Pocket was built for investors like you who play by their own rules
             and aren’t going to let SEC regulations get in the way of their
@@ -33,6 +35,7 @@ const PrimaryFeatures = () => {
             it.
           </p>
         </div>
+        <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-3xl"></div>
         <div className="flex flex-col gap-24 py-20">
           <div className="flex flex-row justify-between">
             <div className="w-1/2">
@@ -71,7 +74,7 @@ const PrimaryFeatures = () => {
                     }}
                     disabled
                   >
-                    Try it Now Coming soon...
+                    Coming soon...
                   </Button>
                 </CardFooter>
               </Card>
@@ -116,7 +119,7 @@ const PrimaryFeatures = () => {
                     }}
                     disabled
                   >
-                    Try it Now Coming soon...
+                    Coming soon...
                   </Button>
                 </CardFooter>
               </Card>

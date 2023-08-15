@@ -40,7 +40,12 @@ const Features = () => {
                 Try it Now
               </Button>
               {/* todo gitbook */}
-              <Button className="bg-[#1A5F7A] transform hover:scale-105 hover:bg-[#002B5B] text-white">
+              <Button
+                className="bg-[#1A5F7A] transform hover:scale-105 hover:bg-[#002B5B] text-white"
+                onClick={() =>
+                  window.open("https://gaslockr.gitbook.io/gaslockr", "_blank")
+                }
+              >
                 Learn More
               </Button>
             </div>

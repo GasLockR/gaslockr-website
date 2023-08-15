@@ -42,7 +42,14 @@ const TimelineItem = ({
             <div className="text-black bg-[#F3BF1E] rounded-sm p-1 whitespace-nowrap">
               {achivements}
             </div>
-            <div>{content}</div>
+            <div>
+              {content.split("\n").map((line, index) => (
+                <span key={index}>
+                  {line}
+                  <br />
+                </span>
+              ))}
+            </div>
           </CardContent>
           <CardFooter className="flex flex-row-reverse">
             <Button

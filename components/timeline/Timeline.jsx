@@ -8,7 +8,7 @@ const timelineData = [
     title: "/ethbeijing_hackathon.png",
     description: "ETH Beijing 2023 Hackathon",
     achivements: "Champion",
-    content: "Main Track - Innovative Layer2 Dapp",
+    content: "Layer2 Championship🥇 \nScroll Bounty track Second place🥈",
     url: "https://www.ethbeijing.xyz/"
   },
   // {
@@ -24,7 +24,7 @@ const timelineData = [
     title: "/chainlink_hackathon.svg",
     description: "CHAINLINK HACKATHON SPRING 2023",
     achivements: "Winner",
-    content: "- Total of $200k in AWS credits",
+    content: "Total of $200k in AWS credits🏅",
     url: "https://devpost.com/software/gaslockr"
   },
   {
@@ -32,7 +32,7 @@ const timelineData = [
     title: "/ethshanghai_hackathon.png",
     description: "ETH Shanghai 2023 Hackathon",
     achivements: "Second place",
-    content: "Main Track - Layer 2 & On-Chain Gaming",
+    content: "Layer2 Second place🥈 \n Chainlink Third place🥉",
     url: "https://app.buidlbox.io/projects/gassubscribe"
   }
 

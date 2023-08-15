@@ -30,7 +30,7 @@ const TimelineItem = ({
         <h1 className="mx-auto font-semibold text-lg text-white">{id}</h1>
       </div>
 
-      <div className="order-1 w-5/12 h-60">
+      <div className="order-1 w-5/12 h-60 pl-8">
         <Card className="w-[370px]">
           <CardHeader>
             <CardTitle>

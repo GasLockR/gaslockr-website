@@ -51,30 +51,30 @@ const GasPriceChart = ({ data }) => {
           //       { offset: 1, color: "#52b3d0" }
           //     ])
           //   },
-          data: data.map((item) => item.gasPrice)
-          //   markArea: {
-          //     label: {
-          //       color: "#52b3d0",
-          //       fontSize: 16
-          //     },
-          //     itemStyle: {
-          //       color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          //         { offset: 0, color: "rgba(144, 238, 144, 0.2)" }, // 开始颜色
-          //         { offset: 1, color: "rgba(144, 238, 144, 0.8)" } // 结束颜色
-          //       ])
-          //     },
-          //     data: [
-          //       [
-          //         {
-          //           name: "Our Protect Area",
-          //           yAxis: 23000000000 // 受保护区域的开始值
-          //         },
-          //         {
-          //           yAxis: 50000000000 // 受保护区域的结束值
-          //         }
-          //       ]
-          //     ]
-          //   }
+          data: data.map((item) => item.gasPrice),
+          markArea: {
+            label: {
+              color: "#57C5B6",
+              fontSize: 16
+            },
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: "rgba(255, 255, 255, 0.1)" }, // 开始颜色
+                { offset: 1, color: "rgba(117, 195, 182, 0.2)" } // 结束颜色
+              ])
+            },
+            data: [
+              [
+                {
+                  name: "Coverage Scope",
+                  yAxis: 30000000000 // 受保护区域的开始值
+                },
+                {
+                  yAxis: 50000000000 // 受保护区域的结束值
+                }
+              ]
+            ]
+          }
         }
       ]
     }

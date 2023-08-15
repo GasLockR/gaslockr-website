@@ -17,7 +17,7 @@ export function SiteHeader() {
     <Container className="top-0 z-40 w-full">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <div className="flex flex-row justify-between gap-8 items-center text-base font-medium text-muted-foreground">
-          <Link href="/" className="flex flex-row gap-4 items-center">
+          <Link href="/" className="flex flex-row gap-2 items-center">
             <Image src="/logo.png" alt="Logo" width={48} height={48} />
             <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#159895] to-[#1A5F7A]">
               GasLockR

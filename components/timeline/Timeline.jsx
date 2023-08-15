@@ -51,10 +51,10 @@ const TimeLine = () => {
     <Container>
       <div className="p-14 mx-auto w-full h-full">
         <p className="p-4 font-bold text-4xl">Our Achivements</p>
-        <p className="p-4 text-1xl">
+        <div className="p-4 text-lg">
           Dive into our track record of innovation and excellence, as recognized
           on the global stage of hackathons.
-        </p>
+        </div>
         <div className="relative wrap overflow-hidden p-10 h-full">
           <div className="border-2-2 absolute border-opacity-20 border-black h-full border left-1/2"></div>
           <div>

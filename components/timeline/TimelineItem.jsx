@@ -30,7 +30,7 @@ const TimelineItem = ({
         <h1 className="mx-auto font-semibold text-lg text-white">{id}</h1>
       </div>
 
-      <div className="order-1 w-5/12">
+      <div className="order-1 w-5/12 h-60">
         <Card className="w-[370px]">
           <CardHeader>
             <CardTitle>
@@ -46,7 +46,7 @@ const TimelineItem = ({
           </CardContent>
           <CardFooter className="flex flex-row-reverse">
             <Button
-              className="bg-[#1A5F7A] text-white transform hover:scale-105 hover:bg-[#002B5B]"
+              className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
               onClick={() => {
                 window.open(url, "_blank")
               }}

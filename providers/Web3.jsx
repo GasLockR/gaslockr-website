@@ -55,7 +55,7 @@ export function Web3Provider(props) {
           <RainbowKitProvider
             chains={chains}
             theme={lightTheme({
-              accentColor: "black",
+              accentColor: "#57C5B6",
               accentColorForeground: "white",
               borderRadius: "medium"
             })}

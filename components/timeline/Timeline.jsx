@@ -5,11 +5,11 @@ import { Container } from "../Container"
 const timelineData = [
   {
     id: 1,
-    title: "/ethshanghai_hackathon.png",
-    description: "ETH Shanghai 2023 Hackathon",
-    achivements: "Runner-Up",
-    content: "Main Track - Layer 2 & On-Chain Gaming",
-    url: "https://app.buidlbox.io/projects/gassubscribe"
+    title: "/ethbeijing_hackathon.png",
+    description: "ETH Beijing 2023 Hackathon",
+    achivements: "Champion",
+    content: "Main Track - Innovative Layer2 Dapp",
+    url: "https://www.ethbeijing.xyz/"
   },
   // {
   //   id: 2,
@@ -29,12 +29,13 @@ const timelineData = [
   },
   {
     id: 3,
-    title: "/ethbeijing_hackathon.png",
-    description: "ETH Beijing 2023 Hackathon",
-    achivements: "Champion",
-    content: "Main Track - Innovative Layer2 Dapp",
-    url: "https://www.ethbeijing.xyz/"
+    title: "/ethshanghai_hackathon.png",
+    description: "ETH Shanghai 2023 Hackathon",
+    achivements: "Second place",
+    content: "Main Track - Layer 2 & On-Chain Gaming",
+    url: "https://app.buidlbox.io/projects/gassubscribe"
   }
+
   // {
   //   id: 5,
   //   title: "/ethbeijing_hackathon.png",
@@ -49,12 +50,10 @@ const TimeLine = () => {
   return (
     <Container>
       <div className="p-14 mx-auto w-full h-full">
-        <p className="p-4 font-bold text-3xl">Our Achivements</p>
+        <p className="p-4 font-bold text-4xl">Our Achivements</p>
         <p className="p-4 text-1xl">
-          Discover the milestones we've achieved along our journey. Our team has
-          distinguished itself in numerous competitions and hackathons,
-          demonstrating our commitment to excellence and innovation in the Web3
-          field.
+          Dive into our track record of innovation and excellence, as recognized
+          on the global stage of hackathons.
         </p>
         <div className="relative wrap overflow-hidden p-10 h-full">
           <div className="border-2-2 absolute border-opacity-20 border-black h-full border left-1/2"></div>

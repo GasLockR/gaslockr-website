@@ -139,7 +139,7 @@ const Pricing = () => {
               ) : (
                 <ConnectButton />
               )} */}
-              <Button className="w-3/4 bg-black text-white transform hover:scale-105 hover:bg-black">
+              <Button className="w-3/4 bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]">
                 Coming Soon
               </Button>
             </CardFooter>
@@ -173,7 +173,7 @@ const Pricing = () => {
               </ul>
             </CardContent>
             <CardFooter className="flex justify-center items-center">
-              <Button className="w-3/4 bg-black text-white transform hover:scale-105 hover:bg-black">
+              <Button className="w-3/4 bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]">
                 Contact Us
               </Button>
             </CardFooter>

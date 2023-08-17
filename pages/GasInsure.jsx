@@ -1,8 +1,8 @@
 import Pricing from "@/components/pricing/Pricing"
 import React from "react"
 
-const GasSubscribe = () => {
+const GasInsure = () => {
   return <Pricing />
 }
 
-export default GasSubscribe
+export default GasInsure

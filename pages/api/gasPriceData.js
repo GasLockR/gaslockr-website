@@ -13,7 +13,7 @@ export default function handler(req, res) {
 
   const filteredData = results.data.filter((record) => {
     const date = new Date(record["Date(UTC)"])
-    return date >= new Date("2023-07-13") && date <= new Date("2023-08-13")
+    return date >= new Date("2023-07-17") && date <= new Date("2023-08-17")
   })
 
   const responseData = filteredData.map((record) => {

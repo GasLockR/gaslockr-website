@@ -339,11 +339,6 @@
 		},
 		{
 		 "internalType": "bool",
-		 "name": "isExpired",
-		 "type": "bool"
-		},
-		{
-		 "internalType": "bool",
 		 "name": "isClaimed",
 		 "type": "bool"
 		}
@@ -407,11 +402,6 @@
 		 "internalType": "uint256",
 		 "name": "volatility",
 		 "type": "uint256"
-		},
-		{
-		 "internalType": "bool",
-		 "name": "isExpired",
-		 "type": "bool"
 		},
 		{
 		 "internalType": "bool",
@@ -484,12 +474,73 @@
 	  },
 	  {
 	   "internalType": "bool",
-	   "name": "isExpired",
+	   "name": "isClaimed",
 	   "type": "bool"
-	  },
+	  }
+	 ],
+	 "stateMutability": "view",
+	 "type": "function"
+	},
+	{
+	 "inputs": [
+	  {
+	   "components": [
+		{
+		 "internalType": "address",
+		 "name": "payer",
+		 "type": "address"
+		},
+		{
+		 "internalType": "address",
+		 "name": "insured",
+		 "type": "address"
+		},
+		{
+		 "internalType": "enum GasInsure.policyTerm",
+		 "name": "Term",
+		 "type": "uint8"
+		},
+		{
+		 "internalType": "enum GasInsure.policyType",
+		 "name": "Type",
+		 "type": "uint8"
+		},
+		{
+		 "internalType": "uint256",
+		 "name": "startTime",
+		 "type": "uint256"
+		},
+		{
+		 "internalType": "uint256",
+		 "name": "endTime",
+		 "type": "uint256"
+		},
+		{
+		 "internalType": "uint256",
+		 "name": "targetGasPrice",
+		 "type": "uint256"
+		},
+		{
+		 "internalType": "uint256",
+		 "name": "volatility",
+		 "type": "uint256"
+		},
+		{
+		 "internalType": "bool",
+		 "name": "isClaimed",
+		 "type": "bool"
+		}
+	   ],
+	   "internalType": "struct GasInsure.Policy",
+	   "name": "policy",
+	   "type": "tuple"
+	  }
+	 ],
+	 "name": "isPolicyExpired",
+	 "outputs": [
 	  {
 	   "internalType": "bool",
-	   "name": "isClaimed",
+	   "name": "",
 	   "type": "bool"
 	  }
 	 ],
@@ -606,11 +657,6 @@
 	  },
 	  {
 	   "internalType": "bool",
-	   "name": "isExpired",
-	   "type": "bool"
-	  },
-	  {
-	   "internalType": "bool",
 	   "name": "isClaimed",
 	   "type": "bool"
 	  }
@@ -667,11 +713,6 @@
 	   "internalType": "uint256",
 	   "name": "volatility",
 	   "type": "uint256"
-	  },
-	  {
-	   "internalType": "bool",
-	   "name": "isExpired",
-	   "type": "bool"
 	  },
 	  {
 	   "internalType": "bool",

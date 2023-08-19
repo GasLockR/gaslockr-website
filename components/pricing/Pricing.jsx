@@ -47,7 +47,6 @@ const Pricing = () => {
     }
 
     return payerPolicyList.map((policy) => {
-      // 转换时间为正常的日期格式
       const endTime = new Date(Number(policy.endTime) * 1000)
       const startTime = new Date(Number(policy.startTime) * 1000)
 

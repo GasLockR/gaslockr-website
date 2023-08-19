@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
@@ -22,6 +22,14 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
+import { useToast } from "@/components/ui/use-toast"
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from "@/components/ui/popover"
+import { QuestionMarkCircledIcon } from "@radix-ui/react-icons"
 import { useAccount, useContractWrite } from "wagmi"
 import useInsuranceData from "@/hooks/useInsuranceData"
 import contractAbi from "@/config/contract.json"
@@ -36,13 +44,12 @@ const InsuranceSheet = () => {
     }
   }
 
+  const { toast } = useToast()
+
   const [policytype, setPolicytype] = useState(0)
   const [policyterm, setPolicyterm] = useState(0)
   const [insuredAddress, setInsuredAddress] = useState("")
   const [addressError, setAddressError] = useState(null)
-
-  console.log(policytype, "policytype")
-  console.log(policyterm, "policyterm")
 
   const {
     policyPrice,
@@ -65,7 +72,12 @@ const InsuranceSheet = () => {
     isVolatilityLoading ||
     isTargetGasPriceLoading
 
-  const { data, isDepositLoading, isSuccess, write } = useContractWrite({
+  const {
+    data,
+    isLoading: isDepositLoading,
+    isSuccess,
+    write
+  } = useContractWrite({
     address: CONTRACT_ADDRESS,
     abi: contractAbi,
     functionName: "deposit"
@@ -79,7 +91,7 @@ const InsuranceSheet = () => {
     policyPrice
   ) => {
     if (!utils.isAddress(insuredAddress)) {
-      setAddressError("Invalid Ethereum address")
+      setAddressError("Please Enter Ethereum address")
       return
     }
 
@@ -95,6 +107,15 @@ const InsuranceSheet = () => {
     15: 1,
     30: 2
   }
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        title: "Get Insured Success",
+        description: "Wow! Get Insured Success"
+      })
+    }
+  }, [isSuccess])
 
   return (
     <Sheet>
@@ -119,7 +140,15 @@ const InsuranceSheet = () => {
         </SheetHeader>
         <div className="flex flex-col gap-10 my-12">
           <div className="flex flex-row justify-between items-center">
-            <Label htmlFor="activeDays">Policy Type</Label>
+            <div className="flex flex-row gap-2">
+              <Label htmlFor="activeDays">Policy Type</Label>
+              <Popover>
+                <PopoverTrigger>
+                  <QuestionMarkCircledIcon />
+                </PopoverTrigger>
+                <PopoverContent>What is Policy Price</PopoverContent>
+              </Popover>
+            </div>
             <Select
               onValueChange={(e) => {
                 setPolicytype(e)
@@ -140,19 +169,15 @@ const InsuranceSheet = () => {
             </Select>
           </div>
           <div className="flex flex-row justify-between items-center">
-            <Label htmlFor="policyPrice">Policy Price</Label>
-            <p className="text-[#57C5B6]">{policyPrice} Wei</p>
-          </div>
-          <div className="flex flex-row justify-between items-center">
-            <Label htmlFor="fluctuation">Lock Fluctuation</Label>
-            <p className="text-[#57C5B6]">{volatility} %</p>
-          </div>
-          <div className="flex flex-row justify-between items-center">
-            <Label htmlFor="fluctuation">Lock GasPrice</Label>
-            <p className="text-[#57C5B6]">{targetGasPrice} Wei</p>
-          </div>
-          <div className="flex flex-row justify-between items-center">
-            <Label htmlFor="activeDays">Active Days</Label>
+            <div className="flex flex-row gap-2">
+              <Label htmlFor="activeDays">Active Days</Label>
+              <Popover>
+                <PopoverTrigger>
+                  <QuestionMarkCircledIcon />
+                </PopoverTrigger>
+                <PopoverContent>What is Policy Price</PopoverContent>
+              </Popover>
+            </div>
             <Select
               onValueChange={(e) => {
                 const enumValue = policyTermMap[e]
@@ -177,15 +202,76 @@ const InsuranceSheet = () => {
             </Select>
           </div>
           <div className="flex flex-row justify-between items-center">
-            <Label htmlFor="compensationAmount">Compensation Amount</Label>
+            <div className="flex flex-row gap-2">
+              <Label htmlFor="policyPrice">Policy Price</Label>
+              <Popover>
+                <PopoverTrigger>
+                  <QuestionMarkCircledIcon />
+                </PopoverTrigger>
+                <PopoverContent>What is Policy Price</PopoverContent>
+              </Popover>
+            </div>
+
+            <p className="text-[#57C5B6]">{policyPrice} Wei</p>
+          </div>
+          <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-row gap-2">
+              <Label htmlFor="fluctuation">Lock Fluctuation</Label>
+              <Popover>
+                <PopoverTrigger>
+                  <QuestionMarkCircledIcon />
+                </PopoverTrigger>
+                <PopoverContent>What is Policy Price</PopoverContent>
+              </Popover>
+            </div>
+            <p className="text-[#57C5B6]">{volatility} %</p>
+          </div>
+          <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-row gap-2">
+              <Label htmlFor="fluctuation">Lock GasPrice</Label>
+              <Popover>
+                <PopoverTrigger>
+                  <QuestionMarkCircledIcon />
+                </PopoverTrigger>
+                <PopoverContent>What is Policy Price</PopoverContent>
+              </Popover>
+            </div>
+            <p className="text-[#57C5B6]">{targetGasPrice} Wei</p>
+          </div>
+          <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-row gap-2">
+              <Label htmlFor="compensationAmount">Compensation Amount</Label>
+              <Popover>
+                <PopoverTrigger>
+                  <QuestionMarkCircledIcon />
+                </PopoverTrigger>
+                <PopoverContent>What is Policy Price</PopoverContent>
+              </Popover>
+            </div>
             <p className="text-[#57C5B6]">{benefit} Wei</p>
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="payerAddress">Payer Address</Label>
+            <div className="flex flex-row gap-2">
+              <Label htmlFor="payerAddress">Payer Address</Label>
+              <Popover>
+                <PopoverTrigger>
+                  <QuestionMarkCircledIcon />
+                </PopoverTrigger>
+                <PopoverContent>What is Policy Price</PopoverContent>
+              </Popover>
+            </div>
             <p>{address}</p>
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="insuredAddress">Insured Address</Label>
+            <div className="flex flex-row gap-2">
+              <Label htmlFor="insuredAddress">Insured Address</Label>
+              <Popover>
+                <PopoverTrigger>
+                  <QuestionMarkCircledIcon />
+                </PopoverTrigger>
+                <PopoverContent>What is Policy Price</PopoverContent>
+              </Popover>
+            </div>
             <Input
               className="text-[#57C5B6]"
               placeholder="Insured Address"
@@ -197,7 +283,15 @@ const InsuranceSheet = () => {
             )}
           </div>
           <div className="flex flex-row justify-between items-center">
-            <Label htmlFor="policyAmount">Policy Amount</Label>
+            <div className="flex flex-row gap-2">
+              <Label htmlFor="policyAmount">Policy Amount</Label>
+              <Popover>
+                <PopoverTrigger>
+                  <QuestionMarkCircledIcon />
+                </PopoverTrigger>
+                <PopoverContent>What is Policy Price</PopoverContent>
+              </Popover>
+            </div>
             <div>
               <Input
                 disabled
@@ -211,7 +305,7 @@ const InsuranceSheet = () => {
         </div>
         <SheetFooter>
           <Button
-            disabled={isLoading}
+            disabled={isDepositLoading}
             className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
             onClick={() => {
               clickBuy(
@@ -223,7 +317,7 @@ const InsuranceSheet = () => {
               )
             }}
           >
-            {isLoading ? (
+            {isDepositLoading ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
               "Buy"

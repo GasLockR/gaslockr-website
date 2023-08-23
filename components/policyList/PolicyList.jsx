@@ -9,6 +9,8 @@ import {
 } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Input } from "@/components/ui/input"
+import { ethers } from "ethers"
 
 import {
   Table,
@@ -18,6 +20,11 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from "@/components/ui/popover"
 
 const PolicyList = ({ policies }) => {
   const [sorting, setSorting] = useState([])
@@ -28,6 +35,13 @@ const PolicyList = ({ policies }) => {
   console.log(policies, "fuck policies")
 
   const loading = !policies || policies.length === 0
+
+  const formatAddress = (address) => {
+    if (address.length > 8) {
+      return address.slice(0, 4) + "..." + address.slice(-4)
+    }
+    return address
+  }
 
   const columns = [
     // normal or advance
@@ -40,7 +54,7 @@ const PolicyList = ({ policies }) => {
     },
     {
       accessorKey: "policyTerm",
-      header: "Policy Term",
+      header: "Policy Period",
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("policyTerm")}</div>
       )
@@ -49,28 +63,60 @@ const PolicyList = ({ policies }) => {
       accessorKey: "payer",
       header: "Payer Address",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("payer")}</div>
+        <Popover>
+          <PopoverTrigger>
+            <Button
+              variant="link"
+              className="capitalize text-[#57C5B6] underline"
+            >
+              {formatAddress(row.getValue("payer"))}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-full text-[#57C5B6]">
+            {row.getValue("payer")}
+          </PopoverContent>
+        </Popover>
       )
     },
     {
       accessorKey: "insured",
       header: "Insured Address",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("insured")}</div>
+        <Popover>
+          <PopoverTrigger>
+            <Button
+              variant="link"
+              className="capitalize text-[#57C5B6] underline"
+            >
+              {formatAddress(row.getValue("insured"))}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-full text-[#57C5B6]">
+            {row.getValue("insured")}
+          </PopoverContent>
+        </Popover>
       )
     },
     {
       accessorKey: "targetGasPrice",
-      header: "Target Gas Price",
+      header: "Locked Price",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("targetGasPrice")}</div>
+        <div className="capitalize">
+          {`${
+            row.getValue("targetGasPrice")
+              ? parseFloat(
+                  ethers.utils.formatUnits(row.getValue("targetGasPrice"), 9)
+                ).toFixed(2)
+              : 0
+          } Gwei`}
+        </div>
       )
     },
     {
       accessorKey: "volatility",
-      header: "Volatitity",
+      header: "Min Fluctuation",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("volatility")}</div>
+        <div className="capitalize">{row.getValue("volatility")}%</div>
       )
     },
     {
@@ -78,7 +124,7 @@ const PolicyList = ({ policies }) => {
       header: "Claimed",
       cell: ({ row }) => (
         <div className="capitalize">
-          {row.getValue("isClaimed") ? "Claimed" : "Active"}
+          {row.getValue("isClaimed") ? "Claimed" : ""}
         </div>
       )
     },
@@ -101,7 +147,7 @@ const PolicyList = ({ policies }) => {
       header: "Expired",
       cell: ({ row }) => (
         <div className="capitalize">
-          {row.getValue("isExpired") ? "Expired" : "Protecting"}
+          {row.getValue("isExpired") ? "Expired" : "Active"}
         </div>
       )
     }
@@ -127,6 +173,16 @@ const PolicyList = ({ policies }) => {
   })
   return (
     <div>
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Filter Payer Address..."
+          value={table.getColumn("payer")?.getFilterValue() ?? ""}
+          onChange={(event) =>
+            table.getColumn("payer")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
       <div>
         <div className="rounded-md border">
           {!loading ? (

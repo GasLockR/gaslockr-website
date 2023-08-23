@@ -34,7 +34,7 @@ import { useAccount, useContractWrite } from "wagmi"
 import useInsuranceData from "@/hooks/useInsuranceData"
 import contractAbi from "@/config/contract.json"
 import { CONTRACT_ADDRESS } from "@/config/address"
-import { utils } from "ethers"
+import { utils, ethers } from "ethers"
 
 const InsuranceSheet = () => {
   const { address } = useAccount()
@@ -111,8 +111,8 @@ const InsuranceSheet = () => {
   useEffect(() => {
     if (isSuccess) {
       toast({
-        title: "Get Insured Success",
-        description: "Wow! Get Insured Success"
+        title: "Insured Success",
+        description: "You got one policy"
       })
     }
   }, [isSuccess])
@@ -133,9 +133,9 @@ const InsuranceSheet = () => {
       </SheetTrigger>
       <SheetContent className="w-[450px] sm:max-w-none overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>Personal Gas Insurance</SheetTitle>
+          <SheetTitle>GasInsure (Beta)</SheetTitle>
           <SheetDescription>
-            Configure your insurance here. Click save when you're done.
+            Configure your insurance here. Click buy when you've done.
           </SheetDescription>
         </SheetHeader>
         <div className="flex flex-col gap-10 my-12">
@@ -146,7 +146,10 @@ const InsuranceSheet = () => {
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>What is Policy Price</PopoverContent>
+                <PopoverContent>
+                  The specific type of insurance policy you're purchasing.
+                  Different types may offer varying coverages.
+                </PopoverContent>
               </Popover>
             </div>
             <Select
@@ -170,12 +173,15 @@ const InsuranceSheet = () => {
           </div>
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row gap-2">
-              <Label htmlFor="activeDays">Active Days</Label>
+              <Label htmlFor="activeDays">Policy Period</Label>
               <Popover>
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>What is Policy Price</PopoverContent>
+                <PopoverContent>
+                  The number of days for which the policy will be active and
+                  provide coverage.
+                </PopoverContent>
               </Popover>
             </div>
             <Select
@@ -195,60 +201,88 @@ const InsuranceSheet = () => {
               <SelectContent>
                 <SelectGroup className="text-[#57C5B6]">
                   <SelectItem value="7">7 Days</SelectItem>
-                  <SelectItem value="15">15 Days</SelectItem>
-                  <SelectItem value="30">30 Days</SelectItem>
+                  <SelectItem disabled value="15">
+                    15 Days
+                  </SelectItem>
+                  <SelectItem disabled value="30">
+                    30 Days
+                  </SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
           </div>
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row gap-2">
-              <Label htmlFor="policyPrice">Policy Price</Label>
+              <Label htmlFor="policyPrice">Premium</Label>
               <Popover>
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>What is Policy Price</PopoverContent>
+                <PopoverContent>
+                  The total cost of purchasing this insurance policy.
+                </PopoverContent>
               </Popover>
             </div>
 
-            <p className="text-[#57C5B6]">{policyPrice} Wei</p>
+            <p className="text-[#57C5B6]">
+              {policyPrice ? ethers.utils.formatEther(policyPrice) : 0} ETH
+            </p>
           </div>
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row gap-2">
-              <Label htmlFor="fluctuation">Lock Fluctuation</Label>
+              <Label htmlFor="fluctuation">Minimum Fluctuation</Label>
               <Popover>
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>What is Policy Price</PopoverContent>
+                <PopoverContent>
+                  The minimum price volatility for insurance policy to make
+                  claim during the policy period.
+                </PopoverContent>
               </Popover>
             </div>
             <p className="text-[#57C5B6]">{volatility} %</p>
           </div>
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row gap-2">
-              <Label htmlFor="fluctuation">Lock GasPrice</Label>
+              <Label htmlFor="fluctuation">Locked Price</Label>
               <Popover>
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>What is Policy Price</PopoverContent>
+                <PopoverContent>
+                  The price for reference per policy. Compensation occurs if the
+                  market gas price reaches or exceeds the product of the locked
+                  gas price and the lock fluctuation rate.
+                </PopoverContent>
               </Popover>
             </div>
-            <p className="text-[#57C5B6]">{targetGasPrice} Wei</p>
+            <p className="text-[#57C5B6]">
+              {targetGasPrice
+                ? parseFloat(
+                    ethers.utils.formatUnits(targetGasPrice, 9)
+                  ).toFixed(2)
+                : 0}
+              Gwei
+            </p>
           </div>
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row gap-2">
-              <Label htmlFor="compensationAmount">Compensation Amount</Label>
+              <Label htmlFor="compensationAmount">Minimum Benefit</Label>
               <Popover>
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>What is Policy Price</PopoverContent>
+                <PopoverContent>
+                  The minimum payout that the insured should receive in the
+                  event of a valid claim. The actual payout depends on the price
+                  volatility.
+                </PopoverContent>
               </Popover>
             </div>
-            <p className="text-[#57C5B6]">{benefit} Wei</p>
+            <p className="text-[#57C5B6]">
+              {benefit ? ethers.utils.formatEther(benefit) : 0} Wei
+            </p>
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex flex-row gap-2">
@@ -257,7 +291,9 @@ const InsuranceSheet = () => {
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>What is Policy Price</PopoverContent>
+                <PopoverContent>
+                  The blockchain address from which the policy payment is made.
+                </PopoverContent>
               </Popover>
             </div>
             <p>{address}</p>
@@ -269,7 +305,9 @@ const InsuranceSheet = () => {
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>What is Policy Price</PopoverContent>
+                <PopoverContent>
+                  The blockchain address of the insured.
+                </PopoverContent>
               </Popover>
             </div>
             <Input
@@ -282,14 +320,16 @@ const InsuranceSheet = () => {
               <span className="text-red-500">{addressError}</span>
             )}
           </div>
-          <div className="flex flex-row justify-between items-center">
+          {/* <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row gap-2">
               <Label htmlFor="policyAmount">Policy Amount</Label>
               <Popover>
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>What is Policy Price</PopoverContent>
+                <PopoverContent>
+                  The quantity of this specific policy you're purchasing.
+                </PopoverContent>
               </Popover>
             </div>
             <div>
@@ -301,7 +341,7 @@ const InsuranceSheet = () => {
                 onChange={handlePolicyAmountChange}
               />
             </div>
-          </div>
+          </div> */}
         </div>
         <SheetFooter>
           <Button

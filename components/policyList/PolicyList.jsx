@@ -32,8 +32,6 @@ const PolicyList = ({ policies }) => {
   const [columnVisibility, setColumnVisibility] = useState({})
   const [rowSelection, setRowSelection] = useState({})
 
-  console.log(policies, "fuck policies")
-
   const loading = !policies || policies.length === 0
 
   const formatAddress = (address) => {

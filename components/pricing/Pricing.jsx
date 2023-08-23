@@ -33,7 +33,6 @@ const Pricing = () => {
   const { insuredPolicyList, isInsuredListError, isInsuredListLoading } =
     useInsuredPolicies(address)
 
-  console.log(payerPolicyList, "payerPolicyList")
 
   const processPolicyData = (payerPolicyList) => {
     const termMapping = {
@@ -66,11 +65,7 @@ const Pricing = () => {
 
   const processedPayerPolicyList = processPolicyData(payerPolicyList || [])
 
-  console.log(processedPayerPolicyList, "processedPayerPolicyList")
-
-  console.log(insuredPolicyList, "insuredPolicyList")
   const processedInsuredPolicyList = processPolicyData(insuredPolicyList || [])
-  console.log(processedInsuredPolicyList, "processedInsuredPolicyList")
 
   return (
     <div className="overflow-hidden h-full mb-20 sm:py-32 lg:pb-32 xl:pb-36">

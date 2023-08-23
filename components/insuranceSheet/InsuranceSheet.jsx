@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
+import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 
 import {
@@ -80,7 +81,15 @@ const InsuranceSheet = () => {
   } = useContractWrite({
     address: CONTRACT_ADDRESS,
     abi: contractAbi,
-    functionName: "deposit"
+    functionName: "deposit",
+    chainId: 11155111,
+    onError(error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Wrong Network.",
+        description: "Please Change to Sepolia Network."
+      })
+    }
   })
 
   const clickBuy = (
@@ -146,7 +155,7 @@ const InsuranceSheet = () => {
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>
+                <PopoverContent className="text-sm">
                   The specific type of insurance policy you're purchasing.
                   Different types may offer varying coverages.
                 </PopoverContent>
@@ -178,7 +187,7 @@ const InsuranceSheet = () => {
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>
+                <PopoverContent className="text-sm">
                   The number of days for which the policy will be active and
                   provide coverage.
                 </PopoverContent>
@@ -218,7 +227,7 @@ const InsuranceSheet = () => {
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>
+                <PopoverContent className="text-sm">
                   The total cost of purchasing this insurance policy.
                 </PopoverContent>
               </Popover>
@@ -235,7 +244,7 @@ const InsuranceSheet = () => {
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>
+                <PopoverContent className="text-sm">
                   The minimum price volatility for insurance policy to make
                   claim during the policy period.
                 </PopoverContent>
@@ -250,7 +259,7 @@ const InsuranceSheet = () => {
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>
+                <PopoverContent className="text-sm">
                   The price for reference per policy. Compensation occurs if the
                   market gas price reaches or exceeds the product of the locked
                   gas price and the lock fluctuation rate.
@@ -273,7 +282,7 @@ const InsuranceSheet = () => {
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>
+                <PopoverContent className="text-sm">
                   The minimum payout that the insured should receive in the
                   event of a valid claim. The actual payout depends on the price
                   volatility.
@@ -291,7 +300,7 @@ const InsuranceSheet = () => {
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>
+                <PopoverContent className="text-sm">
                   The blockchain address from which the policy payment is made.
                 </PopoverContent>
               </Popover>
@@ -305,7 +314,7 @@ const InsuranceSheet = () => {
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
-                <PopoverContent>
+                <PopoverContent className="text-sm">
                   The blockchain address of the insured.
                 </PopoverContent>
               </Popover>

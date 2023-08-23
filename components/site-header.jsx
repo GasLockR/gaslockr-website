@@ -9,9 +9,13 @@ import { Button } from "@/components/ui/button"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { useAccount } from "wagmi"
 import { Container } from "./Container"
+import { useRouter } from "next/router"
+
 
 export function SiteHeader() {
   const { address } = useAccount()
+  const router = useRouter()
+
 
   return (
     <Container className="top-0 z-40 w-full">
@@ -36,6 +40,27 @@ export function SiteHeader() {
           >
             <GitHubLogoIcon className="h-6 w-6" />
           </Button> */}
+          {router.pathname !== "/" && (
+            <>
+              <Button
+                className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
+                onClick={() =>
+                  window.open("https://sepoliafaucet.com", "_blank")
+                }
+              >
+                Faucet
+              </Button>
+              <Button
+                className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
+                onClick={() =>
+                  window.open("https://sepoliafaucet.com", "_blank")
+                }
+              >
+                Contact
+              </Button>
+            </>
+          )}
+
           <Button
             variant="ghost"
             size="icon"

@@ -281,7 +281,7 @@ const InsuranceSheet = () => {
               </Popover>
             </div>
             <p className="text-[#57C5B6]">
-              {benefit ? ethers.utils.formatEther(benefit) : 0} Wei
+              {benefit ? ethers.utils.formatEther(benefit) : 0} ETH
             </p>
           </div>
           <div className="flex flex-col gap-2">

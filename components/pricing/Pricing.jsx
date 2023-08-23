@@ -79,7 +79,7 @@ const Pricing = () => {
           <h1 className="font-bold text-4xl mb-20">
             GasInsure - Where peace of mind meets every transaction.
           </h1>
-          <div className="flex justify-center space-x-32">
+          <div className="flex justify-center space-x-16">
             {/* Regular User Card */}
             <Card className="w-[360px] h-[490px]">
               <CardHeader>

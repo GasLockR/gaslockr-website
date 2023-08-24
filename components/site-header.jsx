@@ -50,14 +50,14 @@ export function SiteHeader() {
               >
                 Faucet
               </Button>
-              <Button
+              {/* <Button
                 className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
                 onClick={() =>
                   window.open("https://discord.gg/DUZMwJzfsP", "_blank")
                 }
               >
                 Contact
-              </Button>
+              </Button> */}
             </>
           )}
 

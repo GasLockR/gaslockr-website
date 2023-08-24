@@ -80,7 +80,6 @@ const PrimaryFeatures = () => {
                     onClick={() => {
                       router.push("/GasInsure")
                     }}
-                    disabled
                   >
                     Try it Now
                   </Button>

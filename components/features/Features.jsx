@@ -35,7 +35,6 @@ const Features = () => {
                 onClick={() => {
                   router.push("/GasInsure")
                 }}
-                disabled
               >
                 Try it Now
               </Button>

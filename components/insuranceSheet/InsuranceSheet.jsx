@@ -84,13 +84,23 @@ const InsuranceSheet = () => {
     functionName: "deposit",
     chainId: 11155111,
     onError(error) {
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Wrong Network.",
-        description: "Please Change to Sepolia Network."
-      })
+      if (error.name === "ChainMismatchError") {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Wrong Network.",
+          description: "Please Change to Sepolia Network."
+        })
+      }
+      if (error.name === "ContractFunctionExecutionError") {
+        toast({
+          variant: "destructive",
+          title: "Ops!",
+          description: "Not Enough ETH In Your Wallet"
+        })
+      }
     }
   })
+
 
   const clickBuy = (
     payerAddress,

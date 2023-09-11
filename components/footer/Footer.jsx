@@ -6,6 +6,7 @@ import { Container } from "../Container"
 const Footer = () => {
   return (
     <Container className="top-0 z-40 w-full mt-20">
+      <div data-donate3-cid="bafkreid4un4nlbjrq35g5yojrnxcyvy6f63avaeb6trk4p2ljafn2aj3fq" ></div>
       <div className="border-b mb-10"></div>
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <div>

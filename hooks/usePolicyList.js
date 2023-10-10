@@ -1,6 +1,7 @@
 import { useContractRead } from "wagmi"
 import contractAbi from "@/config/contract.json"
 import { CONTRACT_ADDRESS } from "@/config/address"
+import { SCROLL_CONTRSCT_ADDRESS } from "@/config/address"
 
 export function usePayerPolicies(address) {
   const {
@@ -8,7 +9,7 @@ export function usePayerPolicies(address) {
     isError: isPayerListError,
     isLoading: isPayerListLoading
   } = useContractRead({
-    address: CONTRACT_ADDRESS,
+    address: SCROLL_CONTRSCT_ADDRESS,
     abi: contractAbi,
     functionName: "getPoliciesAsPayer",
     args: [address],
@@ -24,7 +25,7 @@ export function useInsuredPolicies(address) {
     isError: isInsuredListError,
     isLoading: isInsuredListLoading
   } = useContractRead({
-    address: CONTRACT_ADDRESS,
+    address: SCROLL_CONTRSCT_ADDRESS,
     abi: contractAbi,
     functionName: "getPoliciesAsInsured",
     args: [address],

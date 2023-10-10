@@ -28,11 +28,13 @@ const Pricing = () => {
 
   const { address } = useAccount()
 
-  // const { payerPolicyList, isPayerListError, isPayerListLoading } =
-  //   usePayerPolicies(address)
-  // const { insuredPolicyList, isInsuredListError, isInsuredListLoading } =
-  //   useInsuredPolicies(address)
+  const { payerPolicyList, isPayerListError, isPayerListLoading } =
+    usePayerPolicies(address)
+  const { insuredPolicyList, isInsuredListError, isInsuredListLoading } =
+    useInsuredPolicies(address)
 
+  console.log(payerPolicyList, 'fuck payerPolicyList')
+  console.log(insuredPolicyList, 'fuck insuredPolicyList')
 
   // const processPolicyData = (payerPolicyList) => {
   //   const termMapping = {
@@ -278,7 +280,7 @@ const Pricing = () => {
         <div>
           {/* payer policy list */}
           <div className="text-2xl mt-40">Insurance Policies as Payer</div>
-          {/* <PolicyList policies={processedPayerPolicyList} /> */}
+          <PolicyList policies={payerPolicyList} />
           {/* insured policy list */}
           <div className="text-2xl">Insurance Policies as Insured</div>
           {/* <PolicyList policies={processedInsuredPolicyList} /> */}

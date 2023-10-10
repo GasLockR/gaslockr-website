@@ -17,9 +17,28 @@ import {
 } from "wagmi/chains"
 import { publicProvider } from "wagmi/providers/public"
 
+export const ScrollSepoliaTestnet = {
+  id: 534351,
+  name: 'Scroll Sepolia Testnet',
+  network: 'Scroll Sepolia Testnet',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Ethereum',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    public: { http: ['https://scroll-sepolia.blockpi.network/v1/rpc/public'] },
+    default: { http: ['https://scroll-sepolia.blockpi.network/v1/rpc/public'] },
+  },
+  blockExplorers: {
+    default: { name: 'scrollscan', url: 'https://sepolia.scrollscan.dev' },
+  }
+}
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
-    sepolia
+    sepolia,
+    ScrollSepoliaTestnet
     // mainnet,
     // goerli
     // polygon,

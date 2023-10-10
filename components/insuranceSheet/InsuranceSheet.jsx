@@ -35,7 +35,37 @@ import { useAccount, useContractWrite } from "wagmi"
 import useInsuranceData from "@/hooks/useInsuranceData"
 import contractAbi from "@/config/contract.json"
 import { CONTRACT_ADDRESS } from "@/config/address"
+import { SCROLL_CONTRSCT_ADDRESS } from "@/config/address"
 import { utils, ethers } from "ethers"
+
+const premiums = [
+  6250000000000000,   // 7天
+  7130000000000000,   // 8天
+  7940000000000000,   // 9天
+  8750000000000000,   // 10天
+  9500000000000000,   // 11天
+  10190000000000000,  // 12天
+  10880000000000000,  // 13天
+  11560000000000000,  // 14天
+  12190000000000000,  // 15天
+  12810000000000000,  // 16天
+  13380000000000000,  // 17天
+  13940000000000000,  // 18天
+  14500000000000000,  // 19天
+  15000000000000000,  // 20天
+  15500000000000000,  // 21天
+  15940000000000000,  // 22天
+  16380000000000000,  // 23天
+  16810000000000000,  // 24天
+  17190000000000000,  // 25天
+  17560000000000000,  // 26天
+  17940000000000000,  // 27天
+  18250000000000000,  // 28天
+  18560000000000000,  // 29天
+  18880000000000000   // 30天
+]
+
+const daysArray = Array.from({ length: 24 }, (_, i) => i + 7);
 
 const InsuranceSheet = () => {
   const { address } = useAccount()
@@ -52,8 +82,9 @@ const InsuranceSheet = () => {
   const [insuredAddress, setInsuredAddress] = useState("")
   const [addressError, setAddressError] = useState(null)
 
+  const [policyPrice, setPolicyPrice] = useState(premiums[0]);
+
   const {
-    policyPrice,
     isPolicyPriceError,
     isPolicyPriceLoading,
     benefit,
@@ -136,6 +167,15 @@ const InsuranceSheet = () => {
     }
   }, [isSuccess])
 
+  const handlePolicyTermChange = (selectedDay) => {
+    if (selectedDay >= 7 && selectedDay <= 30) {
+      const index = selectedDay - 7;
+      setPolicyPrice(String(premiums[index]));
+    } else {
+      console.error("Unknown policy term:", selectedDay);
+    }
+  };
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -160,38 +200,6 @@ const InsuranceSheet = () => {
         <div className="flex flex-col gap-10 my-12">
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row gap-2">
-              <Label htmlFor="activeDays">Policy Type</Label>
-              <Popover>
-                <PopoverTrigger>
-                  <QuestionMarkCircledIcon />
-                </PopoverTrigger>
-                <PopoverContent className="text-sm">
-                  The specific type of insurance policy you're purchasing.
-                  Different types may offer varying coverages.
-                </PopoverContent>
-              </Popover>
-            </div>
-            <Select
-              onValueChange={(e) => {
-                setPolicytype(e)
-              }}
-              defaultValue="0"
-            >
-              <SelectTrigger className="w-[180px] text-[#57C5B6]">
-                <SelectValue placeholder="Select Policy Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup className="text-[#57C5B6]">
-                  <SelectItem value="0">Normal</SelectItem>
-                  <SelectItem value="1" disabled>
-                    Advance
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex flex-row justify-between items-center">
-            <div className="flex flex-row gap-2">
               <Label htmlFor="activeDays">Policy Period</Label>
               <Popover>
                 <PopoverTrigger>
@@ -205,34 +213,26 @@ const InsuranceSheet = () => {
             </div>
             <Select
               onValueChange={(e) => {
-                const enumValue = policyTermMap[e]
-                if (enumValue !== undefined) {
-                  setPolicyterm(enumValue)
-                } else {
-                  console.error("Unknown policy term:", e)
-                }
+                const selectedDay = parseInt(e, 10);
+                handlePolicyTermChange(selectedDay);
               }}
               defaultValue="7"
             >
               <SelectTrigger className="w-[180px] text-[#57C5B6]">
                 <SelectValue placeholder="Select Policy Term" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectGroup className="text-[#57C5B6]">
-                  <SelectItem value="7">7 Days</SelectItem>
-                  <SelectItem disabled value="15">
-                    15 Days
-                  </SelectItem>
-                  <SelectItem disabled value="30">
-                    30 Days
-                  </SelectItem>
+              <SelectContent className="max-h-[200px] overflow-y-auto">
+                <SelectGroup>
+                  {daysArray.map(day => (
+                    <SelectItem key={day} value={day.toString()}>{day} Days</SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
           </div>
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row gap-2">
-              <Label htmlFor="policyPrice">Premium</Label>
+              <Label htmlFor="policyPrice">Premiums</Label>
               <Popover>
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
@@ -247,62 +247,27 @@ const InsuranceSheet = () => {
               {policyPrice ? ethers.utils.formatEther(policyPrice) : 0} ETH
             </p>
           </div>
+
+          {/* benefit TODO */}
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row gap-2">
-              <Label htmlFor="fluctuation">Minimum Fluctuation</Label>
+              <Label htmlFor="policyPrice">Benefits</Label>
               <Popover>
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
                 <PopoverContent className="text-sm">
-                  The minimum price volatility for insurance policy to make
-                  claim during the policy period.
+                  ?????????
                 </PopoverContent>
               </Popover>
             </div>
-            <p className="text-[#57C5B6]">{volatility} %</p>
-          </div>
-          <div className="flex flex-row justify-between items-center">
-            <div className="flex flex-row gap-2">
-              <Label htmlFor="fluctuation">Locked Price</Label>
-              <Popover>
-                <PopoverTrigger>
-                  <QuestionMarkCircledIcon />
-                </PopoverTrigger>
-                <PopoverContent className="text-sm">
-                  The price for reference per policy. Compensation occurs if the
-                  market gas price reaches or exceeds the product of the locked
-                  gas price and the lock fluctuation rate.
-                </PopoverContent>
-              </Popover>
-            </div>
+
             <p className="text-[#57C5B6]">
-              {targetGasPrice
-                ? parseFloat(
-                    ethers.utils.formatUnits(targetGasPrice, 9)
-                  ).toFixed(2)
-                : 0}
-              Gwei
+              ???
             </p>
           </div>
-          <div className="flex flex-row justify-between items-center">
-            <div className="flex flex-row gap-2">
-              <Label htmlFor="compensationAmount">Minimum Benefit</Label>
-              <Popover>
-                <PopoverTrigger>
-                  <QuestionMarkCircledIcon />
-                </PopoverTrigger>
-                <PopoverContent className="text-sm">
-                  The minimum payout that the insured should receive in the
-                  event of a valid claim. The actual payout depends on the price
-                  volatility.
-                </PopoverContent>
-              </Popover>
-            </div>
-            <p className="text-[#57C5B6]">
-              {benefit ? ethers.utils.formatEther(benefit) : 0} ETH
-            </p>
-          </div>
+
+
           <div className="flex flex-col gap-2">
             <div className="flex flex-row gap-2">
               <Label htmlFor="payerAddress">Payer Address</Label>

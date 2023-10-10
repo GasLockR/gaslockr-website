@@ -37,7 +37,7 @@ export const ScrollSepoliaTestnet = {
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
-    sepolia,
+    // sepolia,
     ScrollSepoliaTestnet
     // mainnet,
     // goerli

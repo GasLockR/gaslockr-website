@@ -32,9 +32,7 @@ import {
 } from "@/components/ui/popover"
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons"
 import { useAccount, useContractWrite } from "wagmi"
-import useInsuranceData from "@/hooks/useInsuranceData"
 import contractAbi from "@/config/contract.json"
-import { CONTRACT_ADDRESS } from "@/config/address"
 import { SCROLL_CONTRSCT_ADDRESS } from "@/config/address"
 import { utils, ethers } from "ethers"
 
@@ -64,45 +62,16 @@ const premiums = [
   18560000000000000,  // 29天
   18880000000000000   // 30天
 ]
-
 const daysArray = Array.from({ length: 24 }, (_, i) => i + 7);
 
 const InsuranceSheet = () => {
   const { address } = useAccount()
-  const handlePolicyAmountChange = (event) => {
-    if (event.target.value < 1) {
-      event.target.value = 1
-    }
-  }
-
   const { toast } = useToast()
-
-  const [policytype, setPolicytype] = useState(0)
-  const [policyterm, setPolicyterm] = useState(0)
   const [insuredAddress, setInsuredAddress] = useState("")
   const [addressError, setAddressError] = useState(null)
-
+  const [term, setTerm] = useState(7)
   const [policyPrice, setPolicyPrice] = useState(premiums[0]);
 
-  const {
-    isPolicyPriceError,
-    isPolicyPriceLoading,
-    benefit,
-    isBenefitError,
-    isBenefitLoading,
-    volatility,
-    isVolatilityError,
-    isVolatilityLoading,
-    targetGasPrice,
-    isTargetGasPriceError,
-    isTargetGasPriceLoading
-  } = useInsuranceData(policytype, policyterm)
-
-  const isLoading =
-    isPolicyPriceLoading ||
-    isBenefitLoading ||
-    isVolatilityLoading ||
-    isTargetGasPriceLoading
 
   const {
     data,
@@ -110,10 +79,10 @@ const InsuranceSheet = () => {
     isSuccess,
     write
   } = useContractWrite({
-    address: CONTRACT_ADDRESS,
+    address: SCROLL_CONTRSCT_ADDRESS,
     abi: contractAbi,
     functionName: "deposit",
-    chainId: 11155111,
+    chainId: 534351,
     onError(error) {
       if (error.name === "ChainMismatchError") {
         toast({
@@ -136,26 +105,18 @@ const InsuranceSheet = () => {
   const clickBuy = (
     payerAddress,
     insuredAddress,
-    policytype,
-    policyterm,
-    policyPrice
+    term
   ) => {
     if (!utils.isAddress(insuredAddress)) {
       setAddressError("Please Enter Ethereum address")
       return
     }
-
     setAddressError(null)
+    console.log(term, 'fuck term')
     write({
-      args: [payerAddress, insuredAddress, policytype, policyterm],
+      args: [payerAddress, insuredAddress, term],
       value: policyPrice
     })
-  }
-
-  const policyTermMap = {
-    7: 0,
-    15: 1,
-    30: 2
   }
 
   useEffect(() => {
@@ -168,6 +129,7 @@ const InsuranceSheet = () => {
   }, [isSuccess])
 
   const handlePolicyTermChange = (selectedDay) => {
+    setTerm(selectedDay)
     if (selectedDay >= 7 && selectedDay <= 30) {
       const index = selectedDay - 7;
       setPolicyPrice(String(premiums[index]));
@@ -181,13 +143,8 @@ const InsuranceSheet = () => {
       <SheetTrigger asChild>
         <Button
           className="w-3/4 bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
-          disabled={isLoading}
         >
-          {isLoading ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            "Get Started"
-          )}
+          Get Started
         </Button>
       </SheetTrigger>
       <SheetContent className="w-[450px] sm:max-w-none overflow-y-auto">
@@ -232,7 +189,7 @@ const InsuranceSheet = () => {
           </div>
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row gap-2">
-              <Label htmlFor="policyPrice">Premiums</Label>
+              <Label htmlFor="policyPrice">Premium</Label>
               <Popover>
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
@@ -251,19 +208,19 @@ const InsuranceSheet = () => {
           {/* benefit TODO */}
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row gap-2">
-              <Label htmlFor="policyPrice">Benefits</Label>
+              <Label htmlFor="policyPrice">Benefit Boost:</Label>
               <Popover>
                 <PopoverTrigger>
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
                 <PopoverContent className="text-sm">
-                  ?????????
+                  Each time the average daily gas price exceeds the target price from GasLockR pricing model, your benefit increases by 0.003 ETH. At the end of the insurance period, you can claim this benefit.
                 </PopoverContent>
               </Popover>
             </div>
 
             <p className="text-[#57C5B6]">
-              ???
+              0.003 ETH
             </p>
           </div>
 
@@ -335,9 +292,7 @@ const InsuranceSheet = () => {
               clickBuy(
                 address,
                 insuredAddress,
-                policytype,
-                policyterm,
-                policyPrice
+                term
               )
             }}
           >

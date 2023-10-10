@@ -28,44 +28,44 @@ const Pricing = () => {
 
   const { address } = useAccount()
 
-  const { payerPolicyList, isPayerListError, isPayerListLoading } =
-    usePayerPolicies(address)
-  const { insuredPolicyList, isInsuredListError, isInsuredListLoading } =
-    useInsuredPolicies(address)
+  // const { payerPolicyList, isPayerListError, isPayerListLoading } =
+  //   usePayerPolicies(address)
+  // const { insuredPolicyList, isInsuredListError, isInsuredListLoading } =
+  //   useInsuredPolicies(address)
 
 
-  const processPolicyData = (payerPolicyList) => {
-    const termMapping = {
-      0: "7 days",
-      1: "15 days",
-      2: "30 days"
-    }
+  // const processPolicyData = (payerPolicyList) => {
+  //   const termMapping = {
+  //     0: "7 days",
+  //     1: "15 days",
+  //     2: "30 days"
+  //   }
 
-    const typeMapping = {
-      0: "normal",
-      1: "advance"
-    }
+  //   const typeMapping = {
+  //     0: "normal",
+  //     1: "advance"
+  //   }
 
-    return payerPolicyList.map((policy) => {
-      const endTime = new Date(Number(policy.endTime) * 1000)
-      const startTime = new Date(Number(policy.startTime) * 1000)
+  //   return payerPolicyList.map((policy) => {
+  //     const endTime = new Date(Number(policy.endTime) * 1000)
+  //     const startTime = new Date(Number(policy.startTime) * 1000)
 
-      return {
-        ...policy,
-        policyTerm: termMapping[policy.Term],
-        policyType: typeMapping[policy.Type],
-        endTime: endTime.toLocaleDateString(),
-        startTime: startTime.toLocaleDateString(),
-        targetGasPrice: Number(policy.targetGasPrice),
-        volatility: Number(policy.volatility),
-        isExpired: Date.now() > endTime
-      }
-    })
-  }
+  //     return {
+  //       ...policy,
+  //       policyTerm: termMapping[policy.Term],
+  //       policyType: typeMapping[policy.Type],
+  //       endTime: endTime.toLocaleDateString(),
+  //       startTime: startTime.toLocaleDateString(),
+  //       targetGasPrice: Number(policy.targetGasPrice),
+  //       volatility: Number(policy.volatility),
+  //       isExpired: Date.now() > endTime
+  //     }
+  //   })
+  // }
 
-  const processedPayerPolicyList = processPolicyData(payerPolicyList || [])
+  // const processedPayerPolicyList = processPolicyData(payerPolicyList || [])
 
-  const processedInsuredPolicyList = processPolicyData(insuredPolicyList || [])
+  // const processedInsuredPolicyList = processPolicyData(insuredPolicyList || [])
 
   return (
     <div className="overflow-hidden h-full mb-20 sm:py-32 lg:pb-32 xl:pb-36">
@@ -278,10 +278,10 @@ const Pricing = () => {
         <div>
           {/* payer policy list */}
           <div className="text-2xl mt-40">Insurance Policies as Payer</div>
-          <PolicyList policies={processedPayerPolicyList} />
+          {/* <PolicyList policies={processedPayerPolicyList} /> */}
           {/* insured policy list */}
           <div className="text-2xl">Insurance Policies as Insured</div>
-          <PolicyList policies={processedInsuredPolicyList} />
+          {/* <PolicyList policies={processedInsuredPolicyList} /> */}
         </div>
       </Container>
     </div>

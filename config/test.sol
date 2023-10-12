@@ -1,4 +1,4 @@
-//Scroll Sepolia(534351):0xeed6b442F9B126982C30437396c035ad1aE20F2d
+// Scroll Sepolia(534351): 0x0C338Ea17977908b1b8B2c846e2DDea31798bBa8
 
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 contract GasInsure is ReentrancyGuard{
 
     address private admin;
-    bool public pause = false;
+    bool pause = false;
 
     struct Policy{
         uint256 id;
@@ -52,6 +52,7 @@ contract GasInsure is ReentrancyGuard{
     ];
     
     uint256[] public gasPrices;
+    uint256[] public predictedGasPrices;
 
     uint256[] internal livePolicyNum;
     Policy[] public policyList; 
@@ -63,7 +64,6 @@ contract GasInsure is ReentrancyGuard{
     event Deposit(address indexed payer, address indexed insured, uint256 term, uint256 timestamp);
     event Payout(uint256 gasprice, uint256 timestamp);
     event Claim(address indexed insured, uint256 id, uint256 amount, uint256 timestamp);
-    event Withdrawal(address indexed to, uint256 amount, uint256 timestamp);
 
     modifier onlyAdmin{
         require(msg.sender == admin, "not admin");
@@ -78,10 +78,18 @@ contract GasInsure is ReentrancyGuard{
     constructor(uint256[] memory _gasPrice) {
         gasPrices = _gasPrice;
         admin = msg.sender;
+        uint256 n = gasPrices.length;
+        require(n >= 7, "Not enough history gas price");
+        uint256 predictedGasPrice = computeWMA(n-7, n-1);
+        predictedGasPrices.push(predictedGasPrice);
     }
 
     function ePause(bool _pause) external onlyAdmin{
         pause = _pause;
+    }
+
+    function resetPolicyList() external onlyAdmin {
+        delete policyList;
     }
 
     function getPoliciesAsPayer(address _address) public view returns (Policy[] memory) {
@@ -126,6 +134,11 @@ contract GasInsure is ReentrancyGuard{
     function addGasPrice(uint256 _gasPrice) external onlyAdmin notPause {
         require(_gasPrice > 0, "invalid gas price");
         gasPrices.push(_gasPrice);
+
+        uint256 n = gasPrices.length;
+        uint256 predictedGasPrice = computeWMA(n-7, n-1);
+        predictedGasPrices.push(predictedGasPrice);
+
         if(shouldPayout()){
             payout();
             emit Payout(_gasPrice, block.timestamp);
@@ -133,17 +146,14 @@ contract GasInsure is ReentrancyGuard{
     }
 
     function shouldPayout() public view returns (bool) {
-        uint n = gasPrices.length;
-        require(n >= 8, "Not enough history gas price");
-        uint predictedGasPrice = computeWMA(n-8, n-2);
         // Check if the latest gas price exceeds the predicted gas price by more than 20%
-        return gasPrices[n-1] > (predictedGasPrice * 12) / 10;
+        return gasPrices[gasPrices.length - 1] > (predictedGasPrices[predictedGasPrices.length - 2] * 12) / 10;
     }
 
-    function computeWMA(uint startIndex, uint endIndex) public view returns (uint) {
-        uint sum = 0;
-        uint weightSum = 0;
-        for (uint i = startIndex; i <= endIndex; i++) {
+    function computeWMA(uint startIndex, uint endIndex) internal view returns (uint) {
+        uint256 sum = 0;
+        uint256 weightSum = 0;
+        for (uint256 i = startIndex; i <= endIndex; i++) {
             sum += gasPrices[i] * (i - startIndex + 1);
             weightSum += (i - startIndex + 1);
         }
@@ -179,33 +189,28 @@ contract GasInsure is ReentrancyGuard{
     }
 
     //trigger by insured
-    function claim(address insured, uint256 order) external nonReentrant notPause{
-        require(!insuredPolicy[insured][order].isClaimed, "is claimed");
-        require(insuredPolicy[insured][order].benefit > 0, "no benefit");
-        require(msg.sender == insured, "not insured himself");
-        insuredPolicy[insured][order].isClaimed = true;
-        uint256 _benefit = insuredPolicy[insured][order].benefit;
-        insuredPolicy[insured][order].benefit = 0;                
+    function claim(address _insured, uint256 _id) external nonReentrant notPause{
+        require(isPolicyExpired(policyList[_id]), "claim pending till expired");
+        require(!policyList[_id].isClaimed, "is claimed");
+        require(policyList[_id].benefit > 0, "no benefit");
+        require(policyList[_id].insured == _insured, "not insured himself");
+        uint256 _benefit = policyList[_id].benefit;
+
+        // change isClaimed
+        policyList[_id].isClaimed = true;
+        address _payer = policyList[_id].payer;
+        payerPolicy[_payer][policyListPayer[_id]].isClaimed = true;
+        insuredPolicy[_insured][policyListInsured[_id]].isClaimed = true;
+               
         // change benefit for policylist & payer
-        uint256 _id = insuredPolicy[insured][order].id;
-        address _payer = insuredPolicy[insured][order].payer;
         policyList[_id].benefit = 0;
         payerPolicy[_payer][policyListPayer[_id]].benefit = 0;
+        insuredPolicy[_insured][policyListInsured[_id]].benefit = 0; 
 
-        (bool success, ) = insured.call{value: _benefit}("");
+        (bool success, ) = _insured.call{value: _benefit}("");
         require(success, "claim failed");
-        emit Claim(insured, _id, _benefit, block.timestamp);
+        emit Claim(_insured, _id, _benefit, block.timestamp);
     }
 
     receive() external payable {}
-
-    function withdraw(uint256 amount) external onlyAdmin nonReentrant {
-        require(amount > 0, "Amount must be greater than 0");
-        require(address(this).balance >= amount, "Not enough funds");
-
-        (bool success, ) = payable(admin).call{value: amount}("");
-        require(success, "Withdrawal failed");
-
-        emit Withdrawal(admin, amount, block.timestamp);
-    }
 }

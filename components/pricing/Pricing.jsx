@@ -92,6 +92,7 @@ const Pricing = () => {
                     <div className="flex flex-row items-end justify-center gap-4">
                       <span className="text-3xl font-medium">Starting at</span>
                       <div className="flex flex-row ">
+                        {/* TODO */}
                         <span className="text-[#57C5B6] relative right-1 text-2xl  font-medium">
                           $
                         </span>
@@ -109,10 +110,10 @@ const Pricing = () => {
                     {/* <div className="font-bold">🔸 Minimum Input: 0.01 ETH</div> */}
                   </li>
                   <li className="flex flex-row gap-2">
-                    <div className="font-bold">🔸 Maximum Payout: 10X</div>
+                    <div className="font-bold">🔸 Maximum Benefit: 15X</div>
                   </li>
                   <li className="flex flex-row gap-2">
-                    <div className="font-bold">🔸 Minimum Fluctuation: 60%</div>
+                    <div className="font-bold">🔸 Verifiable Benefit Boost</div>
                   </li>
                   <li className="flex flex-row gap-2">
                     <div className="font-bold">🔸 Flexible Policy Periods</div>
@@ -279,11 +280,19 @@ const Pricing = () => {
         </div>
         <div>
           {/* payer policy list */}
-          <div className="text-2xl mt-40">Insurance Policies as Payer</div>
-          <PolicyList policies={payerPolicyList} />
+          {payerPolicyList ?
+            <>
+              <div className="text-2xl mt-40">Insurance Policies as Payer</div>
+              <PolicyList policies={payerPolicyList} />
+            </> : null
+          }
           {/* insured policy list */}
-          <div className="text-2xl">Insurance Policies as Insured</div>
-          {/* <PolicyList policies={processedInsuredPolicyList} /> */}
+          {insuredPolicyList ?
+            <>
+              <div className="text-2xl">Insurance Policies as Insured</div>
+              <PolicyList policies={insuredPolicyList} />
+            </> : null
+          }
         </div>
       </Container>
     </div>

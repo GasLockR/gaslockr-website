@@ -52,6 +52,10 @@ const PolicyList = ({ policies }) => {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   };
 
+  if (!policies) {
+    return <div>Loading...</div>;
+  }
+
   const columns = [
     {
       accessorKey: "payer",

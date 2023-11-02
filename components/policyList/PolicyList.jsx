@@ -136,6 +136,9 @@ const PolicyList = ({ policies }) => {
       accessorKey: "isClaimed",
       header: "Claimed",
       cell: ({ row }) => {
+        const policyData = row.original; // 这里我们获取当前行的原始数据
+
+        console.log(policyData, 'fuck policyData')
         const benefit = Number(row.getValue("benefit"));
         const isExpired = row.getValue("isExpired");
         const isClaimed = row.getValue("isClaimed");

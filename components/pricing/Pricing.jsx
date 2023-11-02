@@ -20,6 +20,7 @@ import InsuranceSheet from "../insuranceSheet/InsuranceSheet"
 import { useInsuredPolicies, usePayerPolicies } from "@/hooks/usePolicyList"
 import PolicyList from "../policyList/PolicyList"
 import { Container } from "../Container"
+import InsurancePayoutCalendar from "../insurancePayoutCalendar/InsurancePayoutCalendar"
 
 const Pricing = () => {
   const { personalCheckout, isPersonalCheckoutLoading } = usePersonalCheckout()
@@ -32,9 +33,6 @@ const Pricing = () => {
     usePayerPolicies(address)
   const { insuredPolicyList, isInsuredListError, isInsuredListLoading } =
     useInsuredPolicies(address)
-
-  console.log(payerPolicyList, 'fuck payerPolicyList')
-  console.log(insuredPolicyList, 'fuck insuredPolicyList')
 
   // const processPolicyData = (payerPolicyList) => {
   //   const termMapping = {
@@ -68,6 +66,13 @@ const Pricing = () => {
   // const processedPayerPolicyList = processPolicyData(payerPolicyList || [])
 
   // const processedInsuredPolicyList = processPolicyData(insuredPolicyList || [])
+
+  const payoutDates = [
+    "2023-01-15",
+    "2023-03-20",
+    "2023-05-10"
+    // ...其他赔付日期
+  ]
 
   return (
     <div className="overflow-hidden h-full mb-20 sm:py-32 lg:pb-32 xl:pb-36">
@@ -277,22 +282,25 @@ const Pricing = () => {
               </CardFooter>
             </Card>
           </div>
+          <div className="w-full">
+            <InsurancePayoutCalendar payoutDates={payoutDates} />
+          </div>
         </div>
         <div>
           {/* payer policy list */}
-          {payerPolicyList ?
+          {payerPolicyList ? (
             <>
               <div className="text-2xl mt-40">Insurance Policies as Payer</div>
               <PolicyList policies={payerPolicyList} />
-            </> : null
-          }
+            </>
+          ) : null}
           {/* insured policy list */}
-          {insuredPolicyList ?
+          {insuredPolicyList ? (
             <>
               <div className="text-2xl">Insurance Policies as Insured</div>
               <PolicyList policies={insuredPolicyList} />
-            </> : null
-          }
+            </>
+          ) : null}
         </div>
       </Container>
     </div>

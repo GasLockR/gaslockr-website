@@ -12,8 +12,8 @@ export function usePayerPolicies(address) {
     address: SCROLL_CONTRSCT_ADDRESS,
     abi: contractAbi,
     functionName: "getPoliciesAsPayer",
+    enabled:false,
     args: [address],
-    watch: true
   })
 
   return { payerPolicyList, isPayerListError, isPayerListLoading }
@@ -28,8 +28,8 @@ export function useInsuredPolicies(address) {
     address: SCROLL_CONTRSCT_ADDRESS,
     abi: contractAbi,
     functionName: "getPoliciesAsInsured",
+    enabled:false,
     args: [address],
-    watch: true
   })
 
   return { insuredPolicyList, isInsuredListError, isInsuredListLoading }

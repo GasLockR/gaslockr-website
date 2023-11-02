@@ -11,8 +11,8 @@ const useInsuranceData = (policytype, policyterm) => {
     address: CONTRACT_ADDRESS,
     abi: contractAbi,
     functionName: "premium",
+    enabled:false,
     args: [policytype, policyterm],
-    watch: true
   })
 
   const {
@@ -23,8 +23,8 @@ const useInsuranceData = (policytype, policyterm) => {
     address: CONTRACT_ADDRESS,
     abi: contractAbi,
     functionName: "benefit",
+    enabled:false,
     args: [policytype, policyterm],
-    watch: true
   })
 
   const {
@@ -35,8 +35,8 @@ const useInsuranceData = (policytype, policyterm) => {
     address: CONTRACT_ADDRESS,
     abi: contractAbi,
     functionName: "volatility",
+    enabled:false,
     args: [policytype, policyterm],
-    watch: true
   })
 
   const {
@@ -47,8 +47,8 @@ const useInsuranceData = (policytype, policyterm) => {
     address: CONTRACT_ADDRESS,
     abi: contractAbi,
     functionName: "targetGasPrice",
+    enabled:false,
     args: [policytype, policyterm],
-    watch: true
   })
 
   return {

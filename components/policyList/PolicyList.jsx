@@ -42,18 +42,18 @@ const PolicyList = ({ policies }) => {
   }
 
   const formatTimestampToDate = (timestamp) => {
-    const date = new Date(timestamp * 1000);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  };
+    const date = new Date(timestamp * 1000)
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, "0")
+    const day = String(date.getDate()).padStart(2, "0")
+    const hours = String(date.getHours()).padStart(2, "0")
+    const minutes = String(date.getMinutes()).padStart(2, "0")
+    const seconds = String(date.getSeconds()).padStart(2, "0")
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+  }
 
   if (!policies) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
 
   const columns = [
@@ -136,30 +136,30 @@ const PolicyList = ({ policies }) => {
       accessorKey: "isClaimed",
       header: "Claimed",
       cell: ({ row }) => {
-        const policyData = row.original; // 这里我们获取当前行的原始数据
+        const policyData = row.original // 这里我们获取当前行的原始数据
 
-        console.log(policyData, 'fuck policyData')
-        const benefit = Number(row.getValue("benefit"));
-        const isExpired = row.getValue("isExpired");
-        const isClaimed = row.getValue("isClaimed");
+        console.log(policyData, "fuck policyData")
+        const benefit = Number(row.getValue("benefit"))
+        const isExpired = row.getValue("isExpired")
+        const isClaimed = row.getValue("isClaimed")
 
-        let buttonText = "Claim Pending";
-        let buttonDisabled = true;
-        let handleClick = () => { };
+        let buttonText = "Claim Pending"
+        let buttonDisabled = true
+        let handleClick = () => {}
 
         if (benefit !== 0 && isExpired && !isClaimed) {
-          buttonText = "Claim";
-          buttonDisabled = false;
+          buttonText = "Claim"
+          buttonDisabled = false
           handleClick = () => {
-            console.log('Claim button clicked for:', row);
+            console.log("Claim button clicked for:", row)
             // 这里可以执行其他逻辑，例如提交claim请求
-          };
+          }
         } else if (benefit === 0 && isExpired && !isClaimed) {
-          buttonText = "No Benefit";
-          buttonDisabled = true;
+          buttonText = "No Benefit"
+          buttonDisabled = true
         } else if (isClaimed) {
-          buttonText = "Already Claimed";
-          buttonDisabled = true;
+          buttonText = "Already Claimed"
+          buttonDisabled = true
         }
 
         return (
@@ -173,22 +173,22 @@ const PolicyList = ({ policies }) => {
               {buttonText}
             </Button>
           </div>
-        );
+        )
       }
     }
   ]
 
-  const processedPolicies = policies?.map(policy => ({
+  const processedPolicies = policies?.map((policy) => ({
     ...policy,
     payer: policy.payer.toString(),
     insured: policy.insured.toString(),
     term: `${policy.term.toString()} Days`,
-    benefit: `${policy.benefit ? policy.benefit.toString() : '0'} ETH`,
+    benefit: `${policy.benefit ? policy.benefit.toString() : "0"} ETH`,
     startTime: formatTimestampToDate(policy.startTime.toString()),
     endTime: formatTimestampToDate(policy.endTime.toString()),
     isExpired: Date.now() / 1000 > Number(policy.endTime.toString()),
     isClaimed: policy.isClaimed
-  }));
+  }))
 
   const table = useReactTable({
     data: processedPolicies,
@@ -233,9 +233,9 @@ const PolicyList = ({ policies }) => {
                           {header.isPlaceholder
                             ? null
                             : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
                         </TableHead>
                       )
                     })}
@@ -272,13 +272,13 @@ const PolicyList = ({ policies }) => {
               </TableBody>
             </Table>
           ) : // <div className="space-y-2">
-            //   <Skeleton className="h-8 w-full" />
-            //   <Skeleton className="h-8 w-full" />
-            //   <Skeleton className="h-8 w-full" />
-            //   <Skeleton className="h-8 w-full" />
-            //   <Skeleton className="h-8 w-full" />
-            // </div>
-            null}
+          //   <Skeleton className="h-8 w-full" />
+          //   <Skeleton className="h-8 w-full" />
+          //   <Skeleton className="h-8 w-full" />
+          //   <Skeleton className="h-8 w-full" />
+          //   <Skeleton className="h-8 w-full" />
+          // </div>
+          null}
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
           <div className="space-x-2">
@@ -305,4 +305,4 @@ const PolicyList = ({ policies }) => {
   )
 }
 
-export default PolicyList
+export default React.memo(PolicyList)

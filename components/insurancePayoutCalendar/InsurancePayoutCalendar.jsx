@@ -12,7 +12,7 @@ function InsurancePayoutCalendar({ payoutDates }) {
 
   return (
     <div>
-      <div className="text-2xl mt-40">Insurance Payout Calendar</div>
+      <div className="text-2xl mt-40 mb-10">Benefit Boost Calendar</div>
       <CalendarHeatmap
         startDate={new Date(new Date().getFullYear(), 0, 1)}
         endDate={new Date(new Date().getFullYear(), 11, 31)}
@@ -28,7 +28,7 @@ function InsurancePayoutCalendar({ payoutDates }) {
             return null
           }
           return {
-            "data-tip": `${value.date} had a payout`
+            "data-tip": `${value.date} had a Boost`
           }
         }}
       />

@@ -4,13 +4,19 @@ const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 
 const contractABI = [
     {
-        "inputs": [],
-        "name": "shouldPayout",
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "predictedGasPrices",
         "outputs": [
             {
-                "internalType": "bool",
+                "internalType": "uint256",
                 "name": "",
-                "type": "bool"
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",
@@ -19,10 +25,10 @@ const contractABI = [
 ]
 
 const csvWriter = createCsvWriter({
-    path: "./payoutResult.csv",
+    path: "./predictedGasPrices.csv",
     header: [
         { id: "date", title: "date" },
-        { id: "result", title: "result" },
+        { id: "predictedGasPrices", title: "predictedGasPrices" },
     ],
 });
 
@@ -35,10 +41,10 @@ export default async function handler() {
             contractABI,
             provider
         )
-        const result = await contract.shouldPayout()
+        const result = await contract.predictedGasPrices()
 
         csvWriter.writeRecords([
-            { date: new Date().toISOString().slice(0, 10), result: result ? 1 : 0 }
+            { date: new Date().toISOString().slice(0, 10), result: result[-1] }
         ]);
     } catch (error) {
         console.log(error)

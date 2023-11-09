@@ -2,7 +2,11 @@
     "crons": [
         {
             "path": "/api/setPayoutCalender",
-            "schedule": "0 5 * * *"
+            "schedule": "0 0 * * *"
+        },
+        {
+            "path": "/api/setPayoutCalender",
+            "schedule": "0 0 * * *"
         }
     ]
 }

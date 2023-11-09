@@ -16,17 +16,19 @@ const contractABI = [
     }
 ]
 
-export default async function handler(request, response) {
+export default async function handler() {
+    try {
+        const provider = new ethers.providers.JsonRpcProvider("https://sepolia-rpc.scroll.io/")
 
-    const provider = new ethers.providers.JsonRpcProvider("https://sepolia-rpc.scroll.io/")
+        const contract = new ethers.Contract(
+            '0xC19E354e8C005e6cF8F73C5d35Fe33d67Ae52F59',
+            contractABI,
+            provider
+        )
+        const result = await contract.shouldPayout()
 
-    const contract = new ethers.Contract(
-        '0xC19E354e8C005e6cF8F73C5d35Fe33d67Ae52F59',
-        contractABI,
-        provider
-    )
-    const result = await contract.shouldPayout()
-
-    console.log(result)
-
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    }
 };

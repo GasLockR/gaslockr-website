@@ -12,7 +12,16 @@ function InsurancePayoutCalendar({ payoutDates }) {
 
   return (
     <div>
-      <div className="text-2xl mt-40 mb-10">Benefit Boost Calendar</div>
+      <div className="text-2xl mt-40 mb-10">
+        <div className="flex flex-row justify-between">
+          <div>Benefit Boost Calendar</div>
+          <div className="flex flex-row gap-2">
+            <div>Total Payout:</div>
+            <div className="text-[#57C5B6]">1.238</div>
+            <div>ETH</div>
+          </div>
+        </div>
+      </div>
       <CalendarHeatmap
         startDate={new Date(new Date().getFullYear(), 0, 1)}
         endDate={new Date(new Date().getFullYear(), 11, 31)}

@@ -183,7 +183,9 @@ const PolicyList = ({ policies }) => {
     payer: policy.payer.toString(),
     insured: policy.insured.toString(),
     term: `${policy.term.toString()} Days`,
-    benefit: `${policy.benefit ? policy.benefit.toString() : "0"} ETH`,
+    benefit: `${
+      policy.benefit ? ethers.utils.formatEther(policy.benefit.toString()) : "0"
+    } ETH`,
     startTime: formatTimestampToDate(policy.startTime.toString()),
     endTime: formatTimestampToDate(policy.endTime.toString()),
     isExpired: Date.now() / 1000 > Number(policy.endTime.toString()),

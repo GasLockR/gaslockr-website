@@ -5,7 +5,7 @@
             "schedule": "0 0 * * *"
         },
         {
-            "path": "/api/setPayoutCalender",
+            "path": "/api/setPredictedGasPrices",
             "schedule": "0 0 * * *"
         }
     ]

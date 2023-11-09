@@ -1,18 +1,32 @@
-export default async function handler(request, response) {
-    try {
-        const result = await fetch('https://api.exchangerate.host/convert?from=USD&to=EUR');
-        const data = await result.json();
+const { ethers } = require("ethers");
 
-        if (data.success) {
-            const rate = data.info.rate;
-            console.log(`Latest exchange rate (USD to EUR): ${rate}`);
-            response.status(200).json({ message: `Exchange rate (USD to EUR) is ${rate}` });
-        } else {
-            console.error('Error fetching exchange rate:', data);
-            response.status(500).json({ error: 'Failed to fetch exchange rate' });
-        }
-    } catch (error) {
-        console.error('Error fetching exchange rate:', error);
-        response.status(500).json({ error: 'Failed to fetch exchange rate' });
+const contractABI = [
+    {
+        "inputs": [],
+        "name": "shouldPayout",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     }
+]
+
+export default async function handler(request, response) {
+
+    const provider = new ethers.providers.JsonRpcProvider("https://sepolia-rpc.scroll.io/")
+
+    const contract = new ethers.Contract(
+        '0xC19E354e8C005e6cF8F73C5d35Fe33d67Ae52F59',
+        contractABI,
+        provider
+    )
+    const result = await contract.shouldPayout()
+
+    console.log(result)
+
 };

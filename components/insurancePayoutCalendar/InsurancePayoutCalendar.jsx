@@ -17,6 +17,7 @@ function InsurancePayoutCalendar({ payoutDates }) {
           <div>Benefit Boost Calendar</div>
           <div className="flex flex-row gap-2">
             <div>Total Payout:</div>
+            {/* 0.003 ETH / 次 */}
             <div className="text-[#57C5B6]">1.238</div>
             <div>ETH</div>
           </div>

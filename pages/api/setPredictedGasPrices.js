@@ -4,19 +4,13 @@ const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 
 const contractABI = [
     {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "predictedGasPrices",
+        "inputs": [],
+        "name": "getPredictedGasPrices",
         "outputs": [
             {
-                "internalType": "uint256",
+                "internalType": "uint256[]",
                 "name": "",
-                "type": "uint256"
+                "type": "uint256[]"
             }
         ],
         "stateMutability": "view",
@@ -41,10 +35,13 @@ export default async function handler() {
             contractABI,
             provider
         )
-        const result = await contract.predictedGasPrices()
+        const result = await contract.getPredictedGasPrices()
+
+        console.log(result[result.length - 1], 'result')
 
         csvWriter.writeRecords([
-            { date: new Date().toISOString().slice(0, 10), result: result[-1] }
+            // 更新前一天的，数组最后一位-2
+            { date: new Date().toISOString().slice(0, 10), result: String(result[result.length - 2]) }
         ]);
     } catch (error) {
         console.log(error)

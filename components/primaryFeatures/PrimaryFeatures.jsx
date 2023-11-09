@@ -151,19 +151,16 @@ const PrimaryFeatures = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-[#57C5B6] via-blue-500 to-[#8878d5] opacity-10"></div>
                 <CardHeader>
                   <CardTitle className="font-bold text-3xl bg-clip-text text-transparent bg-gradient-to-r from-green-300 via-blue-500 to-blue-300">
-                    Gas Reimbursement
+                    GasReimburse
                   </CardTitle>
                   <CardDescription className="text-xl text-white">
-                    Pioneers the first ZK Activity Scoring Protocol on the EVM,
-                    offering a trustless gas rtrustlesseimbursement solution
+                    Gas costs lead to connections.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="text-white">
                   <div className=" mb-8">
-                    GRP is a revolutionary solution addressing the challenges of
-                    gas fees on Ethereum, promoting user engagement across
-                    various sectors like DeFi, NFTs, and DAOs by providing a
-                    robust and trustless reimbursement infrastructure.
+                    Pioneers the first ZK trustless Activity Scoring Protocol on
+                    the EVM, offering a trustless gas reimbursement solution.
                   </div>
                   <div className="flex flex-row items-center gap-4">
                     <CheckIcon className="h-6 w-6 flex-none text-cyan-500" />

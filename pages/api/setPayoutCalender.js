@@ -38,6 +38,7 @@ export default async function handler() {
         const result = await contract.shouldPayout()
 
         csvWriter.writeRecords([
+            // date改成前一天
             { date: new Date().toISOString().slice(0, 10), result: result ? 1 : 0 }
         ]);
     } catch (error) {

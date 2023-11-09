@@ -27,6 +27,7 @@
     "class-variance-authority": "^0.4.0",
     "clsx": "^2.0.0",
     "echarts": "^5.4.3",
+    "eslint-plugin-prettier": "^5.0.1",
     "ethers": "5.7.2",
     "lucide-react": "0.105.0-alpha.4",
     "micro": "^10.0.1",

@@ -1,4 +1,4 @@
-export default async function handler(request, response) => {
+export default async function handler(request, response) {
     try {
         const result = await fetch('https://api.exchangerate.host/convert?from=USD&to=EUR');
         const data = await result.json();

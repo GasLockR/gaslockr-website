@@ -1,4 +1,6 @@
 const { ethers } = require("ethers");
+const fs = require("fs");
+const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 
 const contractABI = [
     {
@@ -16,6 +18,14 @@ const contractABI = [
     }
 ]
 
+const csvWriter = createCsvWriter({
+    path: "./payoutResult.csv",
+    header: [
+        { id: "date", title: "Date" },
+        { id: "result", title: "result" },
+    ],
+});
+
 export default async function handler() {
     try {
         const provider = new ethers.providers.JsonRpcProvider("https://sepolia-rpc.scroll.io/")
@@ -27,7 +37,9 @@ export default async function handler() {
         )
         const result = await contract.shouldPayout()
 
-        console.log(result)
+        csvWriter.writeRecords([
+            { date: new Date().toISOString().slice(0, 10), result: result ? 1 : 0 }
+        ]);
     } catch (error) {
         console.log(error)
     }

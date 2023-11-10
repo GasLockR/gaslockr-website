@@ -244,7 +244,7 @@ const PolicyList = ({ policies }) => {
   })
   return (
     <div>
-      <div className="flex items-center py-4">
+      {/* <div className="flex items-center py-4">
         <Input
           placeholder="Filter Payer Address..."
           value={table.getColumn("payer")?.getFilterValue() ?? ""}
@@ -253,8 +253,8 @@ const PolicyList = ({ policies }) => {
           }
           className="max-w-sm"
         />
-      </div>
-      <div>
+      </div> */}
+      <div className="pt-4">
         <div className="rounded-md border">
           {!loading ? (
             <Table>

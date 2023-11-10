@@ -26,6 +26,9 @@ import {
   PopoverTrigger
 } from "@/components/ui/popover"
 
+import { useContractWrite } from "wagmi"
+import { SCROLL_CONTRSCT_ADDRESS } from "@/config/address"
+
 const PolicyList = ({ policies }) => {
   const [sorting, setSorting] = useState([])
   const [columnFilters, setColumnFilters] = useState([])
@@ -33,6 +36,35 @@ const PolicyList = ({ policies }) => {
   const [rowSelection, setRowSelection] = useState({})
 
   const loading = !policies || policies.length === 0
+
+  const [insured, setInsured] = useState("")
+  const [id, setId] = useState("")
+
+  const { data, isLoading, isSuccess, write } = useContractWrite({
+    address: SCROLL_CONTRSCT_ADDRESS,
+    abi: [
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "_insured",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "_id",
+            type: "uint256"
+          }
+        ],
+        name: "claim",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      }
+    ],
+    functionName: "claim",
+    args: [insured, id]
+  })
 
   const formatAddress = (address) => {
     if (address.length > 8) {
@@ -136,9 +168,9 @@ const PolicyList = ({ policies }) => {
       accessorKey: "isClaimed",
       header: "Claimed",
       cell: ({ row }) => {
-        const policyData = row.original // 这里我们获取当前行的原始数据
+        const policyData = row.original
 
-        console.log(policyData, "fuck policyData")
+        console.log(policyData, "policyData")
         const benefit = Number(row.getValue("benefit"))
         const isExpired = row.getValue("isExpired")
         const isClaimed = row.getValue("isClaimed")
@@ -152,7 +184,7 @@ const PolicyList = ({ policies }) => {
           buttonDisabled = false
           handleClick = () => {
             console.log("Claim button clicked for:", row)
-            // 这里可以执行其他逻辑，例如提交claim请求
+            // write()
           }
         } else if (benefit === 0 && isExpired && !isClaimed) {
           buttonText = "No Benefit"

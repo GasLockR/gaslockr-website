@@ -13,6 +13,7 @@ export function usePayerPolicies(address) {
     abi: contractAbi,
     functionName: "getPoliciesAsPayer",
     args: [address],
+    enabled: false,
   })
 
   return { payerPolicyList, isPayerListError, isPayerListLoading }
@@ -28,6 +29,7 @@ export function useInsuredPolicies(address) {
     abi: contractAbi,
     functionName: "getPoliciesAsInsured",
     args: [address],
+    enabled: false,
   })
 
   return { insuredPolicyList, isInsuredListError, isInsuredListLoading }

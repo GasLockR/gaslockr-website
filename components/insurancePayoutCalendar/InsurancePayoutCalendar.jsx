@@ -19,7 +19,7 @@ function InsurancePayoutCalendar({ payoutDates }) {
             <div>Total Payout:</div>
             {/* 0.003 ETH / 次 */}
             <div className="text-[#57C5B6]">{62 * 0.003}</div>
-            <div>ETH</div>
+            <div>ETH / Address</div>
           </div>
         </div>
       </div>

@@ -37,32 +37,32 @@ import { SCROLL_CONTRSCT_ADDRESS } from "@/config/address"
 import { utils, ethers } from "ethers"
 
 const premiums = [
-  6250000000000000,   // 7天
-  7130000000000000,   // 8天
-  7940000000000000,   // 9天
-  8750000000000000,   // 10天
-  9500000000000000,   // 11天
-  10190000000000000,  // 12天
-  10880000000000000,  // 13天
-  11560000000000000,  // 14天
-  12190000000000000,  // 15天
-  12810000000000000,  // 16天
-  13380000000000000,  // 17天
-  13940000000000000,  // 18天
-  14500000000000000,  // 19天
-  15000000000000000,  // 20天
-  15500000000000000,  // 21天
-  15940000000000000,  // 22天
-  16380000000000000,  // 23天
-  16810000000000000,  // 24天
-  17190000000000000,  // 25天
-  17560000000000000,  // 26天
-  17940000000000000,  // 27天
-  18250000000000000,  // 28天
-  18560000000000000,  // 29天
-  18880000000000000   // 30天
+  6250000000000000, // 7天
+  7130000000000000, // 8天
+  7940000000000000, // 9天
+  8750000000000000, // 10天
+  9500000000000000, // 11天
+  10190000000000000, // 12天
+  10880000000000000, // 13天
+  11560000000000000, // 14天
+  12190000000000000, // 15天
+  12810000000000000, // 16天
+  13380000000000000, // 17天
+  13940000000000000, // 18天
+  14500000000000000, // 19天
+  15000000000000000, // 20天
+  15500000000000000, // 21天
+  15940000000000000, // 22天
+  16380000000000000, // 23天
+  16810000000000000, // 24天
+  17190000000000000, // 25天
+  17560000000000000, // 26天
+  17940000000000000, // 27天
+  18250000000000000, // 28天
+  18560000000000000, // 29天
+  18880000000000000 // 30天
 ]
-const daysArray = Array.from({ length: 24 }, (_, i) => i + 7);
+const daysArray = Array.from({ length: 24 }, (_, i) => i + 7)
 
 const InsuranceSheet = () => {
   const { address } = useAccount()
@@ -70,8 +70,7 @@ const InsuranceSheet = () => {
   const [insuredAddress, setInsuredAddress] = useState("")
   const [addressError, setAddressError] = useState(null)
   const [term, setTerm] = useState(7)
-  const [policyPrice, setPolicyPrice] = useState(premiums[0]);
-
+  const [policyPrice, setPolicyPrice] = useState(premiums[0])
 
   const {
     data,
@@ -101,18 +100,12 @@ const InsuranceSheet = () => {
     }
   })
 
-
-  const clickBuy = (
-    payerAddress,
-    insuredAddress,
-    term
-  ) => {
+  const clickBuy = (payerAddress, insuredAddress, term) => {
     if (!utils.isAddress(insuredAddress)) {
       setAddressError("Please Enter Ethereum address")
       return
     }
     setAddressError(null)
-    console.log(term, 'fuck term')
     write({
       args: [payerAddress, insuredAddress, term],
       value: policyPrice
@@ -131,19 +124,17 @@ const InsuranceSheet = () => {
   const handlePolicyTermChange = (selectedDay) => {
     setTerm(selectedDay)
     if (selectedDay >= 7 && selectedDay <= 30) {
-      const index = selectedDay - 7;
-      setPolicyPrice(String(premiums[index]));
+      const index = selectedDay - 7
+      setPolicyPrice(String(premiums[index]))
     } else {
-      console.error("Unknown policy term:", selectedDay);
+      console.error("Unknown policy term:", selectedDay)
     }
-  };
+  }
 
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button
-          className="w-3/4 bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
-        >
+        <Button className="w-3/4 bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]">
           Get Started
         </Button>
       </SheetTrigger>
@@ -170,8 +161,8 @@ const InsuranceSheet = () => {
             </div>
             <Select
               onValueChange={(e) => {
-                const selectedDay = parseInt(e, 10);
-                handlePolicyTermChange(selectedDay);
+                const selectedDay = parseInt(e, 10)
+                handlePolicyTermChange(selectedDay)
               }}
               defaultValue="7"
             >
@@ -180,8 +171,10 @@ const InsuranceSheet = () => {
               </SelectTrigger>
               <SelectContent className="max-h-[200px] overflow-y-auto">
                 <SelectGroup>
-                  {daysArray.map(day => (
-                    <SelectItem key={day} value={day.toString()}>{day} Days</SelectItem>
+                  {daysArray.map((day) => (
+                    <SelectItem key={day} value={day.toString()}>
+                      {day} Days
+                    </SelectItem>
                   ))}
                 </SelectGroup>
               </SelectContent>
@@ -214,16 +207,16 @@ const InsuranceSheet = () => {
                   <QuestionMarkCircledIcon />
                 </PopoverTrigger>
                 <PopoverContent className="text-sm">
-                  Each time the average daily gas price exceeds the target price from GasLockR pricing model, your benefit increases by 0.003 ETH. At the end of the insurance period, you can claim this benefit.
+                  Each time the average daily gas price exceeds the target price
+                  from GasLockR pricing model, your benefit increases by 0.003
+                  ETH. At the end of the insurance period, you can claim this
+                  benefit.
                 </PopoverContent>
               </Popover>
             </div>
 
-            <p className="text-[#57C5B6]">
-              0.003 ETH
-            </p>
+            <p className="text-[#57C5B6]">0.003 ETH</p>
           </div>
-
 
           <div className="flex flex-col gap-2">
             <div className="flex flex-row gap-2">
@@ -289,11 +282,7 @@ const InsuranceSheet = () => {
             disabled={isDepositLoading}
             className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
             onClick={() => {
-              clickBuy(
-                address,
-                insuredAddress,
-                term
-              )
+              clickBuy(address, insuredAddress, term)
             }}
           >
             {isDepositLoading ? (

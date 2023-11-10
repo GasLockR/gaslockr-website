@@ -11,11 +11,9 @@ import { useAccount } from "wagmi"
 import { Container } from "./Container"
 import { useRouter } from "next/router"
 
-
 export function SiteHeader() {
   const { address } = useAccount()
   const router = useRouter()
-
 
   return (
     <Container className="top-0 z-40 w-full">
@@ -45,7 +43,10 @@ export function SiteHeader() {
               <Button
                 className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
                 onClick={() =>
-                  window.open("https://sepoliafaucet.com", "_blank")
+                  window.open(
+                    "https://docs.scroll.io/en/user-guide/faucet",
+                    "_blank"
+                  )
                 }
               >
                 Faucet

@@ -32,7 +32,7 @@ const Footer = () => {
             <Link href="https://twitter.com/gaslockr" target="_blank">
               Twitter
             </Link>
-            <Link href="https://discord.gg/sBAaqfxR" target="_blank">
+            <Link href="https://discord.gg/DUZMwJzfsP" target="_blank">
               Discord
             </Link>
           </div>

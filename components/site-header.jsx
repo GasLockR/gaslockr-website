@@ -7,13 +7,15 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
-import { useAccount } from "wagmi"
+import { useAccount, useNetwork } from "wagmi"
 import { Container } from "./Container"
 import { useRouter } from "next/router"
 
 export function SiteHeader() {
   const { address } = useAccount()
   const router = useRouter()
+
+  const { chain } = useNetwork()
 
   return (
     <Container className="top-0 z-40 w-full">
@@ -44,7 +46,11 @@ export function SiteHeader() {
                 className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
                 onClick={() =>
                   window.open(
-                    "https://docs.scroll.io/en/user-guide/faucet",
+                    `${
+                      chain?.id === 534351
+                        ? "https://docs.scroll.io/en/user-guide/faucet"
+                        : "https://sepoliafaucet.com"
+                    }`,
                     "_blank"
                   )
                 }

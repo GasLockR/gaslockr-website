@@ -3,6 +3,7 @@ import CalendarHeatmap from "react-calendar-heatmap"
 import ReactTooltip from "react-tooltip"
 import "react-calendar-heatmap/dist/styles.css"
 import styles from "./InsurancePayoutCalendar.module.css"
+import { payoutDates } from "@/config/mockData"
 
 function InsurancePayoutCalendar({ payoutDates }) {
   const heatmapData = payoutDates.map((date) => ({
@@ -18,7 +19,9 @@ function InsurancePayoutCalendar({ payoutDates }) {
           <div className="flex flex-row gap-2">
             <div>Total Payout:</div>
             {/* 0.003 ETH / 次 */}
-            <div className="text-[#57C5B6]">{62 * 0.003}</div>
+            <div className="text-[#57C5B6]">
+              {payoutDates ? payoutDates.length * 0.003 : 0}
+            </div>
             <div>ETH / Address</div>
           </div>
         </div>

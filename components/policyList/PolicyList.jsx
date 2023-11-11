@@ -29,6 +29,7 @@ import {
 import { useContractWrite } from "wagmi"
 import { SCROLL_CONTRSCT_ADDRESS } from "@/config/address"
 import { useDynamicContractAddress } from "@/hooks/useDynamicContractAddress"
+import { payoutDates } from "@/config/mockData"
 
 const PolicyList = ({ policies }) => {
   const [sorting, setSorting] = useState([])
@@ -213,19 +214,39 @@ const PolicyList = ({ policies }) => {
     }
   ]
 
-  const processedPolicies = policies?.map((policy) => ({
-    ...policy,
-    payer: policy.payer.toString(),
-    insured: policy.insured.toString(),
-    term: `${policy.term.toString()} Days`,
-    benefit: `${
-      policy.benefit ? ethers.utils.formatEther(policy.benefit.toString()) : "0"
-    } ETH`,
-    startTime: formatTimestampToDate(policy.startTime.toString()),
-    endTime: formatTimestampToDate(policy.endTime.toString()),
-    isExpired: Date.now() / 1000 > Number(policy.endTime.toString()),
-    isClaimed: policy.isClaimed
-  }))
+  const payoutDatesSet = new Set(
+    payoutDates.map((date) => new Date(date).setUTCHours(0, 0, 0, 0))
+  )
+
+  const processedPolicies = policies.map((policy) => {
+    let benefitCount = 0
+    let currentDate = new Date(Number(policy.startTime) * 1000)
+    currentDate.setUTCHours(0, 0, 0, 0) // 设置为 UTC 的午夜时间
+    const endDate = new Date(Number(policy.endTime) * 1000)
+    endDate.setUTCHours(0, 0, 0, 0) // 设置为 UTC 的午夜时间，并减去一天
+    endDate.setDate(endDate.getDate() - 1)
+
+    while (currentDate <= endDate) {
+      if (payoutDatesSet.has(currentDate.getTime())) {
+        benefitCount++
+      }
+      currentDate.setDate(currentDate.getDate() + 1)
+    }
+
+    console.log(benefitCount, "benefitCount")
+
+    return {
+      ...policy,
+      payer: policy.payer.toString(),
+      insured: policy.insured.toString(),
+      term: `${policy.term.toString()} Days`,
+      benefit: `${(benefitCount * 0.003).toFixed(3)} ETH`,
+      startTime: formatTimestampToDate(policy.startTime.toString()),
+      endTime: formatTimestampToDate(policy.endTime.toString()),
+      isExpired: Date.now() / 1000 > Number(policy.endTime.toString()),
+      isClaimed: policy.isClaimed
+    }
+  })
 
   const table = useReactTable({
     data: processedPolicies,

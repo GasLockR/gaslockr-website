@@ -1,35 +1,38 @@
 import { useContractRead } from "wagmi"
 import contractAbi from "@/config/contract.json"
-import { CONTRACT_ADDRESS } from "@/config/address"
-import { SCROLL_CONTRSCT_ADDRESS } from "@/config/address"
+import { useDynamicContractAddress } from "./useDynamicContractAddress";
 
 export function usePayerPolicies(address) {
+  const contractAddress = useDynamicContractAddress();
+
   const {
     data: payerPolicyList,
     isError: isPayerListError,
     isLoading: isPayerListLoading
   } = useContractRead({
-    address: SCROLL_CONTRSCT_ADDRESS,
+    address: contractAddress,
     abi: contractAbi,
     functionName: "getPoliciesAsPayer",
     args: [address],
-    watch: false,
+    watch: true,
   })
 
   return { payerPolicyList, isPayerListError, isPayerListLoading }
 }
 
 export function useInsuredPolicies(address) {
+  const contractAddress = useDynamicContractAddress();
+
   const {
     data: insuredPolicyList,
     isError: isInsuredListError,
     isLoading: isInsuredListLoading
   } = useContractRead({
-    address: SCROLL_CONTRSCT_ADDRESS,
+    address: contractAddress,
     abi: contractAbi,
     functionName: "getPoliciesAsInsured",
     args: [address],
-    watch: false,
+    watch: true,
   })
 
   return { insuredPolicyList, isInsuredListError, isInsuredListLoading }

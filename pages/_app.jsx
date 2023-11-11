@@ -6,14 +6,12 @@ import { Analytics } from "@vercel/analytics/react"
 import { Web3Provider } from "providers/Web3"
 import Footer from "@/components/footer/Footer"
 import { Toaster } from "@/components/ui/toaster"
-// import Script from 'next/script';
 
 function MyApp({ Component, pageProps }) {
   return (
     <Web3Provider>
       <div>
         <SiteHeader />
-        {/* <Script src='https://cdn.jsdelivr.net/npm/donate3-sdk@1.0.28/dist/webpack/bundle.js' /> */}
         <Component {...pageProps} />
         <Toaster />
         <Analytics />

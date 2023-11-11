@@ -35,6 +35,7 @@ import { useAccount, useContractWrite } from "wagmi"
 import contractAbi from "@/config/contract.json"
 import { SCROLL_CONTRSCT_ADDRESS } from "@/config/address"
 import { utils, ethers } from "ethers"
+import { useDynamicContractAddress } from "@/hooks/useDynamicContractAddress"
 
 const premiums = [
   6250000000000000, // 7天
@@ -72,16 +73,17 @@ const InsuranceSheet = () => {
   const [term, setTerm] = useState(7)
   const [policyPrice, setPolicyPrice] = useState(premiums[0])
 
+  const contractAddress = useDynamicContractAddress()
+
   const {
     data,
     isLoading: isDepositLoading,
     isSuccess,
     write
   } = useContractWrite({
-    address: SCROLL_CONTRSCT_ADDRESS,
+    address: contractAddress,
     abi: contractAbi,
     functionName: "deposit",
-    chainId: 534351,
     onError(error) {
       if (error.name === "ChainMismatchError") {
         toast({

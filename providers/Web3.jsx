@@ -6,15 +6,7 @@ import {
   RainbowKitProvider,
   lightTheme
 } from "@rainbow-me/rainbowkit"
-import {
-  arbitrum,
-  goerli,
-  sepolia,
-  mainnet,
-  optimism,
-  polygon,
-  zora
-} from "wagmi/chains"
+import { sepolia } from "wagmi/chains"
 import { publicProvider } from "wagmi/providers/public"
 
 export const ScrollSepoliaTestnet = {
@@ -36,17 +28,7 @@ export const ScrollSepoliaTestnet = {
 }
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [
-    // sepolia,
-    ScrollSepoliaTestnet
-    // mainnet,
-    // goerli
-    // polygon,
-    // optimism,
-    // arbitrum,
-    // zora
-    // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [sepolia] : [])
-  ],
+  [sepolia, ScrollSepoliaTestnet],
   [publicProvider()]
 )
 

@@ -170,7 +170,6 @@ const PolicyList = ({ policies }) => {
       cell: ({ row }) => {
         const policyData = row.original
 
-        console.log(policyData, "policyData")
         const benefit = Number(row.getValue("benefit"))
         const isExpired = row.getValue("isExpired")
         const isClaimed = row.getValue("isClaimed")

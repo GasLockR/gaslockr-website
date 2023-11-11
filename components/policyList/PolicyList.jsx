@@ -28,6 +28,7 @@ import {
 
 import { useContractWrite } from "wagmi"
 import { SCROLL_CONTRSCT_ADDRESS } from "@/config/address"
+import { useDynamicContractAddress } from "@/hooks/useDynamicContractAddress"
 
 const PolicyList = ({ policies }) => {
   const [sorting, setSorting] = useState([])
@@ -40,8 +41,10 @@ const PolicyList = ({ policies }) => {
   const [insured, setInsured] = useState("")
   const [id, setId] = useState("")
 
+  const contractAddress = useDynamicContractAddress()
+
   const { data, isLoading, isSuccess, write } = useContractWrite({
-    address: SCROLL_CONTRSCT_ADDRESS,
+    address: contractAddress,
     abi: [
       {
         inputs: [

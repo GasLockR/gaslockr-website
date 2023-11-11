@@ -220,9 +220,9 @@ const PolicyList = ({ policies }) => {
   const processedPolicies = policies.map((policy) => {
     let benefitCount = 0
     let currentDate = new Date(Number(policy.startTime) * 1000)
-    currentDate.setUTCHours(0, 0, 0, 0) // 设置为 UTC 的午夜时间
+    currentDate.setUTCHours(0, 0, 0, 0)
     const endDate = new Date(Number(policy.endTime) * 1000)
-    endDate.setUTCHours(0, 0, 0, 0) // 设置为 UTC 的午夜时间，并减去一天
+    endDate.setUTCHours(0, 0, 0, 0)
     endDate.setDate(endDate.getDate() - 1)
 
     while (currentDate <= endDate) {
@@ -231,8 +231,6 @@ const PolicyList = ({ policies }) => {
       }
       currentDate.setDate(currentDate.getDate() + 1)
     }
-
-    console.log(benefitCount, "benefitCount")
 
     return {
       ...policy,

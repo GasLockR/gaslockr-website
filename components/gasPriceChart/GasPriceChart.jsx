@@ -8,12 +8,12 @@ const GasPriceChart = ({ data }) => {
     const chartInstance = echarts.init(chartRef.current)
 
     const options = {
-      tooltip: {
-        trigger: "axis",
-        position: function (pt) {
-          return [pt[0], "10%"]
-        }
-      },
+      // tooltip: {
+      //   trigger: "axis",
+      //   position: function (pt) {
+      //     return [pt[0], "10%"]
+      //   }
+      // },
       grid: {
         top: "0",
         bottom: "0",
@@ -22,7 +22,7 @@ const GasPriceChart = ({ data }) => {
       },
       title: {
         left: "center",
-        text: "Past 30 Days ETH Average Gas Price",
+        // text: "Past 30 Days ETH Average Gas Price",
         padding: [40, 0, 0, 0]
       },
       xAxis: {

@@ -20,7 +20,7 @@ const contractAddress = "0xC19E354e8C005e6cF8F73C5d35Fe33d67Ae52F59";
 
 export default async function handler() {
     try {
-        const provider = new ethers.providers.JsonRpcProvider("https://sepolia-rpc.scroll.io/");
+        const provider = new ethers.providers.JsonRpcProvider(`https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`);
 
         const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
@@ -28,9 +28,10 @@ export default async function handler() {
 
         const gasPrice = "57102480375";
 
-        const gasLimit = "100000000000000000";
+        const estimatedGasLimit = await contract.estimateGas.addGasPrice(gasPrice);
+
         const txResponse = await contract.addGasPrice(gasPrice, {
-            gasLimit: gasLimit
+            gasLimit: estimatedGasLimit,
         });
         const txReceipt = await txResponse.wait();
 

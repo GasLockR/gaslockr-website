@@ -16,7 +16,7 @@ const contractABI = [
     }
 ]
 
-const contractAddress = "0xC19E354e8C005e6cF8F73C5d35Fe33d67Ae52F59";
+const contractAddress = process.env.SEPOLIA_CONTRACT_ADDRESS;
 
 export default async function handler() {
     try {
@@ -26,7 +26,7 @@ export default async function handler() {
 
         const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
-        const gasPrice = "35102480375";
+        const gasPrice = "33124180375";
 
         const estimatedGasLimit = await contract.estimateGas.addGasPrice(gasPrice);
 

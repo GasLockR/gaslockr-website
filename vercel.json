@@ -1,14 +1,6 @@
 {
     "crons": [
         {
-            "path": "/api/setPayoutCalender",
-            "schedule": "0 0 * * *"
-        },
-        {
-            "path": "/api/setPredictedGasPrices",
-            "schedule": "0 0 * * *"
-        },
-        {
             "path": "/api/addGasPrice",
             "schedule": "0 8 * * *"
         }

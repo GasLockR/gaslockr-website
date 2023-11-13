@@ -26,7 +26,7 @@ export default async function handler() {
 
         const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
-        const gasPrice = "33124180375";
+        const gasPrice = "48423689236";
 
         const estimatedGasLimit = await contract.estimateGas.addGasPrice(gasPrice);
 
@@ -37,6 +37,6 @@ export default async function handler() {
 
         console.log("Transaction receipt", txReceipt);
     } catch (error) {
-        console.log(error);
+        console.error("An error occurred", error);
     }
 };

@@ -26,7 +26,7 @@ export default async function handler() {
 
         const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
-        const gasPrice = "48423689236";
+        const gasPrice = "31766283864";
 
         const estimatedGasLimit = await contract.estimateGas.addGasPrice(gasPrice);
 

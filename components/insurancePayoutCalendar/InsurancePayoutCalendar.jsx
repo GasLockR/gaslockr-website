@@ -3,7 +3,6 @@ import CalendarHeatmap from "react-calendar-heatmap"
 import ReactTooltip from "react-tooltip"
 import "react-calendar-heatmap/dist/styles.css"
 import styles from "./InsurancePayoutCalendar.module.css"
-import { payoutDates } from "@/config/mockData"
 
 function InsurancePayoutCalendar({ payoutDates }) {
   const heatmapData = payoutDates.map((date) => ({

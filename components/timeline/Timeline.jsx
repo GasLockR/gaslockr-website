@@ -5,7 +5,7 @@ import Image from "next/image"
 const TimeLine = () => {
   return (
     <div className="bg-white py-24 sm:py-72">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 p-10 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 p-20 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
         <h2 className="text-center text-4xl font-semibold leading-8 text-gray-900">
           🏆 Web3 Hackathon Hall of Fame 🏆
         </h2>

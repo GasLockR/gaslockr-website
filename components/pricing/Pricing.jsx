@@ -70,7 +70,9 @@ const Pricing = () => {
                     </span> */}
                     {/* <span className="text-5xl  font-medium">10</span> */}
                     <div className="flex flex-row items-end justify-center gap-4">
-                      <span className="text-3xl font-medium">Starting at</span>
+                      <span className="text-3xl font-medium dark:text-white">
+                        Starting at
+                      </span>
                       <div className="flex flex-row ">
                         {/* TODO */}
                         <span className="text-[#57C5B6] relative right-1 text-2xl  font-medium">
@@ -126,7 +128,7 @@ const Pricing = () => {
 
             {/* Advanced User Card */}
             <Card className="w-[360px] h-[490px] relative">
-              <div className="absolute inset-0 bg-white bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-10">
+              <div className="absolute inset-0 bg-white rounded-lg bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-10">
                 <span className="text-lg font-bold">Coming Soon</span>
               </div>
               <CardHeader>
@@ -140,7 +142,9 @@ const Pricing = () => {
                     </span> */}
                     {/* <span className="text-5xl  font-medium">10</span> */}
                     <div className="flex flex-row items-end justify-center gap-4">
-                      <span className="text-3xl font-medium">Starting at </span>
+                      <span className="text-3xl font-medium dark:text-white">
+                        Starting at{" "}
+                      </span>
                       <div className="flex flex-row ">
                         <span className="text-[#57C5B6] relative right-1 text-2xl  font-medium">
                           $
@@ -210,7 +214,7 @@ const Pricing = () => {
 
             {/* Enterprise Card */}
             <Card className="w-[360px] h-[490px] relative">
-              <div className="absolute inset-0 bg-white bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-10">
+              <div className="absolute inset-0 bg-white rounded-lg bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-10">
                 <span className="text-lg font-bold">Coming Soon</span>
               </div>
               <CardHeader>
@@ -219,7 +223,9 @@ const Pricing = () => {
                 </CardTitle>
                 <CardDescription className="text-base text-black flex flex-row justify-center items-center gap-2 p-4 h-28">
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl font-medium">Custom Pricing</span>
+                    <span className="text-2xl font-medium dark:text-white">
+                      Custom Pricing
+                    </span>
                     <span className="text-gray-500">
                       Tailored to your needs
                     </span>

@@ -4,8 +4,10 @@ import { configureChains, createConfig, WagmiConfig } from "wagmi"
 import {
   getDefaultWallets,
   RainbowKitProvider,
-  lightTheme
+  lightTheme,
+  darkTheme
 } from "@rainbow-me/rainbowkit"
+import { useTheme } from "next-themes"
 import { sepolia } from "wagmi/chains"
 import { publicProvider } from "wagmi/providers/public"
 
@@ -47,21 +49,31 @@ const wagmiConfig = createConfig({
 
 export function Web3Provider(props) {
   const [ready, setReady] = useState(false)
+
+  const { theme, resolvedTheme } = useTheme()
+
   useEffect(() => {
     setReady(true)
   }, [])
+
+  const rainbowTheme =
+    resolvedTheme === "dark"
+      ? darkTheme({
+          accentColor: "#57C5B6",
+          accentColorForeground: "white",
+          borderRadius: "medium"
+        })
+      : lightTheme({
+          accentColor: "#57C5B6",
+          accentColorForeground: "white",
+          borderRadius: "medium"
+        })
+
   return (
     <>
       {ready && (
         <WagmiConfig config={wagmiConfig}>
-          <RainbowKitProvider
-            chains={chains}
-            theme={lightTheme({
-              accentColor: "#57C5B6",
-              accentColorForeground: "white",
-              borderRadius: "medium"
-            })}
-          >
+          <RainbowKitProvider chains={chains} theme={rainbowTheme}>
             {props.children}
           </RainbowKitProvider>
         </WagmiConfig>

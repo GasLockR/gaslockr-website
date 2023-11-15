@@ -50,14 +50,14 @@ const wagmiConfig = createConfig({
 export function Web3Provider(props) {
   const [ready, setReady] = useState(false)
 
-  const { theme } = useTheme()
+  const { theme, resolvedTheme } = useTheme()
 
   useEffect(() => {
     setReady(true)
   }, [])
 
   const rainbowTheme =
-    theme === "dark"
+    resolvedTheme === "dark"
       ? darkTheme({
           accentColor: "#57C5B6",
           accentColorForeground: "white",

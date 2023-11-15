@@ -10,13 +10,13 @@ import { ThemeProvider } from "@/providers/theme-provider"
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Web3Provider>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <Web3Provider>
         <div>
           <SiteHeader />
           <Component {...pageProps} />
@@ -24,8 +24,8 @@ function MyApp({ Component, pageProps }) {
           <Analytics />
           <Footer />
         </div>
-      </ThemeProvider>
-    </Web3Provider>
+      </Web3Provider>
+    </ThemeProvider>
   )
 }
 

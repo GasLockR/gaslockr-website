@@ -10,6 +10,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { useAccount, useNetwork } from "wagmi"
 import { Container } from "./Container"
 import { useRouter } from "next/router"
+import { ModeToggle } from "./ModeToggle"
 
 export function SiteHeader() {
   const { address } = useAccount()
@@ -67,7 +68,6 @@ export function SiteHeader() {
               </Button> */}
             </>
           )}
-
           <Button
             variant="ghost"
             size="icon"
@@ -87,6 +87,8 @@ export function SiteHeader() {
             <DiscordLogoIcon className="h-6 w-6" />
           </Button>
           <ConnectButton />
+
+          <ModeToggle />
         </div>
       </div>
     </Container>

@@ -258,15 +258,15 @@ const Pricing = () => {
           {/* payer policy list */}
           {payerPolicyList ? (
             <>
-              <div className="text-2xl mt-40">Insurance Policies as Payer</div>
-              <PolicyList policies={memoizedPayerPolicies} />
+              {/* <div className="text-2xl mt-40">Insurance Policies as Payer</div>
+              <PolicyList policies={memoizedPayerPolicies} /> */}
             </>
           ) : null}
           {/* insured policy list */}
           {insuredPolicyList ? (
             <>
-              <div className="text-2xl">Insurance Policies as Insured</div>
-              <PolicyList policies={memoizedInsuredPolicies} />
+              {/* <div className="text-2xl">Insurance Policies as Insured</div>
+              <PolicyList policies={memoizedInsuredPolicies} /> */}
             </>
           ) : null}
         </div>

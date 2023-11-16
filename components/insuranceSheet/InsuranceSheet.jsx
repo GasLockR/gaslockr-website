@@ -136,7 +136,10 @@ const InsuranceSheet = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="w-3/4 bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]">
+        <Button
+          disabled={true}
+          className="w-3/4 bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
+        >
           Get Started
         </Button>
       </SheetTrigger>

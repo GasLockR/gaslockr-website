@@ -23,6 +23,7 @@ const Footer = () => {
             <Link href="https://gaslockr.gitbook.io/gaslockr" target="_blank">
               GitBook
             </Link>
+            <Link href="/mint">NFT</Link>
             {/* <Link href="/whitePaper" target="_blank">
             WhitePaper
           </Link> */}

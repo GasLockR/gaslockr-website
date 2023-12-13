@@ -117,10 +117,6 @@ const Mint = () => {
         title: "Success",
         description: "Mint Success."
       })
-
-      setTimeout(() => {
-        window.location.reload()
-      }, 3000)
     }
   }, [isSuccess, toast])
 
@@ -195,12 +191,7 @@ const Mint = () => {
                 {tokenUri ? (
                   <img src={tokenUri} />
                 ) : (
-                  <Image
-                    src="/block03.jpg"
-                    alt="Logo"
-                    width={524}
-                    height={524}
-                  />
+                  <Image src="/block.jpg" alt="Logo" width={524} height={524} />
                 )}
               </div>
               {nftName ? (
@@ -212,14 +203,14 @@ const Mint = () => {
 
             <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-16">
               <div className="w-2/3">
-                <Image src="/block03.jpg" alt="Logo" width={524} height={524} />
+                <Image src="/block.jpg" alt="Logo" width={524} height={524} />
               </div>
               <div className="text-center text-[#57C5B6]">Coming Soon</div>
             </div>
 
             <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-16">
               <div className="w-2/3">
-                <Image src="/block03.jpg" alt="Logo" width={524} height={524} />
+                <Image src="/block.jpg" alt="Logo" width={524} height={524} />
               </div>
               <div className="text-center text-[#57C5B6]">Coming Soon</div>
             </div>

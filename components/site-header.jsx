@@ -68,12 +68,12 @@ export function SiteHeader() {
               </Button> */}
             </>
           )}
-          <Button
+          {/* <Button
             className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
             onClick={() => router.push("/mint")}
           >
             MINT
-          </Button>
+          </Button> */}
           <Button
             variant="ghost"
             size="icon"

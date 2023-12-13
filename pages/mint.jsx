@@ -4,7 +4,7 @@ import { Container } from "@/components/Container"
 import { useAccount } from "wagmi"
 import verifyWhitelistAddress from "@/config/verifyWhitelistAddress"
 import { useToast } from "@/components/ui/use-toast"
-import { useContractWrite, useContractRead } from "wagmi"
+import { useContractWrite, useNetwork, useSwitchNetwork } from "wagmi"
 import { NFT_CONTRACT_ADDRESS } from "@/config/address"
 import { Alchemy, Network } from "alchemy-sdk"
 
@@ -14,20 +14,31 @@ const Mint = () => {
   const [isWL, setIsWL] = useState(false)
   const [Proof, setProof] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const [nftMetadata, setNftMetadata] = useState(null)
   const [tokenUri, setTokenUri] = useState("")
   const [nftName, setNftName] = useState("")
+  const { chain } = useNetwork()
+  const {
+    chains,
+    error: switchNetWorkError,
+    isLoading: switchNetWorkLoading,
+    pendingChainId,
+    switchNetwork
+  } = useSwitchNetwork()
 
-  console.log(tokenUri, "tokenUri")
+  useEffect(() => {
+    if (chain?.id !== 137 && switchNetwork) {
+      switchNetwork(137)
+    }
+  }, [chain, switchNetwork])
 
   const getUserNFT = async () => {
     const config = {
-      apiKey: "h8cBT_y-mfPReyt1d2rxpRLo-VF4svTz",
-      network: Network.ETH_SEPOLIA
+      apiKey: "WvvnfE7_s16d21jxwbbC9IRf6jUdB6ii",
+      network: Network.MATIC_MAINNET
     }
     const alchemy = new Alchemy(config)
     const options = {
-      contractAddresses: ["0x7e2aa2a62e7a45033c5a274c7b3db4fab788057d"]
+      contractAddresses: [NFT_CONTRACT_ADDRESS]
     }
 
     const response = await alchemy.nft.getNftsForOwner(address, options)
@@ -44,43 +55,6 @@ const Mint = () => {
       })
     }
   }, [address])
-
-  const nftMetadataURI = useContractRead({
-    address: NFT_CONTRACT_ADDRESS,
-    abi: [
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256"
-          }
-        ],
-        name: "tokenURI",
-        outputs: [
-          {
-            internalType: "string",
-            name: "",
-            type: "string"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      }
-    ],
-    functionName: "tokenURI",
-    args: [5]
-  })
-
-  useEffect(() => {
-    if (nftMetadataURI.data) {
-      fetch(nftMetadataURI.data)
-        .then((response) => response.json())
-        .then((data) => {
-          setNftMetadata(data)
-        })
-    }
-  }, [nftMetadataURI.data])
 
   const {
     data,
@@ -113,48 +87,37 @@ const Mint = () => {
     const { isInWhitelist, proof } = verifyWhitelistAddress(address)
 
     if (isInWhitelist) {
-      console.log(`Address ${address} is in whitelist. Proof: `, proof)
       setProof(proof)
       setIsWL(true)
       setIsLoading(false)
       toast({
-        title: "Wow!",
-        description: "You have obtained the whitelist qualification."
+        title: "Congrats!",
+        description: "You are verified to mint the 1st tester NFT."
       })
     } else {
       setIsWL(false)
       setIsLoading(false)
-      console.log(`Address ${address} is not in whitelist.`)
       toast({
-        title: "Uh",
-        description: "Don't lose heart, keep paying attention."
+        title: "Sorry",
+        description: "You are not on the list."
       })
     }
   }
 
   const handleMint = () => {
-    console.log("Minting NFT for address:", address, "with proof:", Proof)
     write({
       args: [Proof]
     })
+  }
+
+  useEffect(() => {
     if (isSuccess) {
       toast({
         title: "Success",
-        description: (
-          <a
-            className="text-[#57C5B6]"
-            href={`https://sepolia.etherscan.io/tx/${data.transactionHash}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {`https://sepolia.etherscan.io/tx/${data.transactionHash}`}
-          </a>
-        )
+        description: "Mint Success."
       })
     }
-  }
-
-  console.log(error?.message, "error")
+  }, [isSuccess])
 
   return (
     <div className="overflow-hidden h-full mb-20 py-20 sm:py-32 lg:pb-32 xl:pb-36">
@@ -162,48 +125,70 @@ const Mint = () => {
         <div className="mb-20">
           <div className="flex flex-col justify-center items-center gap-4">
             <h1 className="font-bold text-4xl mb-20">
-              Mint First Beta Tester NFT 🎁
+              Collect GasLockR Testers Series NFTs 💎
             </h1>
           </div>
           <div>
             {isWL ? (
               <div className="flex flex-row gap-2 items-center justify-center">
                 <div>
-                  Congratulations🎉, you have obtained the whitelist
-                  qualification.
-                </div>
-                <div>
-                  <Button
-                    variant="outline"
-                    className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
-                    onClick={handleMint}
-                    disabled={mintLoading}
-                  >
-                    {mintLoading ? "Transaction in progress.." : "Mint"}
-                  </Button>
+                  {tokenUri ? (
+                    <Button
+                      variant="outline"
+                      className="bg-[#57C5B6] text-white text-2xl p-8 transform hover:scale-105 hover:bg-[#159895]"
+                      onClick={handleMint}
+                      disabled
+                    >
+                      Already Minted in This Phase
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      className="bg-[#57C5B6] text-white text-2xl p-8 transform hover:scale-105 hover:bg-[#159895]"
+                      onClick={handleMint}
+                      disabled={mintLoading}
+                    >
+                      {mintLoading ? "Transaction in progress.." : "Mint Now"}
+                    </Button>
+                  )}
                 </div>
               </div>
             ) : (
               <div className="flex flex-row gap-2 items-center justify-center">
-                <div>Click here to verify your eligibility 👉</div>
                 <div>
                   <Button
                     variant="outline"
-                    className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
+                    className="bg-[#57C5B6] text-white text-2xl p-8 transform hover:scale-105 hover:bg-[#159895]"
                     onClick={() => handleCheck()}
                     disabled={isLoading}
                   >
-                    {isLoading ? "Loading..." : "Check"}
+                    {isLoading ? "Loading..." : "Check Your Eligibility"}
                   </Button>
                 </div>
               </div>
             )}
           </div>
         </div>
-        <div className="h-1/3 border border-[#57C5B6] rounded-lg">
-          <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-8">
-            <img src={tokenUri} />
+        <div className="h-1/3 border border-[#57C5B6] rounded-lg flex flex-row">
+          <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-16">
+            <div className="w-2/3">
+              <img src={tokenUri} />
+            </div>
             <div className="text-center text-[#57C5B6]">{nftName}</div>
+          </div>
+
+          <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-16">
+            <div className="w-2/3">
+              <img src={tokenUri} />
+            </div>
+            <div className="text-center text-[#57C5B6]">Coming ~</div>
+          </div>
+
+          <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-16">
+            <div className="w-2/3">
+              <img src={tokenUri} />
+            </div>
+            <div className="text-center text-[#57C5B6]">Coming ~</div>
           </div>
         </div>
       </Container>

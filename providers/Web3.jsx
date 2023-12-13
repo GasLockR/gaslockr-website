@@ -8,7 +8,7 @@ import {
   darkTheme
 } from "@rainbow-me/rainbowkit"
 import { useTheme } from "next-themes"
-import { sepolia } from "wagmi/chains"
+import { sepolia, polygon } from "wagmi/chains"
 import { publicProvider } from "wagmi/providers/public"
 
 export const ScrollSepoliaTestnet = {
@@ -30,7 +30,7 @@ export const ScrollSepoliaTestnet = {
 }
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [sepolia, ScrollSepoliaTestnet],
+  [sepolia, polygon, ScrollSepoliaTestnet],
   [publicProvider()]
 )
 

@@ -117,8 +117,12 @@ const Mint = () => {
         title: "Success",
         description: "Mint Success."
       })
+
+      setTimeout(() => {
+        window.location.reload()
+      }, 3000)
     }
-  }, [isSuccess])
+  }, [isSuccess, toast])
 
   return (
     <div className="overflow-hidden h-full mb-20 py-20 sm:py-32 lg:pb-32 xl:pb-36">

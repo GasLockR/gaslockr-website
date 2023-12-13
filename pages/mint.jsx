@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { useContractWrite, useNetwork, useSwitchNetwork } from "wagmi"
 import { NFT_CONTRACT_ADDRESS } from "@/config/address"
 import { Alchemy, Network } from "alchemy-sdk"
+import Image from "next/image"
 
 const Mint = () => {
   const { address } = useAccount()
@@ -122,7 +123,7 @@ const Mint = () => {
   return (
     <div className="overflow-hidden h-full mb-20 py-20 sm:py-32 lg:pb-32 xl:pb-36">
       <Container>
-        <div className="mb-20">
+        <div className="mb-36">
           <div className="flex flex-col justify-center items-center gap-4">
             <h1 className="font-bold text-4xl mb-20">
               Collect GasLockR Testers Series NFTs 💎
@@ -169,26 +170,55 @@ const Mint = () => {
             )}
           </div>
         </div>
-        <div className="h-1/3 border border-[#57C5B6] rounded-lg flex flex-row">
-          <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-16">
-            <div className="w-2/3">
-              <img src={tokenUri} />
+        <div className="h-1/3 border border-[#57C5B6] rounded-lg">
+          <div className="flex flex-row justify-between w-full p-4">
+            <div></div>
+            <div>
+              <a
+                className="text-[#57C5B6] underline"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://polygonscan.com/address/0xeed6b442f9b126982c30437396c035ad1ae20f2d"
+              >
+                Check on Polygon Scan
+              </a>
             </div>
-            <div className="text-center text-[#57C5B6]">{nftName}</div>
           </div>
 
-          <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-16">
-            <div className="w-2/3">
-              <img src={tokenUri} />
+          <div className="flex flex-row">
+            <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-16">
+              <div className="w-2/3">
+                {tokenUri ? (
+                  <img src={tokenUri} />
+                ) : (
+                  <Image
+                    src="/block03.jpg"
+                    alt="Logo"
+                    width={524}
+                    height={524}
+                  />
+                )}
+              </div>
+              {nftName ? (
+                <div className="text-center text-[#57C5B6]">{nftName}</div>
+              ) : (
+                <div className="text-center text-[#57C5B6]">Coming Soon</div>
+              )}
             </div>
-            <div className="text-center text-[#57C5B6]">Coming ~</div>
-          </div>
 
-          <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-16">
-            <div className="w-2/3">
-              <img src={tokenUri} />
+            <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-16">
+              <div className="w-2/3">
+                <Image src="/block03.jpg" alt="Logo" width={524} height={524} />
+              </div>
+              <div className="text-center text-[#57C5B6]">Coming Soon</div>
             </div>
-            <div className="text-center text-[#57C5B6]">Coming ~</div>
+
+            <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-16">
+              <div className="w-2/3">
+                <Image src="/block03.jpg" alt="Logo" width={524} height={524} />
+              </div>
+              <div className="text-center text-[#57C5B6]">Coming Soon</div>
+            </div>
           </div>
         </div>
       </Container>

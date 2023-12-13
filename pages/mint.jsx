@@ -126,7 +126,7 @@ const Mint = () => {
         <div className="mb-36">
           <div className="flex flex-col justify-center items-center gap-4">
             <h1 className="font-bold text-4xl mb-20">
-              Collect GasLockR Testers Series NFTs 💎
+              Collect GasLockR Badges Series 💎
             </h1>
           </div>
           <div>

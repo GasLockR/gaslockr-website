@@ -178,7 +178,7 @@ const Mint = () => {
                 className="text-[#57C5B6] underline"
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://polygonscan.com/address/0xeed6b442f9b126982c30437396c035ad1ae20f2d"
+                href="https://polygonscan.com/token/0x574d2e6a314a35692dfa839007da761e290417e3"
               >
                 Check on Polygon Scan
               </a>

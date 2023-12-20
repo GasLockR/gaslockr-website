@@ -82,7 +82,31 @@ const InsuranceSheet = () => {
     write
   } = useContractWrite({
     address: contractAddress,
-    abi: contractAbi,
+    abi: [
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "payer",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "insured",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "term",
+            type: "uint256"
+          }
+        ],
+        name: "deposit",
+        outputs: [],
+        stateMutability: "payable",
+        type: "function"
+      }
+    ],
     functionName: "deposit",
     onError(error) {
       if (error.name === "ChainMismatchError") {
@@ -136,10 +160,7 @@ const InsuranceSheet = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button
-          disabled={true}
-          className="w-3/4 bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
-        >
+        <Button className="w-3/4 bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]">
           Get Started
         </Button>
       </SheetTrigger>

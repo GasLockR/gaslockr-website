@@ -240,8 +240,13 @@ const PolicyList = ({ policies }) => {
       benefit: `${(benefitCount * 0.003).toFixed(3)} ETH`,
       startTime: formatTimestampToDate(policy.startTime.toString()),
       endTime: formatTimestampToDate(policy.endTime.toString()),
-      isExpired: Date.now() / 1000 > Number(policy.endTime.toString()),
-      isClaimed: policy.isClaimed
+      isExpired:
+        Date.now() >
+        new Date(
+          new Date(Number(policy.endTime) * 1000).setDate(
+            new Date(Number(policy.endTime) * 1000).getDate() + 1
+          )
+        ).setHours(0, 0, 0, 0)
     }
   })
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -36,11 +36,11 @@ const Pricing = () => {
   const { insuredPolicyList, isInsuredListError, isInsuredListLoading } =
     useInsuredPolicies(address)
 
-  const memoizedPayerPolicies = React.useMemo(
+  const memoizedPayerPolicies = useMemo(
     () => payerPolicyList,
     [payerPolicyList]
   )
-  const memoizedInsuredPolicies = React.useMemo(
+  const memoizedInsuredPolicies = useMemo(
     () => insuredPolicyList,
     [insuredPolicyList]
   )
@@ -258,15 +258,15 @@ const Pricing = () => {
           {/* payer policy list */}
           {payerPolicyList ? (
             <>
-              {/* <div className="text-2xl mt-40">Insurance Policies as Payer</div>
-              <PolicyList policies={memoizedPayerPolicies} /> */}
+              <div className="text-2xl mt-40">Insurance Policies as Payer</div>
+              <PolicyList policies={memoizedPayerPolicies} />
             </>
           ) : null}
           {/* insured policy list */}
           {insuredPolicyList ? (
             <>
-              {/* <div className="text-2xl">Insurance Policies as Insured</div>
-              <PolicyList policies={memoizedInsuredPolicies} /> */}
+              <div className="text-2xl">Insurance Policies as Insured</div>
+              <PolicyList policies={memoizedInsuredPolicies} />
             </>
           ) : null}
         </div>

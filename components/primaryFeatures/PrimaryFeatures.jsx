@@ -76,7 +76,6 @@ const PrimaryFeatures = () => {
                 </CardContent>
                 <CardFooter className="flex justify-end">
                   <Button
-                    disabled={true}
                     className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
                     onClick={() => {
                       router.push("/GasInsure")

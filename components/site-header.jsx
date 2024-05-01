@@ -28,19 +28,8 @@ export function SiteHeader() {
               GasLockR
             </div>
           </Link>
-          {/* <Link href="/whitePaper" target="_blank">
-            WhitePaper
-          </Link> */}
-          {/* {address ? <Link href="/ClaimList">Purchase History</Link> : null} */}
         </div>
         <div className="flex flex-row items-center space-x-4 text-muted-foreground">
-          {/* <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => window.open("https://github.com/GasLockR", "_blank")}
-          >
-            <GitHubLogoIcon className="h-6 w-6" />
-          </Button> */}
           {router.pathname === "/GasInsure" && (
             <>
               <Button
@@ -58,22 +47,8 @@ export function SiteHeader() {
               >
                 Faucet
               </Button>
-              {/* <Button
-                className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
-                onClick={() =>
-                  window.open("https://discord.gg/DUZMwJzfsP", "_blank")
-                }
-              >
-                Contact
-              </Button> */}
             </>
           )}
-          {/* <Button
-            className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
-            onClick={() => router.push("/mint")}
-          >
-            MINT
-          </Button> */}
           <Button
             variant="ghost"
             size="icon"

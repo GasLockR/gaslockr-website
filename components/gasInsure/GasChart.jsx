@@ -55,6 +55,17 @@ const GasChart = () => {
   }
 
   useEffect(() => {
+    const handleResize = () => {
+      chartInstance && chartInstance.resize()
+    }
+
+    window.addEventListener("resize", handleResize)
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [chartInstance])
+
+  useEffect(() => {
     if (chartRef.current && !chartInstance) {
       const initializedChart = echarts.init(chartRef.current)
       setChartInstance(initializedChart)
@@ -127,7 +138,12 @@ const GasChart = () => {
     }
   }, [dataSeries, chartInstance])
 
-  return <div ref={chartRef} style={{ width: "100%", height: "400px" }}></div>
+  return (
+    <div
+      ref={chartRef}
+      style={{ width: "100%", height: "400px", overflow: "hidden" }}
+    ></div>
+  )
 }
 
 export default GasChart

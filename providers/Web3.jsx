@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import "@rainbow-me/rainbowkit/styles.css"
 import { configureChains, createConfig, WagmiConfig } from "wagmi"
 import {
-  getDefaultWallets,
+  connectorsForWallets,
   RainbowKitProvider,
   lightTheme,
   darkTheme
@@ -10,6 +10,13 @@ import {
 import { useTheme } from "next-themes"
 import { sepolia, polygon } from "wagmi/chains"
 import { publicProvider } from "wagmi/providers/public"
+import {
+  metaMaskWallet,
+  okxWallet,
+  rainbowWallet,
+  coinbaseWallet,
+  walletConnectWallet
+} from "@rainbow-me/rainbowkit/wallets"
 
 export const ScrollSepoliaTestnet = {
   id: 534351,
@@ -34,11 +41,20 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   [publicProvider()]
 )
 
-const { connectors } = getDefaultWallets({
-  appName: "Dapp Forge",
-  projectId: "928c0944dc8279fb073a7405ecd6b657",
-  chains
-})
+
+const projectId = "928c0944dc8279fb073a7405ecd6b657"
+const connectors = connectorsForWallets([
+  {
+    groupName: "Popular",
+    wallets: [
+      metaMaskWallet({ projectId, chains }),
+      okxWallet({ projectId, chains }),
+      rainbowWallet({ projectId, chains }),
+      coinbaseWallet({ chains, appName: "GasLockR" }),
+      walletConnectWallet({ projectId, chains })
+    ]
+  }
+])
 
 const wagmiConfig = createConfig({
   autoConnect: true,

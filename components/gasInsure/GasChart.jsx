@@ -7,6 +7,7 @@ const GasChart = () => {
   const [latestBlockNumber, setLatestBlockNumber] = useState(0)
   const [dataSeries, setDataSeries] = useState([])
   const [isInitialDataLoaded, setIsInitialDataLoaded] = useState(false) // 新状态标记初始数据是否加载完成
+  const [markLineY, setMarkLineY] = useState(5) // 假设初始标记线的 Y 值为 5
 
   const fetchInitialData = async () => {
     try {
@@ -24,6 +25,14 @@ const GasChart = () => {
     } catch (error) {
       console.error("Failed to fetch initial gas data:", error)
     }
+  }
+
+  const updateMarkLineY = async () => {
+    // 假设这里是从后端获取新的 Y 值
+    // const response = await fetch("/api/mark-line-y");
+    // const newY = await response.json();
+    const newY = Math.random() * 10 // 模拟新的 Y 值
+    setMarkLineY(newY)
   }
 
   const fetchGasPrices = async () => {
@@ -65,16 +74,24 @@ const GasChart = () => {
     }
   }, [chartInstance])
 
+  // 设置和更新图表
   useEffect(() => {
-    if (chartRef.current && !chartInstance) {
+    if (!chartInstance && chartRef.current) {
       const initializedChart = echarts.init(chartRef.current)
       setChartInstance(initializedChart)
     }
-  }, [])
+  }, [chartInstance, chartRef])
 
   useEffect(() => {
     fetchInitialData()
   }, [])
+
+  useEffect(() => {
+    if (isInitialDataLoaded) {
+      const intervalId = setInterval(updateMarkLineY, 600000) // 每10分钟更新一次标记线的位置
+      return () => clearInterval(intervalId)
+    }
+  }, [isInitialDataLoaded])
 
   useEffect(() => {
     if (isInitialDataLoaded) {
@@ -130,11 +147,19 @@ const GasChart = () => {
               normal: {
                 color: "#57c5b6" // 设置数据展示区域的背景色
               }
+            },
+            markLine: {
+              data: [{ yAxis: markLineY }],
+              symbol: ["none", "none"], // 移除线两端的箭头
+              lineStyle: {
+                color: "yellow", // 设置标记线为黄色
+                width: 2 // 设置标记线宽度
+              }
             }
           }
         ]
       }
-      chartInstance.setOption(option, true) // 使用true确保完全覆盖之前的配置
+      chartInstance.setOption(option, false) // 使用true确保完全覆盖之前的配置
     }
   }, [dataSeries, chartInstance])
 

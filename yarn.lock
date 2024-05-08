@@ -520,11 +520,6 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@kurkle/color@^0.3.0":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@kurkle/color/-/color-0.3.2.tgz#5acd38242e8bde4f9986e7913c8fdf49d3aa199f"
-  integrity sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==
-
 "@ledgerhq/connect-kit-loader@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/connect-kit-loader/-/connect-kit-loader-1.1.0.tgz#10343b78ef13436818bf3453568a559c0eeb9d48"
@@ -2427,13 +2422,6 @@ chalk@^4.0.0, chalk@^4.1.1:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-chart.js@^4.4.2:
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-4.4.2.tgz#95962fa6430828ed325a480cc2d5f2b4e385ac31"
-  integrity sha512-6GD7iKwFpP5kbSD4MeRRRlTnQvxfQREy36uEtm1hzHzcOqwWx0YEHuspuoNlslu+nciLIB7fjjsHkUv/FzFcOg==
-  dependencies:
-    "@kurkle/color" "^0.3.0"
-
 chokidar@^3.5.3:
   version "3.5.3"
   resolved "https://registry.npmmirror.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
@@ -3456,6 +3444,13 @@ fraction.js@^4.2.0:
   version "4.2.0"
   resolved "https://registry.npmmirror.com/fraction.js/-/fraction.js-4.2.0.tgz#448e5109a313a3527f5a3ab2119ec4cf0e0e2950"
   integrity sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==
+
+framer-motion@^11.1.7:
+  version "11.1.7"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-11.1.7.tgz#ad970c1296e7b5fb26db222fd65d1329aef115a6"
+  integrity sha512-cW11Pu53eDAXUEhv5hEiWuIXWhfkbV32PlgVISn7jRdcAiVrJ1S03YQQ0/DzoswGYYwKi4qYmHHjCzAH52eSdQ==
+  dependencies:
+    tslib "^2.4.0"
 
 fs.realpath@^1.0.0:
   version "1.0.0"
@@ -4999,11 +4994,6 @@ react-calendar-heatmap@1.7.0:
   integrity sha512-stPZSm07l3mZmj/MXOD+feHM2ZWY4Jb8fn06O+OeMFMasRCuiB2ZjBgCnCLb0BZ4hHh8vHNQ9v7wapiMcVgU0g==
   dependencies:
     prop-types "^15.6.2"
-
-react-chartjs-2@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/react-chartjs-2/-/react-chartjs-2-5.2.0.tgz#43c1e3549071c00a1a083ecbd26c1ad34d385f5d"
-  integrity sha512-98iN5aguJyVSxp5U3CblRLH67J8gkfyGNbiK3c+l1QI/G4irHMPQw44aEPmjVag+YKTyQ260NcF82GTQ3bdscA==
 
 react-dom@^18.2.0:
   version "18.2.0"

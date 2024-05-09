@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import * as echarts from "echarts"
+import { Card } from "@/components/ui/card"
 
 const GasChart = () => {
   const chartRef = useRef(null)
@@ -164,10 +165,14 @@ const GasChart = () => {
   }, [dataSeries, chartInstance])
 
   return (
-    <div
-      ref={chartRef}
-      style={{ width: "100%", height: "400px", overflow: "hidden" }}
-    ></div>
+    <>
+      <Card className=" w-full h-full flex items-center justify-center">
+        <div
+          ref={chartRef}
+          style={{ width: "100%", height: "400px", overflow: "hidden" }}
+        ></div>
+      </Card>
+    </>
   )
 }
 

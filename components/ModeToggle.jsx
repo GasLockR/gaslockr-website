@@ -20,13 +20,18 @@ export function ModeToggle() {
 
   const icon =
     currentTheme === "light" ? (
-      <Moon className="h-[1.2rem] w-[1.2rem]" />
+      <Moon className="h-6 w-6" />
     ) : (
-      <Sun className="h-[1.2rem] w-[1.2rem]" />
+      <Sun className="h-6 w-6" />
     )
 
   return (
-    <Button variant="outline" size="icon" onClick={toggleTheme}>
+    <Button
+      className="bg-[#57C5B6] md:bg-transparent"
+      variant="ghost"
+      size="icon"
+      onClick={toggleTheme}
+    >
       {icon}
       <span className="sr-only">Toggle theme</span>
     </Button>

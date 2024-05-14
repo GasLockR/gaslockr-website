@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }) {
       <Web3Provider>
         <div>
           <SiteHeader />
-          {/* <Component {...pageProps} /> */}
+          <Component {...pageProps} />
           <Toaster />
           <Analytics />
           <Footer />

@@ -18,13 +18,13 @@ import { motion, AnimatePresence } from "framer-motion"
 
 const navVariants = {
   open: {
-    x: 0,
+    y: 0,
     opacity: 1,
     transition: { duration: 0.3 },
     display: "flex"
   },
   closed: {
-    x: "-100%",
+    y: "-100%",
     opacity: 0,
     transition: { duration: 0.3 },
     transitionEnd: { display: "none" }
@@ -64,7 +64,7 @@ export function SiteHeader() {
             GasLockR
           </div>
         </Link>
-        <div className="flex flex-row items-center space-x-4 text-muted-foreground">
+        <div className="flex flex-row items-center text-muted-foreground">
           <div className="sm:hidden flex flex-1 items-center justify-end ">
             <button ref={navIconRef} onClick={toggleMenu}>
               {isMenuOpen ? (
@@ -89,11 +89,44 @@ export function SiteHeader() {
                 variants={navVariants}
                 onAnimationStart={handleAnimationStart}
                 onAnimationComplete={handleAnimationComplete}
-                className="flex-col gap-x-20 absolute sm:relative top-16 left-0 right-0 z-50 rounded-lg mx-2"
+                className="z-30 bg-gray-200 dark:bg-[#1b1a33] top-16 fixed flex max-w-full inset-x-0 bottom-0 w-screen flex-col gap-2 overflow-y-auto"
               >
-                <div className="flex flex-col bg-gray-800 text-white p-4 space-y-4 z-50">
-                  <ConnectButton />
-                  <ModeToggle />
+                <div className="flex flex-col gap-2 px-6 mt-10 text-white">
+                  {router.pathname === "/" && (
+                    <>
+                      <Button
+                        variant="ghost"
+                        className="bg-[#57C5B6] transform hover:scale-105 hover:bg-[#159895]"
+                        onClick={() => {
+                          router.push("/GasInsure")
+                        }}
+                      >
+                        Launch App
+                      </Button>
+                      <Button
+                        className="w-full bg-[#57C5B6]"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() =>
+                          window.open("https://twitter.com/gaslockr", "_blank")
+                        }
+                      >
+                        <TwitterLogoIcon className="h-6 w-6" />
+                      </Button>
+                      <Button
+                        className="w-full bg-[#57C5B6]"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() =>
+                          window.open("https://discord.gg/DUZMwJzfsP", "_blank")
+                        }
+                      >
+                        <DiscordLogoIcon className="h-6 w-6" />
+                      </Button>
+                      <ModeToggle />
+                    </>
+                  )}
+
                   {router.pathname === "/GasInsure" && (
                     <>
                       <Button
@@ -113,55 +146,12 @@ export function SiteHeader() {
                       </Button>
                     </>
                   )}
-
-                  {router.pathname === "/" && (
-                    <>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() =>
-                          window.open("https://twitter.com/gaslockr", "_blank")
-                        }
-                      >
-                        <TwitterLogoIcon className="h-6 w-6" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() =>
-                          window.open("https://discord.gg/DUZMwJzfsP", "_blank")
-                        }
-                      >
-                        <DiscordLogoIcon className="h-6 w-6" />
-                      </Button>
-                    </>
-                  )}
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
 
-          <div title="nav" className="gap-x-10 hidden sm:flex sm:flex-row">
-            {router.pathname === "/GasInsure" && (
-              <>
-                <Button
-                  className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
-                  onClick={() =>
-                    window.open(
-                      `${
-                        chain?.id === 534351
-                          ? "https://docs.scroll.io/en/user-guide/faucet"
-                          : "https://sepoliafaucet.com"
-                      }`,
-                      "_blank"
-                    )
-                  }
-                >
-                  Faucet
-                </Button>
-              </>
-            )}
-
+          <div title="nav" className="gap-x-4 hidden sm:flex sm:flex-row">
             {router.pathname === "/" && (
               <>
                 <Button
@@ -182,12 +172,9 @@ export function SiteHeader() {
                 >
                   <DiscordLogoIcon className="h-6 w-6" />
                 </Button>
-              </>
-            )}
 
-            <div className=" flex-row justify-end items-center space-x-4 text-muted-foreground hidden sm:flex">
-              <div className="hidden sm:flex">
-                {/* <ConnectButton /> */}
+                <ModeToggle />
+
                 <Button
                   className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
                   onClick={() => {
@@ -196,9 +183,30 @@ export function SiteHeader() {
                 >
                   Launch App
                 </Button>
-                <ModeToggle />
-              </div>
-            </div>
+              </>
+            )}
+
+            {router.pathname === "/GasInsure" && (
+              <>
+                <Button
+                  className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
+                  onClick={() =>
+                    window.open(
+                      `${
+                        chain?.id === 534351
+                          ? "https://docs.scroll.io/en/user-guide/faucet"
+                          : "https://sepoliafaucet.com"
+                      }`,
+                      "_blank"
+                    )
+                  }
+                >
+                  Faucet
+                </Button>
+
+                <ConnectButton />
+              </>
+            )}
           </div>
         </div>
       </div>

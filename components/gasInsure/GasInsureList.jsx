@@ -16,7 +16,7 @@ const GasInsureList = () => {
   return (
     <>
       <Card className=" w-full h-full flex items-center justify-center">
-        <div className="bg-white h-full w-full">
+        <div className="h-full w-full">
           <Tabs defaultValue="account" className="w-full p-2">
             <TabsList>
               <TabsTrigger value="current">Current</TabsTrigger>

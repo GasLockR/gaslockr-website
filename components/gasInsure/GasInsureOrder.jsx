@@ -2,6 +2,13 @@ import React from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "@/components/ui/tooltip"
 
 const GasInsureOrder = () => {
   return (
@@ -18,7 +25,27 @@ const GasInsureOrder = () => {
           </Button>
         </div>
         <div className="flex items-center justify-center text-2xl sm:text-3xl font-bold text-[#159895]">
-          300
+          <div className="flex flex-row items-center justify-center gap-2 mt-2 sm:mt-0">
+            <div>300</div>
+            <div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      className="bg-transparent"
+                      variant="ghost"
+                      size="icon"
+                    >
+                      <ExclamationTriangleIcon className="text-red-500 h-6 w-6" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text-red-500">High Risk Cycle</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </div>
         </div>
         <div className="flex flex-row items-center justify-between">
           <div>锁定gwei</div>

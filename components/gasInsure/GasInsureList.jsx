@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button"
 const GasInsureList = () => {
   return (
     <>
-      <Card className=" w-full h-full flex items-center justify-center">
+      <Card className=" w-full h-full flex items-center justify-center border-2 border-[#159895]">
         <div className="h-full w-full">
           <Tabs defaultValue="current" className="w-full p-2">
             <TabsList>

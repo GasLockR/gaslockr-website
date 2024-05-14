@@ -55,7 +55,7 @@ const GasChart = () => {
         }
         setDataSeries((currentData) => {
           const updatedData = [...currentData, newData]
-          return updatedData.slice(-100) // 保持最新的100条数据
+          return updatedData.slice(-300) // 保持最新的100条数据
         })
         setLatestBlockNumber(newBlock.blockNumber)
       }
@@ -166,7 +166,7 @@ const GasChart = () => {
 
   return (
     <>
-      <Card className=" w-full h-full flex items-center justify-center">
+      <Card className="w-full h-full flex items-center justify-center border-2 border-[#159895]">
         <div
           ref={chartRef}
           style={{ width: "100%", height: "400px", overflow: "hidden" }}

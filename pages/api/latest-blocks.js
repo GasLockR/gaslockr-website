@@ -12,7 +12,7 @@ export default async function handler(req, res) {
           SELECT block_number, base_fee_per_gas
           FROM gas_prices
           ORDER BY block_number DESC
-          LIMIT 100
+          LIMIT 300
         ) AS latest_blocks
         ORDER BY block_number ASC;
       `

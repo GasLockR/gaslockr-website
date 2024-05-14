@@ -20,17 +20,31 @@ const Footer = () => {
         <div className="flex flex-row justify-between lg:flex-row gap-4 lg:gap-16 w-full">
           <div className="flex flex-col gap-2">
             <p className="text-xl">Resource</p>
-            <Link href="https://gaslockr.gitbook.io/gaslockr" target="_blank">
+            <Link
+              className="hover:text-[#57C5B6]"
+              href="https://gaslockr.gitbook.io/gaslockr"
+              target="_blank"
+            >
               GitBook
             </Link>
-            <Link href="/mint">Badge</Link>
+            <Link className="hover:text-[#57C5B6]" href="/mint">
+              Badge
+            </Link>
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-xl">Contact Us</p>
-            <Link href="https://twitter.com/gaslockr" target="_blank">
+            <Link
+              className="hover:text-[#57C5B6]"
+              href="https://twitter.com/gaslockr"
+              target="_blank"
+            >
               Twitter
             </Link>
-            <Link href="https://discord.gg/DUZMwJzfsP" target="_blank">
+            <Link
+              className="hover:text-[#57C5B6]"
+              href="https://discord.gg/DUZMwJzfsP"
+              target="_blank"
+            >
               Discord
             </Link>
           </div>

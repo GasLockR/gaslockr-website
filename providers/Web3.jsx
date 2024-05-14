@@ -41,7 +41,6 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   [publicProvider()]
 )
 
-
 const projectId = "928c0944dc8279fb073a7405ecd6b657"
 const connectors = connectorsForWallets([
   {
@@ -89,7 +88,11 @@ export function Web3Provider(props) {
     <>
       {ready && (
         <WagmiConfig config={wagmiConfig}>
-          <RainbowKitProvider chains={chains} theme={rainbowTheme}>
+          <RainbowKitProvider
+            chains={chains}
+            theme={rainbowTheme}
+            coolMode={true}
+          >
             {props.children}
           </RainbowKitProvider>
         </WagmiConfig>

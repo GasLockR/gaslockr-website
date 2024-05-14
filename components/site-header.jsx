@@ -56,16 +56,14 @@ export function SiteHeader() {
   }
 
   return (
-    <Container className="top-0 z-40 w-full">
-      <div className="container flex h-16 items-center sm:px-8 px-2 justify-between sm:space-x-0 overflow-hidden">
-        <div className="flex flex-row justify-between gap-8 items-center text-base font-medium text-muted-foreground">
-          <Link href="/" className="flex flex-row gap-2 items-center">
-            <Image src="/logo.png" alt="Logo" width={48} height={48} />
-            <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#159895] to-[#1A5F7A]">
-              GasLockR
-            </div>
-          </Link>
-        </div>
+    <Container>
+      <div className="flex h-16 items-center justify-between">
+        <Link href="/" className="flex flex-row gap-2 items-center">
+          <Image src="/logo.png" alt="Logo" width={48} height={48} />
+          <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#159895] to-[#1A5F7A]">
+            GasLockR
+          </div>
+        </Link>
         <div className="flex flex-row items-center space-x-4 text-muted-foreground">
           <div className="sm:hidden flex flex-1 items-center justify-end ">
             <button ref={navIconRef} onClick={toggleMenu}>
@@ -93,13 +91,13 @@ export function SiteHeader() {
                 onAnimationComplete={handleAnimationComplete}
                 className="flex-col gap-x-20 absolute sm:relative top-16 left-0 right-0 z-50 rounded-lg mx-2"
               >
-                <div className="flex flex-col gap-2 bg-slate-500 h-full">
+                <div className="flex flex-col bg-gray-800 text-white p-4 space-y-4 z-50">
                   <ConnectButton />
                   <ModeToggle />
                   {router.pathname === "/GasInsure" && (
                     <>
                       <Button
-                        className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
+                        className="bg-[#57C5B6] transform hover:scale-105 hover:bg-[#159895]"
                         onClick={() =>
                           window.open(
                             `${

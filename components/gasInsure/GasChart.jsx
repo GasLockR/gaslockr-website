@@ -97,7 +97,7 @@ const GasChart = () => {
   useEffect(() => {
     if (isInitialDataLoaded) {
       // 只有在初始数据加载后，才设置定时器
-      const intervalId = setInterval(fetchGasPrices, 500) // 调整为每500毫秒检查一次新数据
+      const intervalId = setInterval(fetchGasPrices, 3000) // 调整为每3000毫秒检查一次新数据
       return () => clearInterval(intervalId)
     }
   }, [isInitialDataLoaded, latestBlockNumber])

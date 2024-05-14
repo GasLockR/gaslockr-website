@@ -64,7 +64,16 @@ export function SiteHeader() {
             GasLockR
           </div>
         </Link>
-        <div className="flex flex-row items-center text-muted-foreground">
+        <div className="flex flex-row gap-4 items-center text-muted-foreground">
+          <div className="lg:hidden md:hidden">
+            {router.pathname === "/GasInsure" && (
+              <ConnectButton
+                showBalance={false}
+                chainStatus="none"
+                accountStatus="address"
+              />
+            )}
+          </div>
           <div className="sm:hidden flex flex-1 items-center justify-end ">
             <button ref={navIconRef} onClick={toggleMenu}>
               {isMenuOpen ? (
@@ -144,6 +153,8 @@ export function SiteHeader() {
                       >
                         Faucet
                       </Button>
+
+                      <ModeToggle />
                     </>
                   )}
                 </div>
@@ -204,7 +215,9 @@ export function SiteHeader() {
                   Faucet
                 </Button>
 
-                <ConnectButton />
+                <ConnectButton showBalance={false} accountStatus="address" />
+
+                <ModeToggle />
               </>
             )}
           </div>

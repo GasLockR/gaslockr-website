@@ -27,7 +27,7 @@ export function ModeToggle() {
 
   return (
     <Button
-      className="bg-[#57C5B6] md:bg-transparent"
+      className="w-full bg-[#57C5B6] md:bg-transparent md:w-auto"
       variant="ghost"
       size="icon"
       onClick={toggleTheme}

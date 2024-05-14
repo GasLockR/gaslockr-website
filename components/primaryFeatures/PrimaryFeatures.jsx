@@ -11,7 +11,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/router"
 import CheckIcon from "../CheckIcon"
-import clsx from "clsx"
 
 const PrimaryFeatures = () => {
   const router = useRouter()
@@ -22,23 +21,20 @@ const PrimaryFeatures = () => {
       className="bg-gray-900 py-20 sm:py-32"
     >
       <Container>
-        <div className="flex items-center justify-center mb-12">
-          <h2 className="text-5xl font-medium tracking-tight text-white">
+        <div className="flex flex-col items-center justify-center mb-12 text-center">
+          <h2 className="text-4xl sm:text-5xl font-medium tracking-tight text-white">
             GasFi - A New Epoch in Blockchain Transactions
           </h2>
-        </div>
-        <div className="flex items-center justify-center">
-          <p className="mt-2 text-lg text-gray-400">
+          <p className="mt-4 text-base sm:text-lg text-gray-400">
             Engineered with GasLockR. Venture into a transformative space where
             unpredictable gas fees become manageable. Change the way you
             transact on the blockchain with financial tools designed to provide
             assurance against price volatility.
           </p>
         </div>
-        <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-3xl"></div>
-        <div className="flex flex-col gap-24 py-20">
-          <div className="flex flex-row justify-between">
-            <div className="w-1/2">
+        <div className="flex flex-col gap-16 lg:gap-24 py-20">
+          <div className="flex flex-col lg:flex-row justify-between">
+            <div className="w-full lg:w-1/2 lg:pr-6 mb-12 lg:mb-0 lg:self-start">
               <Card className="bg-transparent relative backdrop-blur-md border-0">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#57C5B6] via-blue-500 to-[#8878d5] opacity-10"></div>
                 <CardHeader>
@@ -50,7 +46,7 @@ const PrimaryFeatures = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="text-white">
-                  <div className=" mb-8">
+                  <div className="mb-8">
                     Elevate your decentralized interactions with our
                     cutting-edge insurance offering. Seamlessly shield your
                     transactions across multiple chains from gas price
@@ -86,12 +82,12 @@ const PrimaryFeatures = () => {
                 </CardFooter>
               </Card>
             </div>
-            <div></div>
+            <div className="hidden lg:block lg:w-1/2"></div>
           </div>
 
-          <div className="flex flex-row justify-between">
-            <div></div>
-            <div className="w-1/2">
+          <div className="flex flex-col lg:flex-row justify-between">
+            <div className="hidden lg:block lg:w-1/2"></div>
+            <div className="w-full lg:w-1/2 lg:pl-6 mb-12 lg:mb-0 lg:self-end">
               <Card className="bg-transparent relative backdrop-blur-md border-0">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#57C5B6] via-blue-500 to-[#8878d5] opacity-10"></div>
                 <CardHeader>
@@ -103,7 +99,7 @@ const PrimaryFeatures = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="text-white">
-                  <div className=" mb-8">
+                  <div className="mb-8">
                     Envision a blockchain world as straightforward as a mobile
                     data subscription. Say goodbye to gas fee stresses;
                     pre-subscribe and immerse in your chosen DApps while we take
@@ -130,7 +126,7 @@ const PrimaryFeatures = () => {
                     </span>
                   </div>
                 </CardContent>
-                <CardFooter className="flex flex-start">
+                <CardFooter className="flex justify-end lg:justify-start">
                   <Button
                     className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
                     onClick={() => {
@@ -145,8 +141,8 @@ const PrimaryFeatures = () => {
             </div>
           </div>
 
-          <div className="flex flex-row justify-between">
-            <div className="w-1/2">
+          <div className="flex flex-col lg:flex-row justify-between">
+            <div className="w-full lg:w-1/2 lg:pr-6 mb-12 lg:mb-0 lg:self-start">
               <Card className="bg-transparent relative backdrop-blur-md border-0">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#57C5B6] via-blue-500 to-[#8878d5] opacity-10"></div>
                 <CardHeader>
@@ -158,7 +154,7 @@ const PrimaryFeatures = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="text-white">
-                  <div className=" mb-8">
+                  <div className="mb-8">
                     Pioneers the first ZK trustless Activity Scoring Protocol on
                     the EVM, offering a trustless gas reimbursement solution.
                   </div>
@@ -204,7 +200,7 @@ const PrimaryFeatures = () => {
                 </CardFooter>
               </Card>
             </div>
-            <div></div>
+            <div className="hidden lg:block lg:w-1/2"></div>
           </div>
         </div>
       </Container>

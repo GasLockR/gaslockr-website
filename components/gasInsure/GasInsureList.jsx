@@ -264,7 +264,9 @@ const GasInsureList = () => {
                       <TableCell>{item.points}</TableCell>
                       <TableCell className="">{item.highRisk}</TableCell>
                       <TableCell className="text-right">
-                        <Button>claim</Button>
+                        <Button className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]">
+                          claim
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -327,7 +329,9 @@ const GasInsureList = () => {
                       <TableCell>{item.points}</TableCell>
                       <TableCell className="">{item.highRisk}</TableCell>
                       <TableCell className="text-right">
-                        <Button>claim</Button>
+                        <Button className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]">
+                          claim
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}

@@ -125,11 +125,7 @@ const GasChart = () => {
         yAxis: {
           type: "value",
           splitLine: {
-            show: true,
-            lineStyle: {
-              color: "#f1f5f9", // 设置分割线颜色为黄色
-              type: "dashed" // 设置分割线为虚线
-            }
+            show: false
           },
           axisLabel: {
             margin: 20 // 调整这个值来改变 Y 轴标签与图表内容的距离
@@ -144,6 +140,9 @@ const GasChart = () => {
             type: "line",
             smooth: true,
             showSymbol: false,
+            lineStyle: {
+              color: "#57c5b6" // 设置线条颜色
+            },
             areaStyle: {
               normal: {
                 color: "#57c5b6" // 设置数据展示区域的背景色

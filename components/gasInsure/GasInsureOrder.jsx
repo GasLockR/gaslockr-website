@@ -15,7 +15,6 @@ import { useAccount } from "wagmi"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { useToast } from "@/components/ui/use-toast"
 
-// 合约的ABI和地址
 const contractABI = [
   {
     inputs: [],
@@ -135,8 +134,11 @@ const GasInsureOrder = () => {
   const [totalCost, setTotalCost] = useState("0")
   const [isLoading, setIsLoading] = useState(false)
   const [boost, setBoost] = useState(false)
+  const [startBlock, setStartBlock] = useState(0)
+  const [countdown, setCountdown] = useState(null)
+  const [isInitialLoading, setIsInitialLoading] = useState(true)
 
-  const { address, isConnected } = useAccount()
+  const { isConnected } = useAccount()
   const { toast } = useToast()
 
   useEffect(() => {
@@ -152,11 +154,38 @@ const GasInsureOrder = () => {
         const cycle = await contract.cycles(currentCycleId)
         setPremiumPerUnit(BigNumber.from(cycle.premiumPerUnit))
         setBoost(cycle.boost)
+        setStartBlock(cycle.startBlock.toNumber())
+        setIsInitialLoading(false)
       }
     }
 
     fetchCycleInfo()
   }, [])
+
+  useEffect(() => {
+    const fetchBlockNumber = async () => {
+      try {
+        const response = await fetch(
+          "https://api.blocknative.com/gasprices/blockprices",
+          {
+            method: "GET"
+          }
+        )
+        const data = await response.json()
+        const blockNumber = data.blockPrices[0].blockNumber
+        const newCountdown = startBlock + 300 - blockNumber
+        setCountdown(newCountdown > 0 ? newCountdown : 0)
+      } catch (error) {
+        console.error("Error fetching block number:", error)
+      }
+    }
+
+    if (!isInitialLoading) {
+      fetchBlockNumber()
+      const interval = setInterval(fetchBlockNumber, 3000)
+      return () => clearInterval(interval)
+    }
+  }, [startBlock, isInitialLoading])
 
   useEffect(() => {
     const totalCostInWei = premiumPerUnit.mul(units)
@@ -221,6 +250,9 @@ const GasInsureOrder = () => {
     }
   }
 
+  const isPayNowDisabled =
+    isLoading || isInitialLoading || countdown === null || countdown === 0
+
   return (
     <Card className="w-full h-full flex border-2 border-[#159895] p-4 sm:p-6 lg:p-8">
       <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full">
@@ -236,7 +268,13 @@ const GasInsureOrder = () => {
         </div>
         <div className="flex items-center justify-center text-2xl sm:text-3xl font-bold text-[#159895]">
           <div className="flex flex-row items-center justify-center gap-2 mt-2 sm:mt-0">
-            <div>300</div>
+            <div>
+              {countdown !== null && !isInitialLoading ? (
+                countdown
+              ) : (
+                <Loader2 className="animate-spin" />
+              )}
+            </div>
             {boost && (
               <div>
                 <TooltipProvider>
@@ -295,7 +333,7 @@ const GasInsureOrder = () => {
             <Button
               className="bg-[#57C5B6] text-white w-full transform hover:scale-105 hover:bg-[#159895]"
               onClick={handlePurchase}
-              disabled={isLoading}
+              disabled={isPayNowDisabled}
             >
               {isLoading ? (
                 <div className="flex items-center justify-center gap-2">

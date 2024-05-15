@@ -1,16 +1,145 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
+import { Loader2 } from "lucide-react"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger
 } from "@/components/ui/tooltip"
+import { ethers, BigNumber } from "ethers"
+import { useAccount } from "wagmi"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
+import { useToast } from "@/components/ui/use-toast"
+
+// 合约的ABI和地址
+const contractABI = [
+  {
+    inputs: [],
+    name: "premiumPerUnit",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "units",
+        type: "uint256"
+      },
+      {
+        internalType: "address",
+        name: "holder",
+        type: "address"
+      }
+    ],
+    name: "purchase",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function"
+  }
+]
+const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
 
 const GasInsureOrder = () => {
+  const [units, setUnits] = useState(1)
+  const [premiumPerUnit, setPremiumPerUnit] = useState(BigNumber.from(0))
+  const [totalCost, setTotalCost] = useState("0")
+  const [isLoading, setIsLoading] = useState(false)
+
+  const { address, isConnected } = useAccount()
+  const { toast } = useToast()
+
+  useEffect(() => {
+    const fetchPremiumPerUnit = async () => {
+      if (typeof window.ethereum !== "undefined") {
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+        const contract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          provider
+        )
+        const premium = await contract.premiumPerUnit()
+        setPremiumPerUnit(BigNumber.from(premium))
+      }
+    }
+
+    fetchPremiumPerUnit()
+  }, [])
+
+  useEffect(() => {
+    const totalCostInWei = premiumPerUnit.mul(units)
+    setTotalCost(ethers.utils.formatEther(totalCostInWei))
+  }, [premiumPerUnit, units])
+
+  const handleUnitsChange = (e) => {
+    let value = e.target.value
+    if (value === "") {
+      setUnits(1)
+    } else if (Number(value) >= 0 && /^\d+$/.test(value)) {
+      setUnits(Number(value.replace(/^0+/, "")))
+    }
+  }
+
+  const handlePurchase = async () => {
+    if (typeof window.ethereum !== "undefined") {
+      await window.ethereum.request({ method: "eth_requestAccounts" })
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const contract = new ethers.Contract(contractAddress, contractABI, signer)
+
+      try {
+        setIsLoading(true)
+        const tx = await contract.purchase(units, await signer.getAddress(), {
+          value: ethers.utils.parseEther(totalCost)
+        })
+        await tx.wait()
+        setIsLoading(false)
+        const txHashShort = `${tx.hash.substring(
+          0,
+          8
+        )}......${tx.hash.substring(tx.hash.length - 8)}`
+        toast({
+          title: "Purchase successful",
+          description: (
+            <div className="flex flex-row gap-2">
+              <div>Transaction Hash:</div>
+              <div>
+                <a
+                  href={`https://sepolia.etherscan.io//tx/${tx.hash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#159895] underline"
+                >
+                  {txHashShort}
+                </a>
+              </div>
+            </div>
+          ),
+          status: "success"
+        })
+      } catch (error) {
+        setIsLoading(false)
+        toast({
+          title: "Purchase failed",
+          description: error.message,
+          status: "error"
+        })
+        console.error(error)
+      }
+    }
+  }
+
   return (
     <Card className="w-full h-full flex border-2 border-[#159895] p-4 sm:p-6 lg:p-8">
       <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full">
@@ -57,17 +186,17 @@ const GasInsureOrder = () => {
         <div className="flex flex-row items-center justify-between">
           <div>投保份数</div>
           <div className="w-1/3 text-[#159895]">
-            <Input value={100} type="number" />
+            <Input value={units} onChange={handleUnitsChange} />
           </div>
           <div className="text-[#159895] flex flex-row gap-2 mt-2 sm:mt-0">
-            <div>0.005</div>
+            <div>{ethers.utils.formatEther(premiumPerUnit)}</div>
             <div>ETH</div>
           </div>
         </div>
         <div className="flex flex-row items-center justify-between">
           <div>总支付</div>
           <div className="text-[#159895] flex flex-row gap-2 mt-2 sm:mt-0">
-            <div>0.5</div>
+            <div>{totalCost}</div>
             <div>ETH</div>
           </div>
         </div>
@@ -79,9 +208,24 @@ const GasInsureOrder = () => {
           </div>
         </div>
         <div className="flex flex-row items-center justify-center mt-4">
-          <Button className="bg-[#57C5B6] text-white w-full transform hover:scale-105 hover:bg-[#159895]">
-            Pay Now
-          </Button>
+          {isConnected ? (
+            <Button
+              className="bg-[#57C5B6] text-white w-full transform hover:scale-105 hover:bg-[#159895]"
+              onClick={handlePurchase}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Loader2 className="animate-spin" />
+                  <span>Loading...</span>
+                </div>
+              ) : (
+                "Pay Now"
+              )}
+            </Button>
+          ) : (
+            <ConnectButton showBalance={false} accountStatus="address" />
+          )}
         </div>
       </div>
     </Card>

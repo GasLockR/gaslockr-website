@@ -7,13 +7,6 @@ import GasPriceChart from "../gasPriceChart/GasPriceChart"
 
 const Features = () => {
   const router = useRouter()
-  const [data, setData] = useState([])
-
-  useEffect(() => {
-    fetch("/api/gasPriceData")
-      .then((response) => response.json())
-      .then((data) => setData(data))
-  }, [])
 
   return (
     <div className="overflow-hidden h-full mb-20 py-20 sm:py-32 lg:pb-32 xl:pb-36">

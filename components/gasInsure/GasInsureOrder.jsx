@@ -19,6 +19,19 @@ import { useToast } from "@/components/ui/use-toast"
 const contractABI = [
   {
     inputs: [],
+    name: "currentCycleId",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
     name: "premiumPerUnit",
     outputs: [
       {
@@ -47,8 +60,73 @@ const contractABI = [
     outputs: [],
     stateMutability: "payable",
     type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    name: "cycles",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "startBlock",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "endBlock",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "coverBlock",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "premiumPerUnit",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "benefitPerUnit",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "units",
+        type: "uint256"
+      },
+      {
+        internalType: "bool",
+        name: "isActive",
+        type: "bool"
+      },
+      {
+        internalType: "bool",
+        name: "isClaimable",
+        type: "bool"
+      },
+      {
+        internalType: "bool",
+        name: "boost",
+        type: "bool"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
   }
 ]
+
 const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
 
 const GasInsureOrder = () => {
@@ -56,12 +134,13 @@ const GasInsureOrder = () => {
   const [premiumPerUnit, setPremiumPerUnit] = useState(BigNumber.from(0))
   const [totalCost, setTotalCost] = useState("0")
   const [isLoading, setIsLoading] = useState(false)
+  const [boost, setBoost] = useState(false)
 
   const { address, isConnected } = useAccount()
   const { toast } = useToast()
 
   useEffect(() => {
-    const fetchPremiumPerUnit = async () => {
+    const fetchCycleInfo = async () => {
       if (typeof window.ethereum !== "undefined") {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         const contract = new ethers.Contract(
@@ -69,12 +148,14 @@ const GasInsureOrder = () => {
           contractABI,
           provider
         )
-        const premium = await contract.premiumPerUnit()
-        setPremiumPerUnit(BigNumber.from(premium))
+        const currentCycleId = await contract.currentCycleId()
+        const cycle = await contract.cycles(currentCycleId)
+        setPremiumPerUnit(BigNumber.from(cycle.premiumPerUnit))
+        setBoost(cycle.boost)
       }
     }
 
-    fetchPremiumPerUnit()
+    fetchCycleInfo()
   }, [])
 
   useEffect(() => {
@@ -116,7 +197,7 @@ const GasInsureOrder = () => {
               <div>Transaction Hash:</div>
               <div>
                 <a
-                  href={`https://sepolia.etherscan.io//tx/${tx.hash}`}
+                  href={`https://sepolia.etherscan.io/tx/${tx.hash}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#159895] underline"
@@ -156,24 +237,26 @@ const GasInsureOrder = () => {
         <div className="flex items-center justify-center text-2xl sm:text-3xl font-bold text-[#159895]">
           <div className="flex flex-row items-center justify-center gap-2 mt-2 sm:mt-0">
             <div>300</div>
-            <div>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      className="bg-transparent"
-                      variant="ghost"
-                      size="icon"
-                    >
-                      <ExclamationTriangleIcon className="text-red-500 h-6 w-6" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="text-red-500">High Risk Cycle</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
+            {boost && (
+              <div>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        className="bg-transparent"
+                        variant="ghost"
+                        size="icon"
+                      >
+                        <ExclamationTriangleIcon className="text-red-500 h-6 w-6" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="text-red-500">High Risk Cycle</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            )}
           </div>
         </div>
         <div className="flex flex-row items-center justify-between">

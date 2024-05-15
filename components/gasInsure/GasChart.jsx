@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from "react"
 import * as echarts from "echarts"
 import { Card } from "@/components/ui/card"
+import { Loader2 } from "lucide-react"
 
 const GasChart = () => {
   const chartRef = useRef(null)
   const [chartInstance, setChartInstance] = useState(null)
   const [latestBlockNumber, setLatestBlockNumber] = useState(0)
   const [dataSeries, setDataSeries] = useState([])
-  const [isInitialDataLoaded, setIsInitialDataLoaded] = useState(false) // 新状态标记初始数据是否加载完成
-  const [markLineY, setMarkLineY] = useState(5) // 假设初始标记线的 Y 值为 5
+  const [isInitialDataLoaded, setIsInitialDataLoaded] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [lockGas, setLockGas] = useState(null)
 
   const fetchInitialData = async () => {
     try {
@@ -22,22 +24,26 @@ const GasChart = () => {
       if (data.length > 0) {
         setLatestBlockNumber(data[data.length - 1].block_number)
       }
-      setIsInitialDataLoaded(true) // 设置初始数据加载完成
+      setIsInitialDataLoaded(true)
     } catch (error) {
       console.error("Failed to fetch initial gas data:", error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  const updateMarkLineY = async () => {
-    // 假设这里是从后端获取新的 Y 值
-    // const response = await fetch("/api/mark-line-y");
-    // const newY = await response.json();
-    const newY = Math.random() * 10 // 模拟新的 Y 值
-    setMarkLineY(newY)
+  const fetchLockGas = async () => {
+    try {
+      const response = await fetch("/api/latest-lockgas")
+      const data = await response.json()
+      setLockGas(parseFloat(data.lockgas).toFixed(6))
+    } catch (error) {
+      console.error("Failed to fetch lockgas data:", error)
+    }
   }
 
   const fetchGasPrices = async () => {
-    if (!isInitialDataLoaded) return // 如果初始数据未加载完成，不执行新数据的检查
+    if (!isInitialDataLoaded) return
     try {
       const response = await fetch(
         "https://api.blocknative.com/gasprices/blockprices",
@@ -55,7 +61,7 @@ const GasChart = () => {
         }
         setDataSeries((currentData) => {
           const updatedData = [...currentData, newData]
-          return updatedData.slice(-300) // 保持最新的100条数据
+          return updatedData.slice(-300)
         })
         setLatestBlockNumber(newBlock.blockNumber)
       }
@@ -75,7 +81,6 @@ const GasChart = () => {
     }
   }, [chartInstance])
 
-  // 设置和更新图表
   useEffect(() => {
     if (!chartInstance && chartRef.current) {
       const initializedChart = echarts.init(chartRef.current)
@@ -89,15 +94,14 @@ const GasChart = () => {
 
   useEffect(() => {
     if (isInitialDataLoaded) {
-      const intervalId = setInterval(updateMarkLineY, 600000) // 每10分钟更新一次标记线的位置
+      const intervalId = setInterval(fetchLockGas, 10000) // 每10秒更新一次lockgas
       return () => clearInterval(intervalId)
     }
   }, [isInitialDataLoaded])
 
   useEffect(() => {
     if (isInitialDataLoaded) {
-      // 只有在初始数据加载后，才设置定时器
-      const intervalId = setInterval(fetchGasPrices, 3000) // 调整为每3000毫秒检查一次新数据
+      const intervalId = setInterval(fetchGasPrices, 3000)
       return () => clearInterval(intervalId)
     }
   }, [isInitialDataLoaded, latestBlockNumber])
@@ -105,8 +109,24 @@ const GasChart = () => {
   useEffect(() => {
     if (chartInstance && dataSeries.length > 0) {
       const option = {
+        title: {
+          text: "Recent Gas Prices",
+          left: "10%",
+          top: "top",
+          textStyle: {
+            color: "#159895",
+            fontSize: 18,
+            fontWeight: "bold"
+          }
+        },
         tooltip: {
           trigger: "axis",
+          axisPointer: {
+            type: "cross",
+            crossStyle: {
+              color: "#999"
+            }
+          },
           formatter: function (params) {
             const param = params[0]
             return `Block Number: ${param.axisValue}<br>Base Fee: ${param.data[1]}`
@@ -115,10 +135,10 @@ const GasChart = () => {
         xAxis: {
           type: "category",
           axisLabel: {
-            margin: 15 // 调整这个值来改变 Y 轴标签与图表内容的距离
+            margin: 15
           },
           axisTick: {
-            show: false // 不显示 X 轴的刻度线
+            show: false
           },
           data: dataSeries.map((item) => item.blockNumber.toString())
         },
@@ -128,7 +148,7 @@ const GasChart = () => {
             show: false
           },
           axisLabel: {
-            margin: 20 // 调整这个值来改变 Y 轴标签与图表内容的距离
+            margin: 20
           }
         },
         series: [
@@ -141,37 +161,61 @@ const GasChart = () => {
             smooth: true,
             showSymbol: false,
             lineStyle: {
-              color: "#57c5b6" // 设置线条颜色
+              color: "#57c5b6"
             },
             areaStyle: {
               normal: {
-                color: "#57c5b6" // 设置数据展示区域的背景色
+                color: "#57c5b6"
               }
             },
-            markLine: {
-              data: [{ yAxis: markLineY }],
-              symbol: ["none", "none"], // 移除线两端的箭头
-              lineStyle: {
-                color: "yellow", // 设置标记线为黄色
-                width: 2 // 设置标记线宽度
-              }
-            }
+            markLine: lockGas
+              ? {
+                  data: [
+                    {
+                      yAxis: lockGas,
+                      label: {
+                        show: true,
+                        formatter: `Lock Gas: ${lockGas}`,
+                        color: "#159895",
+                        position: "insideEndTop",
+                        padding: [3, 5],
+                        borderRadius: 4
+                      },
+                      lineStyle: {
+                        color: "#159895",
+                        width: 2
+                      }
+                    }
+                  ],
+                  symbol: ["none", "none"]
+                }
+              : {}
           }
         ]
       }
-      chartInstance.setOption(option, false) // 使用true确保完全覆盖之前的配置
+      chartInstance.setOption(option, false)
     }
-  }, [dataSeries, chartInstance])
+  }, [dataSeries, chartInstance, lockGas])
 
   return (
-    <>
-      <Card className="w-full h-full flex items-center justify-center border-2 border-[#159895]">
-        <div
-          ref={chartRef}
-          style={{ width: "100%", height: "400px", overflow: "hidden" }}
-        ></div>
-      </Card>
-    </>
+    <Card className="w-full h-full flex items-center justify-center border-2 border-[#159895] relative">
+      {isLoading && (
+        <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
+          <Loader2 className="animate-spin h-10 w-10 text-[#159895]" />
+        </div>
+      )}
+      <div
+        ref={chartRef}
+        style={{
+          width: "100%",
+          height: "400px",
+          overflow: "hidden",
+          opacity: isLoading ? 0.5 : 1,
+          filter: isLoading ? "blur(4px)" : "none",
+          transition: "opacity 0.3s, filter 0.3s"
+        }}
+      ></div>
+    </Card>
   )
 }
 

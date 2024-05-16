@@ -137,55 +137,82 @@ const GasInsureOrder = () => {
   const [startBlock, setStartBlock] = useState(0)
   const [countdown, setCountdown] = useState(null)
   const [isInitialLoading, setIsInitialLoading] = useState(true)
+  const [currentCycleId, setCurrentCycleId] = useState(0)
 
   const { isConnected } = useAccount()
   const { toast } = useToast()
 
-  useEffect(() => {
-    const fetchCycleInfo = async () => {
-      if (typeof window.ethereum !== "undefined") {
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
-        const contract = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          provider
-        )
-        const currentCycleId = await contract.currentCycleId()
-        const cycle = await contract.cycles(currentCycleId)
-        setPremiumPerUnit(BigNumber.from(cycle.premiumPerUnit))
-        setBoost(cycle.boost)
-        setStartBlock(cycle.startBlock.toNumber())
-        setIsInitialLoading(false)
+  const fetchCycleInfo = async () => {
+    if (typeof window.ethereum !== "undefined") {
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        provider
+      )
+      const currentCycleId = await contract.currentCycleId()
+      const cycle = await contract.cycles(currentCycleId)
+      setPremiumPerUnit(BigNumber.from(cycle.premiumPerUnit))
+      setBoost(cycle.boost)
+      setStartBlock(cycle.startBlock.toNumber())
+      setCurrentCycleId(currentCycleId.toNumber())
+      setIsInitialLoading(false)
+    }
+  }
+
+  const fetchBlockNumber = async () => {
+    try {
+      const response = await fetch(
+        "https://api.blocknative.com/gasprices/blockprices",
+        {
+          method: "GET"
+        }
+      )
+      const data = await response.json()
+      const blockNumber = data.blockPrices[0].blockNumber
+      const newCountdown = startBlock + 300 - blockNumber
+      setCountdown(newCountdown > 0 ? newCountdown : 0)
+      if (newCountdown <= 0) {
+        await fetchCycleInfo()
+      }
+    } catch (error) {
+      console.error("Error fetching block number:", error)
+    }
+  }
+
+  const checkForNewCycle = async () => {
+    if (typeof window.ethereum !== "undefined") {
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        provider
+      )
+      const currentCycleId = await contract.currentCycleId()
+      if (currentCycleId.toNumber() !== currentCycleId) {
+        await fetchCycleInfo()
       }
     }
+  }
 
+  useEffect(() => {
     fetchCycleInfo()
   }, [])
 
   useEffect(() => {
-    const fetchBlockNumber = async () => {
-      try {
-        const response = await fetch(
-          "https://api.blocknative.com/gasprices/blockprices",
-          {
-            method: "GET"
-          }
-        )
-        const data = await response.json()
-        const blockNumber = data.blockPrices[0].blockNumber
-        const newCountdown = startBlock + 300 - blockNumber
-        setCountdown(newCountdown > 0 ? newCountdown : 0)
-      } catch (error) {
-        console.error("Error fetching block number:", error)
-      }
-    }
-
     if (!isInitialLoading) {
       fetchBlockNumber()
       const interval = setInterval(fetchBlockNumber, 3000)
       return () => clearInterval(interval)
     }
   }, [startBlock, isInitialLoading])
+
+  useEffect(() => {
+    if (!isInitialLoading) {
+      const interval = setInterval(checkForNewCycle, 10000)
+      return () => clearInterval(interval)
+    }
+  }, [isInitialLoading])
 
   useEffect(() => {
     const totalCostInWei = premiumPerUnit.mul(units)

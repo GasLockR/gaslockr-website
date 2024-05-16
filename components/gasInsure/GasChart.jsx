@@ -108,6 +108,9 @@ const GasChart = () => {
 
   useEffect(() => {
     if (chartInstance && dataSeries.length > 0) {
+      const maxGasPrice = Math.max(...dataSeries.map((item) => item.gasPrice))
+      const yAxisMax = lockGas ? Math.max(maxGasPrice, lockGas) : maxGasPrice
+
       const option = {
         title: {
           text: "Recent Gas Prices",
@@ -144,6 +147,7 @@ const GasChart = () => {
         },
         yAxis: {
           type: "value",
+          max: yAxisMax,
           splitLine: {
             show: false
           },

@@ -204,6 +204,7 @@ const GasInsureList = () => {
 
       const detailedPolicies = await Promise.all(
         policiesDetails.map(async (policy) => {
+          console.log(policy.cycleId.toString(), "policy.cycleId")
           const cycle = await contract.cycles(policy.cycleId)
           return {
             id: policy.id.toString(),

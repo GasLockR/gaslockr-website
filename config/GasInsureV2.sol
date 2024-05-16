@@ -49,7 +49,7 @@ contract GasInsureV2 is AccessControl, ReentrancyGuard {
     
     event PolicyPurchased(uint256 indexed policyId, address indexed holder, uint256 units);
     event PolicyClaimed(uint256 indexed policyId, uint256 payout);
-    event NewCycleStarted(uint256 indexed cycleId);
+    event NewCycleStarted(uint256 indexed cycleId, bool boost);
     event CycleEnded(uint256 indexed cycleId, bool isClaimable);
     event RatiosUpdated(uint256 manageRatio, uint256 claimPoolRatio);
     event ParametersUpdated(uint256 coverBlock, uint256 premiumPerUnit, uint256 startBlockBuffer);
@@ -129,13 +129,12 @@ contract GasInsureV2 is AccessControl, ReentrancyGuard {
         return claimableAmount / cycles[cycleId].units; // TODO safe math
     }
 
-    function endCurrentCycle(uint256 _endBlock, bool isClaimable, bool _boost) public onlyRole(OPERATOR_ROLE) {
+    function endCurrentCycle(uint256 _endBlock, bool isClaimable) public onlyRole(OPERATOR_ROLE) {
         require(cycles[currentCycleId].isActive, "No active cycle to end");
         // // Mainnet open below requirements
         // require(block.number >= _endBlock, "Endblock not pass");
         cycles[currentCycleId].endBlock = _endBlock;
         cycles[currentCycleId].isActive = false;
-        cycles[currentCycleId].boost = _boost;
 
         uint256 cyclePremiumTotal = cycles[currentCycleId].units * cycles[currentCycleId].premiumPerUnit;
         uint256 managementFee = cyclePremiumTotal * manageRatio / 100;
@@ -155,7 +154,7 @@ contract GasInsureV2 is AccessControl, ReentrancyGuard {
     }
 
     // startblock >= endblock + 6
-    function startNewCycle(uint256 _startBlock) public onlyRole(OPERATOR_ROLE) {
+    function startNewCycle(uint256 _startBlock, bool _boost) public onlyRole(OPERATOR_ROLE) {
         require(!cycles[currentCycleId].isActive, "Current cycle still active");
         require(cycles[currentCycleId].endBlock <= (_startBlock - startBlockBuffer), "Startblock not correct");
         currentCycleId++;
@@ -170,9 +169,9 @@ contract GasInsureV2 is AccessControl, ReentrancyGuard {
             units: 0,
             isActive: true,
             isClaimable: false,
-            boost: false
+            boost: _boost
         });
-        emit NewCycleStarted(currentCycleId);
+        emit NewCycleStarted(currentCycleId, _boost);
     }
 
     function updateRatios(uint256 _manageRatio, uint256 _claimPoolRatio) external onlyRole(OPERATOR_ROLE) {
@@ -181,7 +180,7 @@ contract GasInsureV2 is AccessControl, ReentrancyGuard {
         emit RatiosUpdated(manageRatio, claimPoolRatio);
     }
 
-    //300, 5000000000000000, 6
+    //300, 5000000000000000, 0
     function updateParameters(uint256 _coverBlock, uint256 _premiumPerUnit, uint256 _startBlockBuffer) external onlyRole(OPERATOR_ROLE) {
         coverBlock = _coverBlock;
         premiumPerUnit = _premiumPerUnit;

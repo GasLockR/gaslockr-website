@@ -105,11 +105,6 @@
 				"internalType": "bool",
 				"name": "isClaimable",
 				"type": "bool"
-			},
-			{
-				"internalType": "bool",
-				"name": "_boost",
-				"type": "bool"
 			}
 		],
 		"name": "endCurrentCycle",
@@ -169,6 +164,12 @@
 				"internalType": "uint256",
 				"name": "cycleId",
 				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "boost",
+				"type": "bool"
 			}
 		],
 		"name": "NewCycleStarted",
@@ -423,6 +424,11 @@
 				"internalType": "uint256",
 				"name": "_startBlock",
 				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_boost",
+				"type": "bool"
 			}
 		],
 		"name": "startNewCycle",

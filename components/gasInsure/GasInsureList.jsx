@@ -214,7 +214,7 @@ const GasInsureList = () => {
             isClaimed: policy.isClaimed,
             endBlock: cycle.endBlock.toString(),
             amount: ethers.utils.formatEther(
-              (policy.units * cycle.premiumPerUnit).toString()
+              ethers.BigNumber.from(policy.units).mul(cycle.premiumPerUnit)
             ),
             isActive: cycle.isActive,
             isClaimable: cycle.isClaimable,
@@ -222,6 +222,8 @@ const GasInsureList = () => {
           }
         })
       )
+
+      console.log(detailedPolicies, "detailedPolicies")
 
       setPolicies(detailedPolicies)
     } catch (error) {
@@ -320,7 +322,7 @@ const GasInsureList = () => {
   // 计算积分
   const calculatePoints = (policies) => {
     return policies.reduce((acc, policy) => {
-      return acc + (policy.isClaimable ? 100 : -100)
+      return acc + (policy.isClaimable ? 100 : -100) * policy.units
     }, 0)
   }
 
@@ -395,7 +397,9 @@ const GasInsureList = () => {
                         {policy.isClaimed ? "Yes" : "No"}
                       </TableCell>
                       <TableCell className="w-[120px]">
-                        {policy.isClaimable ? "+100" : "-100"}
+                        {policy.isClaimable
+                          ? `${policy.units * 100}`
+                          : `${policy.units * -100}`}
                       </TableCell>
                       <TableCell className="w-[120px]">
                         {policy.highRisk ? "Yes" : "No"}
@@ -475,7 +479,9 @@ const GasInsureList = () => {
                         {policy.isClaimed ? "Yes" : "No"}
                       </TableCell>
                       <TableCell className="w-[120px]">
-                        {policy.isClaimable ? "+100" : "-100"}
+                        {policy.isClaimable
+                          ? `${policy.units * 100}`
+                          : `${policy.units * -100}`}
                       </TableCell>
                       <TableCell className="w-[120px]">
                         {policy.highRisk ? "Yes" : "No"}

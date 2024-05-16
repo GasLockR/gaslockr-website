@@ -64,6 +64,22 @@ contract GasInsureV2 is AccessControl, ReentrancyGuard {
         claimPoolRatio = _initialClaimPoolRatio;
     }
 
+    function getPoliciesOfHolder(address _holder) external view returns (uint256[] memory) {
+        return holderPolicies[_holder];
+    }
+
+    function getPoliciesDetailsOfHolder(address _holder) external view returns (Policy[] memory) {
+        uint256[] memory policyIds = holderPolicies[_holder]; 
+        Policy[] memory policiesDetails = new Policy[](policyIds.length); 
+
+        for (uint256 i = 0; i < policyIds.length; i++) {
+            Policy storage policy = policies[policyIds[i]];
+            policiesDetails[i] = policy;
+        }
+
+        return policiesDetails;
+    }
+
     function purchase(uint256 units, address holder) external payable {
         require(cycles[currentCycleId].isActive, "Current cycle is not active");
         // // Mainnet open below requirements

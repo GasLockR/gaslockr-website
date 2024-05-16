@@ -19,6 +19,13 @@ import {
   PaginationNext,
   PaginationPrevious
 } from "@/components/ui/pagination"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "@/components/ui/tooltip"
+import { SketchLogoIcon } from "@radix-ui/react-icons"
 
 // Simulated data for current policies
 const currentData = [
@@ -235,10 +242,33 @@ const GasInsureList = () => {
       <Card className="w-full h-full flex items-center justify-center border-2 border-[#159895]">
         <div className="h-full w-full">
           <Tabs defaultValue="current" className="w-full p-2">
-            <TabsList>
-              <TabsTrigger value="current">Current</TabsTrigger>
-              <TabsTrigger value="finished">Finished</TabsTrigger>
-            </TabsList>
+            <div className="flex flex-row justify-between">
+              <TabsList>
+                <TabsTrigger value="current">Current</TabsTrigger>
+                <TabsTrigger value="finished">Finished</TabsTrigger>
+              </TabsList>
+              <div>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        className="bg-transparent w-full"
+                        variant="ghost"
+                        size="icon"
+                      >
+                        <div className="flex flex-row gap-2 items-center p-2">
+                          <div className="text-[#57C5B6] text-2xl">996007</div>
+                          <SketchLogoIcon className="text-[#159895] h-8 w-8" />
+                        </div>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>total points</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            </div>
             <TabsContent value="current">
               <Table>
                 <TableCaption>A list of your current policy.</TableCaption>

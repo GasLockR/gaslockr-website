@@ -160,6 +160,31 @@ const contractABI = [
     outputs: [],
     stateMutability: "nonpayable",
     type: "function"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "policyId",
+        type: "uint256"
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "holder",
+        type: "address"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "units",
+        type: "uint256"
+      }
+    ],
+    name: "PolicyPurchased",
+    type: "event"
   }
 ]
 
@@ -169,21 +194,18 @@ const GasInsureList = () => {
   const [loading, setLoading] = useState(true)
   const [currentPageCurrent, setCurrentPageCurrent] = useState(1)
   const [currentPageFinished, setCurrentPageFinished] = useState(1)
-  const itemsPerPage = 3
+  const itemsPerPage = 10
   const { toast } = useToast()
 
   useEffect(() => {
     if (isConnected && address) {
       fetchPolicies(address)
+      startListeningToEvents(address)
     }
 
-    const interval = setInterval(() => {
-      if (isConnected && address) {
-        fetchPolicies(address)
-      }
-    }, 60000)
-
-    return () => clearInterval(interval)
+    return () => {
+      stopListeningToEvents()
+    }
   }, [isConnected, address])
 
   const fetchPolicies = async (address) => {
@@ -200,7 +222,7 @@ const GasInsureList = () => {
 
       console.log(`Fetching policies for address: ${address}`)
       const policiesDetails = await contract.getPoliciesDetailsOfHolder(address)
-      console.log(policiesDetails)
+      console.log("Fetched policies details:", policiesDetails)
 
       const detailedPolicies = await Promise.all(
         policiesDetails.map(async (policy) => {
@@ -224,14 +246,42 @@ const GasInsureList = () => {
         })
       )
 
-      console.log(detailedPolicies, "detailedPolicies")
+      console.log("Detailed policies:", detailedPolicies)
 
       setPolicies(detailedPolicies)
+      console.log("Policies state updated:", detailedPolicies)
     } catch (error) {
       console.error(`Error fetching policies: ${error}`)
     } finally {
       setLoading(false)
     }
+  }
+
+  const startListeningToEvents = (address) => {
+    const provider = new ethers.providers.WebSocketProvider(
+      process.env.NEXT_PUBLIC_PROVIDER_URL
+    )
+    const contract = new ethers.Contract(contractAddress, contractABI, provider)
+
+    contract.on("PolicyPurchased", (policyId, holder, units) => {
+      console.log(
+        `Policy purchased: Policy ID: ${policyId}, Holder: ${holder}, Units: ${units}`
+      )
+      if (holder.toLowerCase() === address.toLowerCase()) {
+        setTimeout(() => {
+          fetchPolicies(address)
+        }, 10000)
+      }
+    })
+  }
+
+  const stopListeningToEvents = () => {
+    const provider = new ethers.providers.WebSocketProvider(
+      process.env.NEXT_PUBLIC_PROVIDER_URL
+    )
+    const contract = new ethers.Contract(contractAddress, contractABI, provider)
+
+    contract.removeAllListeners("PolicyPurchased")
   }
 
   const handleClaim = async (policyId) => {
@@ -405,7 +455,7 @@ const GasInsureList = () => {
                           disabled={!policy.isClaimable}
                           onClick={() => handleClaim(policy.id)}
                         >
-                          claim
+                          waiting...
                         </Button>
                       </TableCell>
                     </TableRow>

@@ -29,6 +29,7 @@ import { SketchLogoIcon } from "@radix-ui/react-icons"
 import { ethers } from "ethers"
 import { useAccount } from "wagmi"
 import { Loader2 } from "lucide-react"
+import { useToast } from "@/components/ui/use-toast"
 
 const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
 const contractABI = [
@@ -146,6 +147,19 @@ const contractABI = [
     ],
     stateMutability: "view",
     type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "policyId",
+        type: "uint256"
+      }
+    ],
+    name: "claim",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
   }
 ]
 
@@ -156,6 +170,7 @@ const GasInsureList = () => {
   const [currentPageCurrent, setCurrentPageCurrent] = useState(1)
   const [currentPageFinished, setCurrentPageFinished] = useState(1)
   const itemsPerPage = 3
+  const { toast } = useToast()
 
   useEffect(() => {
     if (isConnected && address) {
@@ -216,10 +231,57 @@ const GasInsureList = () => {
     }
   }
 
+  const handleClaim = async (policyId) => {
+    if (typeof window.ethereum !== "undefined") {
+      await window.ethereum.request({ method: "eth_requestAccounts" })
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const contract = new ethers.Contract(contractAddress, contractABI, signer)
+
+      try {
+        setLoading(true)
+        const tx = await contract.claim(policyId)
+        await tx.wait()
+        setLoading(false)
+        const txHashShort = `${tx.hash.substring(
+          0,
+          8
+        )}......${tx.hash.substring(tx.hash.length - 8)}`
+        toast({
+          title: "Claim successful",
+          description: (
+            <div className="flex flex-row gap-2">
+              <div>Transaction Hash:</div>
+              <div>
+                <a
+                  href={`https://sepolia.etherscan.io/tx/${tx.hash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#159895] underline"
+                >
+                  {txHashShort}
+                </a>
+              </div>
+            </div>
+          ),
+          status: "success"
+        })
+        fetchPolicies(address)
+      } catch (error) {
+        setLoading(false)
+        toast({
+          title: "Claim failed",
+          description: error.message,
+          status: "error"
+        })
+        console.error(error)
+      }
+    }
+  }
+
   const currentPolicies = policies.filter((policy) => policy.isActive)
   const finishedPolicies = policies.filter((policy) => !policy.isActive)
 
-  // Calculate paginated data for current policies
   const offsetCurrent = (currentPageCurrent - 1) * itemsPerPage
   const currentPageDataCurrent = currentPolicies.slice(
     offsetCurrent,
@@ -227,7 +289,6 @@ const GasInsureList = () => {
   )
   const pageCountCurrent = Math.ceil(currentPolicies.length / itemsPerPage)
 
-  // Calculate paginated data for finished policies
   const offsetFinished = (currentPageFinished - 1) * itemsPerPage
   const currentPageDataFinished = finishedPolicies.slice(
     offsetFinished,
@@ -332,6 +393,7 @@ const GasInsureList = () => {
                         <Button
                           className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
                           disabled={!policy.isClaimable}
+                          onClick={() => handleClaim(policy.id)}
                         >
                           claim
                         </Button>
@@ -411,6 +473,7 @@ const GasInsureList = () => {
                         <Button
                           className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
                           disabled={!policy.isClaimable}
+                          onClick={() => handleClaim(policy.id)}
                         >
                           claim
                         </Button>

@@ -377,9 +377,8 @@ const GasInsureList = () => {
                     <TableHead className="w-[120px]">End Block</TableHead>
                     <TableHead className="w-[120px]">Amount</TableHead>
                     <TableHead className="w-[120px]">Claim status</TableHead>
-                    <TableHead className="w-[120px]">Points</TableHead>
                     <TableHead className="w-[120px]">High Risk</TableHead>
-                    <TableHead className="w-[120px] text-right"></TableHead>
+                    <TableHead className="w-[120px]"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -398,14 +397,9 @@ const GasInsureList = () => {
                         {policy.isClaimed ? "Yes" : "No"}
                       </TableCell>
                       <TableCell className="w-[120px]">
-                        {policy.isClaimable
-                          ? `${policy.units * 100}`
-                          : `${policy.units * -100}`}
-                      </TableCell>
-                      <TableCell className="w-[120px]">
                         {policy.highRisk ? "Yes" : "No"}
                       </TableCell>
-                      <TableCell className="w-[120px] text-right">
+                      <TableCell className="w-[120px]">
                         <Button
                           className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
                           disabled={!policy.isClaimable}
@@ -461,7 +455,7 @@ const GasInsureList = () => {
                     <TableHead className="w-[120px]">Claim status</TableHead>
                     <TableHead className="w-[120px]">Points</TableHead>
                     <TableHead className="w-[120px]">High Risk</TableHead>
-                    <TableHead className="w-[120px] text-right"></TableHead>
+                    <TableHead className="w-[120px]"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -487,7 +481,7 @@ const GasInsureList = () => {
                       <TableCell className="w-[120px]">
                         {policy.highRisk ? "Yes" : "No"}
                       </TableCell>
-                      <TableCell className="w-[120px] text-right">
+                      <TableCell className="w-[120px]">
                         <Button
                           className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
                           disabled={!policy.isClaimable}

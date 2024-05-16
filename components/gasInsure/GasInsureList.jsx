@@ -317,6 +317,15 @@ const GasInsureList = () => {
     return items
   }
 
+  // 计算积分
+  const calculatePoints = (policies) => {
+    return policies.reduce((acc, policy) => {
+      return acc + (policy.isClaimable ? 100 : -100)
+    }, 0)
+  }
+
+  const totalPoints = calculatePoints(finishedPolicies)
+
   return (
     <>
       <Card className="w-full h-full flex items-center justify-center border-2 border-[#159895] relative">
@@ -342,7 +351,9 @@ const GasInsureList = () => {
                         size="icon"
                       >
                         <div className="flex flex-row gap-2 items-center p-2">
-                          <div className="text-[#57C5B6] text-2xl">996007</div>
+                          <div className="text-[#57C5B6] text-2xl">
+                            {totalPoints}
+                          </div>
                           <SketchLogoIcon className="text-[#159895] h-8 w-8" />
                         </div>
                       </Button>
@@ -384,7 +395,7 @@ const GasInsureList = () => {
                         {policy.isClaimed ? "Yes" : "No"}
                       </TableCell>
                       <TableCell className="w-[120px]">
-                        Points Placeholder
+                        {policy.isClaimable ? "+100" : "-100"}
                       </TableCell>
                       <TableCell className="w-[120px]">
                         {policy.highRisk ? "Yes" : "No"}
@@ -464,7 +475,7 @@ const GasInsureList = () => {
                         {policy.isClaimed ? "Yes" : "No"}
                       </TableCell>
                       <TableCell className="w-[120px]">
-                        Points Placeholder
+                        {policy.isClaimable ? "+100" : "-100"}
                       </TableCell>
                       <TableCell className="w-[120px]">
                         {policy.highRisk ? "Yes" : "No"}

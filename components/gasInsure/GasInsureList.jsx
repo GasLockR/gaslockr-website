@@ -30,6 +30,7 @@ import { ethers } from "ethers"
 import { useAccount } from "wagmi"
 import { Loader2 } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
 
 const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
 const contractABI = [
@@ -192,6 +193,7 @@ const GasInsureList = () => {
   const { address, isConnected } = useAccount()
   const [policies, setPolicies] = useState([])
   const [loading, setLoading] = useState(true)
+  const [claimingPolicyId, setClaimingPolicyId] = useState(null)
   const [currentPageCurrent, setCurrentPageCurrent] = useState(1)
   const [currentPageFinished, setCurrentPageFinished] = useState(1)
   const itemsPerPage = 10
@@ -246,10 +248,15 @@ const GasInsureList = () => {
         })
       )
 
-      console.log("Detailed policies:", detailedPolicies)
+      // 按 policyId 倒序排序
+      const sortedPolicies = detailedPolicies.sort(
+        (a, b) => parseInt(b.id) - parseInt(a.id)
+      )
 
-      setPolicies(detailedPolicies)
-      console.log("Policies state updated:", detailedPolicies)
+      console.log("Detailed policies:", sortedPolicies)
+
+      setPolicies(sortedPolicies)
+      console.log("Policies state updated:", sortedPolicies)
     } catch (error) {
       console.error(`Error fetching policies: ${error}`)
     } finally {
@@ -292,10 +299,10 @@ const GasInsureList = () => {
       const contract = new ethers.Contract(contractAddress, contractABI, signer)
 
       try {
-        setLoading(true)
+        setClaimingPolicyId(policyId)
         const tx = await contract.claim(policyId)
         await tx.wait()
-        setLoading(false)
+        setClaimingPolicyId(null)
         const txHashShort = `${tx.hash.substring(
           0,
           8
@@ -321,7 +328,7 @@ const GasInsureList = () => {
         })
         fetchPolicies(address)
       } catch (error) {
-        setLoading(false)
+        setClaimingPolicyId(null)
         toast({
           title: "Claim failed",
           description: error.message,
@@ -382,6 +389,11 @@ const GasInsureList = () => {
   return (
     <>
       <Card className="w-full h-full flex items-center justify-center border-2 border-[#159895] relative">
+        {!isConnected && (
+          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
+            <ConnectButton />
+          </div>
+        )}
         {loading && (
           <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
             <Loader2 className="animate-spin h-10 w-10 text-[#159895]" />
@@ -420,9 +432,10 @@ const GasInsureList = () => {
             </div>
             <TabsContent value="current">
               <Table>
-                <TableCaption>A list of your current policy.</TableCaption>
+                <TableCaption>A list of your current policies.</TableCaption>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-[120px]">Cycle ID</TableHead>
                     <TableHead className="w-[120px]">Start Block</TableHead>
                     <TableHead className="w-[120px]">End Block</TableHead>
                     <TableHead className="w-[120px]">Amount</TableHead>
@@ -434,6 +447,9 @@ const GasInsureList = () => {
                 <TableBody>
                   {currentPageDataCurrent.map((policy, index) => (
                     <TableRow key={index}>
+                      <TableCell className="w-[120px]">
+                        {policy.cycleId}
+                      </TableCell>
                       <TableCell className="w-[120px]">
                         {policy.startBlock}
                       </TableCell>
@@ -452,10 +468,17 @@ const GasInsureList = () => {
                       <TableCell className="w-[120px]">
                         <Button
                           className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
-                          disabled={!policy.isClaimable}
+                          disabled={!policy.isClaimable || policy.isClaimed}
                           onClick={() => handleClaim(policy.id)}
                         >
-                          waiting...
+                          {claimingPolicyId === policy.id ? (
+                            <div className="flex items-center">
+                              <Loader2 className="animate-spin h-4 w-4 mr-2" />
+                              Claiming...
+                            </div>
+                          ) : (
+                            "Claim"
+                          )}
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -496,9 +519,10 @@ const GasInsureList = () => {
             </TabsContent>
             <TabsContent value="finished">
               <Table>
-                <TableCaption>A list of your finished policy.</TableCaption>
+                <TableCaption>A list of your finished policies.</TableCaption>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-[120px]">Cycle ID</TableHead>
                     <TableHead className="w-[120px]">Start Block</TableHead>
                     <TableHead className="w-[120px]">End Block</TableHead>
                     <TableHead className="w-[120px]">Amount</TableHead>
@@ -511,6 +535,9 @@ const GasInsureList = () => {
                 <TableBody>
                   {currentPageDataFinished.map((policy, index) => (
                     <TableRow key={index}>
+                      <TableCell className="w-[120px]">
+                        {policy.cycleId}
+                      </TableCell>
                       <TableCell className="w-[120px]">
                         {policy.startBlock}
                       </TableCell>
@@ -534,10 +561,17 @@ const GasInsureList = () => {
                       <TableCell className="w-[120px]">
                         <Button
                           className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
-                          disabled={!policy.isClaimable}
+                          disabled={!policy.isClaimable || policy.isClaimed}
                           onClick={() => handleClaim(policy.id)}
                         >
-                          claim
+                          {claimingPolicyId === policy.id ? (
+                            <div className="flex items-center">
+                              <Loader2 className="animate-spin h-4 w-4 mr-2" />
+                              Claiming...
+                            </div>
+                          ) : (
+                            "Claim"
+                          )}
                         </Button>
                       </TableCell>
                     </TableRow>

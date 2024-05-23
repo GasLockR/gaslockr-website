@@ -41,6 +41,7 @@ contract GasInsureV2 is AccessControl, ReentrancyGuard {
     mapping(uint256 => Policy) public policies;
     mapping(uint256 => Cycle) public cycles;
 
+    uint256 public nextPolicyId;
     uint256 public currentCycleId;
     uint256[] public claimableCycleId;
 
@@ -89,7 +90,7 @@ contract GasInsureV2 is AccessControl, ReentrancyGuard {
         require(msg.value == totalCost, "Incorrect amount transferred");
         //TODO: require some blocks before the end
 
-        uint256 policyId = cycles[currentCycleId].policyIds.length;
+        uint256 policyId = nextPolicyId;
         Policy memory newPolicy = Policy({
             id: policyId,
             cycleId: currentCycleId,
@@ -104,6 +105,7 @@ contract GasInsureV2 is AccessControl, ReentrancyGuard {
         cycles[currentCycleId].policyIds.push(policyId);
         cycles[currentCycleId].units += units;
         holderPolicies[holder].push(policyId);
+        nextPolicyId++;
 
         emit PolicyPurchased(policyId, holder, units);
     }

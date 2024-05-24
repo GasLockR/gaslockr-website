@@ -25,7 +25,7 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from "@/components/ui/tooltip"
-import { SketchLogoIcon } from "@radix-ui/react-icons"
+import { SketchLogoIcon, QuestionMarkCircledIcon } from "@radix-ui/react-icons"
 import { ethers } from "ethers"
 import { useAccount } from "wagmi"
 import { Loader2 } from "lucide-react"
@@ -441,7 +441,23 @@ const GasInsureList = () => {
                     <TableHead className="w-[120px]">Start Block</TableHead>
                     <TableHead className="w-[120px]">End Block</TableHead>
                     <TableHead className="w-[120px]">Premium</TableHead>
-                    <TableHead className="w-[120px]">Boost</TableHead>
+                    <TableHead className="w-[120px] flex flex-row gap-2 items-center">
+                      <div>Boost</div>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <QuestionMarkCircledIcon className="text-[#57C5B6] h-4 w-4" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-[#57C5B6]">
+                              AI detects significant gas fluctuations in
+                              real-time network conditions. Enters boost mode,
+                              earning more points when a payout occurs.
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -457,7 +473,10 @@ const GasInsureList = () => {
                         {policy.endBlock === "0" ? "pending" : policy.endBlock}
                       </TableCell>
                       <TableCell className="w-[120px]">
-                        {policy.amount} ETH
+                        <div className="flex flex-row gap-2">
+                          <div className=" text-[#57C5B6]">{policy.amount}</div>
+                          <div>ETH</div>
+                        </div>
                       </TableCell>
                       <TableCell className="w-[120px]">
                         {policy.highRisk ? "Yes" : "No"}
@@ -509,7 +528,23 @@ const GasInsureList = () => {
                     <TableHead className="w-[120px]">Premium</TableHead>
                     <TableHead className="w-[120px]">Claimable</TableHead>
                     <TableHead className="w-[120px]">Points</TableHead>
-                    <TableHead className="w-[120px]">Boost</TableHead>
+                    <TableHead className="w-[120px] flex flex-row gap-2 items-center">
+                      <div>Boost</div>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <QuestionMarkCircledIcon className="text-[#57C5B6] h-4 w-4" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-[#57C5B6]">
+                              AI detects significant gas fluctuations in
+                              real-time network conditions. Enters boost mode,
+                              earning more points when a payout occurs.
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </TableHead>
                     <TableHead className="w-[120px]"></TableHead>
                   </TableRow>
                 </TableHeader>
@@ -526,7 +561,10 @@ const GasInsureList = () => {
                         {policy.endBlock === "0" ? "pending" : policy.endBlock}
                       </TableCell>
                       <TableCell className="w-[120px]">
-                        {policy.amount} ETH
+                        <div className="flex flex-row gap-2">
+                          <div className=" text-[#57C5B6]">{policy.amount}</div>
+                          <div>ETH</div>
+                        </div>
                       </TableCell>
                       <TableCell className="w-[120px]">
                         {policy.isClaimed ? "Yes" : "No"}
@@ -534,7 +572,7 @@ const GasInsureList = () => {
                       <TableCell
                         className="w-[120px]"
                         style={{
-                          color: policy.isClaimable ? "#159895" : "red"
+                          color: policy.isClaimable ? "#57C5B6" : "red"
                         }}
                       >
                         {policy.highRisk

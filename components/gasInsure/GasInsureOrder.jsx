@@ -126,6 +126,32 @@ const contractABI = [
     ],
     stateMutability: "view",
     type: "function"
+  },
+  {
+    inputs: [],
+    name: "totalInsurancePool",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "claimPoolRatio",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
   }
 ]
 
@@ -141,6 +167,7 @@ const GasInsureOrder = () => {
   const [countdown, setCountdown] = useState(null)
   const [isInitialLoading, setIsInitialLoading] = useState(true)
   const [currentCycleId, setCurrentCycleId] = useState(0)
+  const [benefitCap, setBenefitCap] = useState("0")
 
   const { isConnected } = useAccount()
   const { toast } = useToast()
@@ -160,6 +187,21 @@ const GasInsureOrder = () => {
       setStartBlock(cycle.startBlock.toNumber())
       setCurrentCycleId(currentCycleId.toNumber())
       setIsInitialLoading(false)
+    }
+  }
+
+  const fetchBenefitCap = async () => {
+    if (typeof window.ethereum !== "undefined") {
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        provider
+      )
+      const totalInsurancePool = await contract.totalInsurancePool()
+      const claimPoolRatio = await contract.claimPoolRatio()
+      const cap = totalInsurancePool.mul(claimPoolRatio).div(100)
+      setBenefitCap(ethers.utils.formatEther(cap))
     }
   }
 
@@ -200,6 +242,7 @@ const GasInsureOrder = () => {
 
   useEffect(() => {
     fetchCycleInfo()
+    fetchBenefitCap()
   }, [])
 
   useEffect(() => {
@@ -408,7 +451,6 @@ const GasInsureOrder = () => {
           </div>
         </div>
         <div className="flex flex-row items-center justify-between">
-          {/* totalInsurancePool * claimPoolRatio / 100 */}
           <div className="flex flex-row gap-2 items-center">
             <div>Benefit Cap</div>
             <TooltipProvider>
@@ -426,7 +468,7 @@ const GasInsureOrder = () => {
             </TooltipProvider>
           </div>
           <div className="text-[#159895] flex flex-row gap-2 mt-2 sm:mt-0">
-            <div>1</div>
+            <div>{benefitCap}</div>
             <div>ETH</div>
           </div>
         </div>

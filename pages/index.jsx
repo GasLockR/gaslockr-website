@@ -3,6 +3,7 @@ import Features from "@/components/features/Features"
 import Teams from "@/components/teams/Teams"
 import TimeLine from "@/components/timeline/Timeline"
 import PrimaryFeatures from "@/components/primaryFeatures/PrimaryFeatures"
+import PartnerLogos from "@/components/partnerLogos/PartnerLogos"
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
       </Head>
       <Features />
       <PrimaryFeatures />
+      {/* <PartnerLogos /> */}
       {/* <Teams /> */}
       {/* <TimeLine /> */}
     </div>

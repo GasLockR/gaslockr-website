@@ -15,11 +15,7 @@ import CheckIcon from "../CheckIcon"
 const PrimaryFeatures = () => {
   const router = useRouter()
   return (
-    <section
-      id="features"
-      aria-label="Features for investing all your money"
-      className="bg-gray-900 py-20 sm:py-32"
-    >
+    <section className="bg-gray-900 py-20 sm:py-32">
       <Container>
         <div className="flex flex-col items-center justify-center mb-12 text-center">
           <h2 className="text-4xl sm:text-5xl font-medium tracking-tight text-white">

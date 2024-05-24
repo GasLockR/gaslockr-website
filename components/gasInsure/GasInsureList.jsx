@@ -601,7 +601,7 @@ const GasInsureList = () => {
                           ) : claimingPolicyId === policy.id ? (
                             <div className="flex items-center">
                               <Loader2 className="animate-spin h-4 w-4 mr-2" />
-                              Claiming...
+                              Loading...
                             </div>
                           ) : policy.isClaimable ? (
                             "Claim"

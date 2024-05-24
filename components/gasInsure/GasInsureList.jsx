@@ -426,7 +426,7 @@ const GasInsureList = () => {
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Total Points</p>
+                      <p className="text-[#57C5B6]">Total Points</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>

@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
+import {
+  ExclamationTriangleIcon,
+  QuestionMarkCircledIcon
+} from "@radix-ui/react-icons"
 import { Loader2 } from "lucide-react"
 import {
   Tooltip,
@@ -295,13 +298,24 @@ const GasInsureOrder = () => {
         </div>
         <div className="flex items-center justify-center text-2xl sm:text-3xl font-bold text-[#159895]">
           <div className="flex flex-row items-center justify-center gap-2 mt-2 sm:mt-0">
-            <div>
-              {countdown !== null && !isInitialLoading ? (
-                countdown
-              ) : (
-                <Loader2 className="animate-spin" />
-              )}
-            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    {countdown !== null && !isInitialLoading ? (
+                      countdown
+                    ) : (
+                      <Loader2 className="animate-spin" />
+                    )}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-[#57C5B6]">
+                    Estimated remaining blocks in current GasInsure cycle
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             {boost && (
               <div>
                 <TooltipProvider>
@@ -325,14 +339,44 @@ const GasInsureOrder = () => {
           </div>
         </div>
         <div className="flex flex-row items-center justify-between">
-          <div>Threshold</div>
+          <div className="flex flex-row gap-2 items-center">
+            <div>Threshold</div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <QuestionMarkCircledIcon className="text-[#57C5B6] h-4 w-4" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-[#57C5B6]">
+                    AI-driven threshold gas price based on network conditions,
+                    exceeding which for a sustained period triggers a payout and
+                    ends the current cycle.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           <div className="text-[#159895] flex flex-row gap-2 mt-2 sm:mt-0">
             <div>60</div>
-            <div>gwei</div>
+            <div>Gwei</div>
           </div>
         </div>
         <div className="flex flex-row items-center justify-between">
-          <div>Units</div>
+          <div className="flex flex-row gap-2 items-center">
+            <div>Units</div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <QuestionMarkCircledIcon className="text-[#57C5B6] h-4 w-4" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-[#57C5B6]">
+                    Number of policies to purchase.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           <div className="w-1/3 text-[#159895]">
             <Input value={units} onChange={handleUnitsChange} />
           </div>
@@ -343,7 +387,21 @@ const GasInsureOrder = () => {
           </div>
         </div>
         <div className="flex flex-row items-center justify-between">
-          <div>Premium</div>
+          <div className="flex flex-row gap-2 items-center">
+            <div>Premium</div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <QuestionMarkCircledIcon className="text-[#57C5B6] h-4 w-4" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-[#57C5B6]">
+                    Premium price per total number of policies.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           <div className="text-[#159895] flex flex-row gap-2 mt-2 sm:mt-0">
             <div>{totalCost}</div>
             <div>ETH</div>
@@ -351,7 +409,22 @@ const GasInsureOrder = () => {
         </div>
         <div className="flex flex-row items-center justify-between">
           {/* totalInsurancePool * claimPoolRatio / 100 */}
-          <div>Benefit Cap</div>
+          <div className="flex flex-row gap-2 items-center">
+            <div>Benefit Cap</div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <QuestionMarkCircledIcon className="text-[#57C5B6] h-4 w-4" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-[#57C5B6]">
+                    Dynamically updated estimated payout price, always higher
+                    than the premium.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           <div className="text-[#159895] flex flex-row gap-2 mt-2 sm:mt-0">
             <div>1</div>
             <div>ETH</div>

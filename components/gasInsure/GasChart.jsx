@@ -179,7 +179,7 @@ const GasChart = () => {
                       yAxis: lockGas,
                       label: {
                         show: true,
-                        formatter: `Lock Gas: ${lockGas}`,
+                        formatter: `Threshold: ${lockGas}`,
                         color: "#159895",
                         position: "insideEndTop",
                         padding: [3, 5],
@@ -204,7 +204,7 @@ const GasChart = () => {
   return (
     <Card className="w-full h-full flex items-center justify-center border-2 border-[#159895] relative">
       {isLoading && (
-        <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
+        <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center rounded-md">
           <Loader2 className="animate-spin h-10 w-10 text-[#159895]" />
         </div>
       )}

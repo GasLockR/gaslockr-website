@@ -284,7 +284,7 @@ const GasInsureOrder = () => {
     <Card className="w-full h-full flex border-2 border-[#159895] p-4 sm:p-6 lg:p-8">
       <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full">
         <div className="flex flex-row items-center justify-between">
-          <div className="text-xl sm:text-2xl font-bold">Purchase</div>
+          <div className="text-xl sm:text-2xl font-bold">Policy</div>
           <Button
             disabled
             variant="ghost"
@@ -316,7 +316,7 @@ const GasInsureOrder = () => {
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p className="text-red-500">High Risk Cycle</p>
+                      <p className="text-red-500">Boost Cycle</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -325,31 +325,33 @@ const GasInsureOrder = () => {
           </div>
         </div>
         <div className="flex flex-row items-center justify-between">
-          <div>锁定gwei</div>
+          <div>Threshold</div>
           <div className="text-[#159895] flex flex-row gap-2 mt-2 sm:mt-0">
             <div>60</div>
             <div>gwei</div>
           </div>
         </div>
         <div className="flex flex-row items-center justify-between">
-          <div>投保份数</div>
+          <div>Units</div>
           <div className="w-1/3 text-[#159895]">
             <Input value={units} onChange={handleUnitsChange} />
           </div>
           <div className="text-[#159895] flex flex-row gap-2 mt-2 sm:mt-0">
+            <div>*</div>
             <div>{ethers.utils.formatEther(premiumPerUnit)}</div>
             <div>ETH</div>
           </div>
         </div>
         <div className="flex flex-row items-center justify-between">
-          <div>总支付</div>
+          <div>Premium</div>
           <div className="text-[#159895] flex flex-row gap-2 mt-2 sm:mt-0">
             <div>{totalCost}</div>
             <div>ETH</div>
           </div>
         </div>
         <div className="flex flex-row items-center justify-between">
-          <div>预计赔付金额</div>
+          {/* totalInsurancePool * claimPoolRatio / 100 */}
+          <div>Benefit Cap</div>
           <div className="text-[#159895] flex flex-row gap-2 mt-2 sm:mt-0">
             <div>1</div>
             <div>ETH</div>
@@ -368,7 +370,7 @@ const GasInsureOrder = () => {
                   <span>Loading...</span>
                 </div>
               ) : (
-                "Pay Now"
+                "Purchase"
               )}
             </Button>
           ) : (

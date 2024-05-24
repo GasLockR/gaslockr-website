@@ -380,7 +380,9 @@ const GasInsureList = () => {
   // 计算积分
   const calculatePoints = (policies) => {
     return policies.reduce((acc, policy) => {
-      return acc + (policy.isClaimable ? 100 : -100) * policy.units
+      const points = policy.isClaimable ? 100 : -100
+      const adjustedPoints = policy.highRisk ? points * 1.5 : points
+      return acc + adjustedPoints * policy.units
     }, 0)
   }
 
@@ -390,12 +392,12 @@ const GasInsureList = () => {
     <>
       <Card className="w-full h-full flex items-center justify-center border-2 border-[#159895] relative">
         {!isConnected && (
-          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
+          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center rounded-md z-10">
             <ConnectButton />
           </div>
         )}
-        {loading && (
-          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
+        {isConnected && loading && (
+          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center rounded-md z-10">
             <Loader2 className="animate-spin h-10 w-10 text-[#159895]" />
           </div>
         )}
@@ -403,8 +405,8 @@ const GasInsureList = () => {
           <Tabs defaultValue="current" className="w-full p-2">
             <div className="flex flex-row justify-between">
               <TabsList>
-                <TabsTrigger value="current">Current</TabsTrigger>
-                <TabsTrigger value="finished">Finished</TabsTrigger>
+                <TabsTrigger value="current">Active</TabsTrigger>
+                <TabsTrigger value="finished">Expired</TabsTrigger>
               </TabsList>
               <div>
                 <TooltipProvider>
@@ -424,7 +426,7 @@ const GasInsureList = () => {
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>total points</p>
+                      <p>Total Points</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -432,16 +434,14 @@ const GasInsureList = () => {
             </div>
             <TabsContent value="current">
               <Table>
-                <TableCaption>A list of your current policies.</TableCaption>
+                <TableCaption>The list of active policies.</TableCaption>
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-[120px]">Cycle ID</TableHead>
                     <TableHead className="w-[120px]">Start Block</TableHead>
                     <TableHead className="w-[120px]">End Block</TableHead>
-                    <TableHead className="w-[120px]">Amount</TableHead>
-                    <TableHead className="w-[120px]">Claim status</TableHead>
-                    <TableHead className="w-[120px]">High Risk</TableHead>
-                    <TableHead className="w-[120px]"></TableHead>
+                    <TableHead className="w-[120px]">Premium</TableHead>
+                    <TableHead className="w-[120px]">Boost</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -460,26 +460,7 @@ const GasInsureList = () => {
                         {policy.amount} ETH
                       </TableCell>
                       <TableCell className="w-[120px]">
-                        {policy.isClaimed ? "Yes" : "No"}
-                      </TableCell>
-                      <TableCell className="w-[120px]">
                         {policy.highRisk ? "Yes" : "No"}
-                      </TableCell>
-                      <TableCell className="w-[120px]">
-                        <Button
-                          className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
-                          disabled={!policy.isClaimable || policy.isClaimed}
-                          onClick={() => handleClaim(policy.id)}
-                        >
-                          {claimingPolicyId === policy.id ? (
-                            <div className="flex items-center">
-                              <Loader2 className="animate-spin h-4 w-4 mr-2" />
-                              Claiming...
-                            </div>
-                          ) : (
-                            "Claim"
-                          )}
-                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -519,16 +500,16 @@ const GasInsureList = () => {
             </TabsContent>
             <TabsContent value="finished">
               <Table>
-                <TableCaption>A list of your finished policies.</TableCaption>
+                <TableCaption>The list of expired policies.</TableCaption>
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-[120px]">Cycle ID</TableHead>
                     <TableHead className="w-[120px]">Start Block</TableHead>
                     <TableHead className="w-[120px]">End Block</TableHead>
-                    <TableHead className="w-[120px]">Amount</TableHead>
-                    <TableHead className="w-[120px]">Claim status</TableHead>
+                    <TableHead className="w-[120px]">Premium</TableHead>
+                    <TableHead className="w-[120px]">Claimable</TableHead>
                     <TableHead className="w-[120px]">Points</TableHead>
-                    <TableHead className="w-[120px]">High Risk</TableHead>
+                    <TableHead className="w-[120px]">Boost</TableHead>
                     <TableHead className="w-[120px]"></TableHead>
                   </TableRow>
                 </TableHeader>
@@ -550,8 +531,17 @@ const GasInsureList = () => {
                       <TableCell className="w-[120px]">
                         {policy.isClaimed ? "Yes" : "No"}
                       </TableCell>
-                      <TableCell className="w-[120px]">
-                        {policy.isClaimable
+                      <TableCell
+                        className="w-[120px]"
+                        style={{
+                          color: policy.isClaimable ? "#159895" : "red"
+                        }}
+                      >
+                        {policy.highRisk
+                          ? policy.isClaimable
+                            ? `${policy.units * 150}`
+                            : `${policy.units * -150}`
+                          : policy.isClaimable
                           ? `${policy.units * 100}`
                           : `${policy.units * -100}`}
                       </TableCell>
@@ -561,16 +551,24 @@ const GasInsureList = () => {
                       <TableCell className="w-[120px]">
                         <Button
                           className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
-                          disabled={!policy.isClaimable || policy.isClaimed}
+                          disabled={
+                            !policy.isClaimable ||
+                            policy.isClaimed ||
+                            claimingPolicyId === policy.id
+                          }
                           onClick={() => handleClaim(policy.id)}
                         >
-                          {claimingPolicyId === policy.id ? (
+                          {policy.isClaimed ? (
+                            "Claimed"
+                          ) : claimingPolicyId === policy.id ? (
                             <div className="flex items-center">
                               <Loader2 className="animate-spin h-4 w-4 mr-2" />
                               Claiming...
                             </div>
-                          ) : (
+                          ) : policy.isClaimable ? (
                             "Claim"
+                          ) : (
+                            "Not Eligible"
                           )}
                         </Button>
                       </TableCell>

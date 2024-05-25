@@ -82,6 +82,7 @@ contract GasInsureV2 is AccessControl, ReentrancyGuard {
     }
 
     function purchase(uint256 units, address holder) external payable {
+        require(units > 0, "Must purchase at least one unit");
         require(cycles[currentCycleId].isActive, "Current cycle is not active");
         // // Mainnet open below requirements
         // require(block.number >= cycles[currentCycleId].startBlock, "Current cycle not start");
@@ -138,18 +139,25 @@ contract GasInsureV2 is AccessControl, ReentrancyGuard {
         cycles[currentCycleId].endBlock = _endBlock;
         cycles[currentCycleId].isActive = false;
 
-        uint256 cyclePremiumTotal = cycles[currentCycleId].units * cycles[currentCycleId].premiumPerUnit;
-        uint256 managementFee = cyclePremiumTotal * manageRatio / 100;
-        totalManagementFees += managementFee;
+        if (cycles[cycleId].units > 0) {
+            uint256 cyclePremiumTotal = cycles[currentCycleId].units * cycles[currentCycleId].premiumPerUnit;
+            uint256 managementFee = cyclePremiumTotal * manageRatio / 100;
+            totalManagementFees += managementFee;
 
-        if (!isClaimable){
-            totalInsurancePool += (cyclePremiumTotal - managementFee);
+            if (!isClaimable){
+                totalInsurancePool += (cyclePremiumTotal - managementFee);
+            }
+
+            if (isClaimable) {
+                claimableCycleId.push(currentCycleId);
+                cycles[currentCycleId].isClaimable = true;
+                cycles[currentCycleId].benefitPerUnit = calculateBenefitPerUnit(currentCycleId, managementFee);
+            }
         }
 
-        if (isClaimable) {
+        if (cycles[cycleId].units == 0 && isClaimable) {
             claimableCycleId.push(currentCycleId);
             cycles[currentCycleId].isClaimable = true;
-            cycles[currentCycleId].benefitPerUnit = calculateBenefitPerUnit(currentCycleId, managementFee);
         }
 
         emit CycleEnded(currentCycleId, isClaimable);

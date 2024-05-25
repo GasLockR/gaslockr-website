@@ -441,22 +441,24 @@ const GasInsureList = () => {
                     <TableHead className="w-[120px]">Start Block</TableHead>
                     <TableHead className="w-[120px]">End Block</TableHead>
                     <TableHead className="w-[120px]">Premium</TableHead>
-                    <TableHead className="w-[120px] flex flex-row gap-2 items-center">
-                      <div>Boost</div>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <QuestionMarkCircledIcon className="text-[#57C5B6] h-4 w-4" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p className="text-[#57C5B6]">
-                              AI detects significant gas fluctuations in
-                              real-time network conditions. Enters boost mode,
-                              earning more points when a payout occurs.
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                    <TableHead className="w-[120px]">
+                      <div className="flex flex-row gap-2 items-center">
+                        <div>Boost</div>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <QuestionMarkCircledIcon className="text-[#57C5B6] h-4 w-4" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-[#57C5B6]">
+                                AI detects significant gas fluctuations in
+                                real-time network conditions. Enters boost mode,
+                                earning more points when a payout occurs.
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
                     </TableHead>
                   </TableRow>
                 </TableHeader>
@@ -528,22 +530,24 @@ const GasInsureList = () => {
                     <TableHead className="w-[120px]">Premium</TableHead>
                     <TableHead className="w-[120px]">Claimable</TableHead>
                     <TableHead className="w-[120px]">Points</TableHead>
-                    <TableHead className="w-[120px] flex flex-row gap-2 items-center">
-                      <div>Boost</div>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <QuestionMarkCircledIcon className="text-[#57C5B6] h-4 w-4" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p className="text-[#57C5B6]">
-                              AI detects significant gas fluctuations in
-                              real-time network conditions. Enters boost mode,
-                              earning more points when a payout occurs.
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                    <TableHead className="w-[120px]">
+                      <div className="flex flex-row gap-2 items-center">
+                        <div>Boost</div>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <QuestionMarkCircledIcon className="text-[#57C5B6] h-4 w-4" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-[#57C5B6]">
+                                AI detects significant gas fluctuations in
+                                real-time network conditions. Enters boost mode,
+                                earning more points when a payout occurs.
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
                     </TableHead>
                     <TableHead className="w-[120px]"></TableHead>
                   </TableRow>

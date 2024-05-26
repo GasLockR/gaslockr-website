@@ -169,40 +169,32 @@ const GasInsureOrder = () => {
   const [currentCycleId, setCurrentCycleId] = useState(0)
   const [benefitCap, setBenefitCap] = useState("0")
 
-  const { isConnected } = useAccount()
+  const { address, isConnected } = useAccount()
   const { toast } = useToast()
 
   const fetchCycleInfo = async () => {
-    if (typeof window.ethereum !== "undefined") {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        provider
-      )
-      const currentCycleId = await contract.currentCycleId()
-      const cycle = await contract.cycles(currentCycleId)
-      setPremiumPerUnit(BigNumber.from(cycle.premiumPerUnit))
-      setBoost(cycle.boost)
-      setStartBlock(cycle.startBlock.toNumber())
-      setCurrentCycleId(currentCycleId.toNumber())
-      setIsInitialLoading(false)
-    }
+    if (!isConnected) return
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const contract = new ethers.Contract(contractAddress, contractABI, provider)
+    const currentCycleId = await contract.currentCycleId()
+    const cycle = await contract.cycles(currentCycleId)
+    setPremiumPerUnit(BigNumber.from(cycle.premiumPerUnit))
+    setBoost(cycle.boost)
+    setStartBlock(cycle.startBlock.toNumber())
+    setCurrentCycleId(currentCycleId.toNumber())
+    setIsInitialLoading(false)
   }
 
   const fetchBenefitCap = async () => {
-    if (typeof window.ethereum !== "undefined") {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        provider
-      )
-      const totalInsurancePool = await contract.totalInsurancePool()
-      const claimPoolRatio = await contract.claimPoolRatio()
-      const cap = totalInsurancePool.mul(claimPoolRatio).div(100)
-      setBenefitCap(ethers.utils.formatEther(cap))
-    }
+    if (!isConnected) return
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const contract = new ethers.Contract(contractAddress, contractABI, provider)
+    const totalInsurancePool = await contract.totalInsurancePool()
+    const claimPoolRatio = await contract.claimPoolRatio()
+    const cap = totalInsurancePool.mul(claimPoolRatio).div(100)
+    setBenefitCap(ethers.utils.formatEther(cap))
   }
 
   const fetchBlockNumber = async () => {
@@ -226,39 +218,37 @@ const GasInsureOrder = () => {
   }
 
   const checkForNewCycle = async () => {
-    if (typeof window.ethereum !== "undefined") {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        provider
-      )
-      const currentCycleId = await contract.currentCycleId()
-      if (currentCycleId.toNumber() !== currentCycleId) {
-        await fetchCycleInfo()
-      }
+    if (!isConnected) return
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const contract = new ethers.Contract(contractAddress, contractABI, provider)
+    const currentCycleId = await contract.currentCycleId()
+    if (currentCycleId.toNumber() !== currentCycleId) {
+      await fetchCycleInfo()
     }
   }
 
   useEffect(() => {
-    fetchCycleInfo()
-    fetchBenefitCap()
-  }, [])
+    if (isConnected) {
+      fetchCycleInfo()
+      fetchBenefitCap()
+    }
+  }, [isConnected])
 
   useEffect(() => {
-    if (!isInitialLoading) {
+    if (!isInitialLoading && isConnected) {
       fetchBlockNumber()
       const interval = setInterval(fetchBlockNumber, 3000)
       return () => clearInterval(interval)
     }
-  }, [startBlock, isInitialLoading])
+  }, [startBlock, isInitialLoading, isConnected])
 
   useEffect(() => {
-    if (!isInitialLoading) {
+    if (!isInitialLoading && isConnected) {
       const interval = setInterval(checkForNewCycle, 10000)
       return () => clearInterval(interval)
     }
-  }, [isInitialLoading])
+  }, [isInitialLoading, isConnected])
 
   useEffect(() => {
     const totalCostInWei = premiumPerUnit.mul(units)
@@ -275,51 +265,50 @@ const GasInsureOrder = () => {
   }
 
   const handlePurchase = async () => {
-    if (typeof window.ethereum !== "undefined") {
-      await window.ethereum.request({ method: "eth_requestAccounts" })
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
-      const contract = new ethers.Contract(contractAddress, contractABI, signer)
+    if (!isConnected) return
 
-      try {
-        setIsLoading(true)
-        const tx = await contract.purchase(units, await signer.getAddress(), {
-          value: ethers.utils.parseEther(totalCost)
-        })
-        await tx.wait()
-        setIsLoading(false)
-        const txHashShort = `${tx.hash.substring(
-          0,
-          8
-        )}......${tx.hash.substring(tx.hash.length - 8)}`
-        toast({
-          title: "Purchase successful",
-          description: (
-            <div className="flex flex-row gap-2">
-              <div>Transaction Hash:</div>
-              <div>
-                <a
-                  href={`https://sepolia.etherscan.io/tx/${tx.hash}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#159895] underline"
-                >
-                  {txHashShort}
-                </a>
-              </div>
+    await window.ethereum.request({ method: "eth_requestAccounts" })
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
+    const contract = new ethers.Contract(contractAddress, contractABI, signer)
+
+    try {
+      setIsLoading(true)
+      const tx = await contract.purchase(units, await signer.getAddress(), {
+        value: ethers.utils.parseEther(totalCost)
+      })
+      await tx.wait()
+      setIsLoading(false)
+      const txHashShort = `${tx.hash.substring(0, 8)}......${tx.hash.substring(
+        tx.hash.length - 8
+      )}`
+      toast({
+        title: "Purchase successful",
+        description: (
+          <div className="flex flex-row gap-2">
+            <div>Transaction Hash:</div>
+            <div>
+              <a
+                href={`https://sepolia.etherscan.io/tx/${tx.hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#159895] underline"
+              >
+                {txHashShort}
+              </a>
             </div>
-          ),
-          status: "success"
-        })
-      } catch (error) {
-        setIsLoading(false)
-        toast({
-          title: "Purchase failed",
-          description: error.message,
-          status: "error"
-        })
-        console.error(error)
-      }
+          </div>
+        ),
+        status: "success"
+      })
+    } catch (error) {
+      setIsLoading(false)
+      toast({
+        title: "Purchase failed",
+        description: error.message,
+        status: "error"
+      })
+      console.error(error)
     }
   }
 

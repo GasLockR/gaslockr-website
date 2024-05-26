@@ -211,10 +211,7 @@ const GasInsureList = () => {
   }, [isConnected, address])
 
   const fetchPolicies = async (address) => {
-    if (!window.ethereum) {
-      console.error("MetaMask is not installed")
-      return
-    }
+    if (!isConnected) return
 
     try {
       setLoading(true)
@@ -248,7 +245,6 @@ const GasInsureList = () => {
         })
       )
 
-      // 按 policyId 倒序排序
       const sortedPolicies = detailedPolicies.sort(
         (a, b) => parseInt(b.id) - parseInt(a.id)
       )
@@ -265,6 +261,8 @@ const GasInsureList = () => {
   }
 
   const startListeningToEvents = (address) => {
+    if (!isConnected) return
+
     const provider = new ethers.providers.WebSocketProvider(
       process.env.NEXT_PUBLIC_PROVIDER_URL
     )
@@ -283,6 +281,8 @@ const GasInsureList = () => {
   }
 
   const stopListeningToEvents = () => {
+    if (!isConnected) return
+
     const provider = new ethers.providers.WebSocketProvider(
       process.env.NEXT_PUBLIC_PROVIDER_URL
     )
@@ -292,50 +292,49 @@ const GasInsureList = () => {
   }
 
   const handleClaim = async (policyId) => {
-    if (typeof window.ethereum !== "undefined") {
-      await window.ethereum.request({ method: "eth_requestAccounts" })
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
-      const contract = new ethers.Contract(contractAddress, contractABI, signer)
+    if (!isConnected) return
 
-      try {
-        setClaimingPolicyId(policyId)
-        const tx = await contract.claim(policyId)
-        await tx.wait()
-        setClaimingPolicyId(null)
-        const txHashShort = `${tx.hash.substring(
-          0,
-          8
-        )}......${tx.hash.substring(tx.hash.length - 8)}`
-        toast({
-          title: "Claim successful",
-          description: (
-            <div className="flex flex-row gap-2">
-              <div>Transaction Hash:</div>
-              <div>
-                <a
-                  href={`https://sepolia.etherscan.io/tx/${tx.hash}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#159895] underline"
-                >
-                  {txHashShort}
-                </a>
-              </div>
+    await window.ethereum.request({ method: "eth_requestAccounts" })
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
+    const contract = new ethers.Contract(contractAddress, contractABI, signer)
+
+    try {
+      setClaimingPolicyId(policyId)
+      const tx = await contract.claim(policyId)
+      await tx.wait()
+      setClaimingPolicyId(null)
+      const txHashShort = `${tx.hash.substring(0, 8)}......${tx.hash.substring(
+        tx.hash.length - 8
+      )}`
+      toast({
+        title: "Claim successful",
+        description: (
+          <div className="flex flex-row gap-2">
+            <div>Transaction Hash:</div>
+            <div>
+              <a
+                href={`https://sepolia.etherscan.io/tx/${tx.hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#159895] underline"
+              >
+                {txHashShort}
+              </a>
             </div>
-          ),
-          status: "success"
-        })
-        fetchPolicies(address)
-      } catch (error) {
-        setClaimingPolicyId(null)
-        toast({
-          title: "Claim failed",
-          description: error.message,
-          status: "error"
-        })
-        console.error(error)
-      }
+          </div>
+        ),
+        status: "success"
+      })
+      fetchPolicies(address)
+    } catch (error) {
+      setClaimingPolicyId(null)
+      toast({
+        title: "Claim failed",
+        description: error.message,
+        status: "error"
+      })
+      console.error(error)
     }
   }
 

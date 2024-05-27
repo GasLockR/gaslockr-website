@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef } from "react"
 import {
   GitHubLogoIcon,
   TwitterLogoIcon,
@@ -55,6 +55,59 @@ export function SiteHeader() {
     setIsAnimating(false)
   }
 
+  const renderNavContent = () => (
+    <>
+      <Button
+        variant="ghost"
+        className="bg-[#57C5B6] transform hover:scale-105 hover:bg-[#159895]"
+        onClick={() => {
+          router.push("/GasInsure")
+        }}
+      >
+        Launch App
+      </Button>
+      <Button
+        className="w-full bg-[#57C5B6]"
+        variant="ghost"
+        size="icon"
+        onClick={() => window.open("https://twitter.com/gaslockr", "_blank")}
+      >
+        <TwitterLogoIcon className="h-6 w-6" />
+      </Button>
+      <Button
+        className="w-full bg-[#57C5B6]"
+        variant="ghost"
+        size="icon"
+        onClick={() => window.open("https://discord.gg/DUZMwJzfsP", "_blank")}
+      >
+        <DiscordLogoIcon className="h-6 w-6" />
+      </Button>
+      <ModeToggle />
+    </>
+  )
+
+  const renderConnectButton = () => (
+    <ConnectButton showBalance={false} accountStatus="address" />
+  )
+
+  const renderFaucetButton = () => (
+    <Button
+      className="bg-[#57C5B6] transform hover:scale-105 hover:bg-[#159895]"
+      onClick={() =>
+        window.open(
+          `${
+            chain?.id === 534351
+              ? "https://docs.scroll.io/en/user-guide/faucet"
+              : "https://sepoliafaucet.com"
+          }`,
+          "_blank"
+        )
+      }
+    >
+      Faucet
+    </Button>
+  )
+
   return (
     <Container>
       <div className="flex h-16 items-center justify-between">
@@ -66,15 +119,10 @@ export function SiteHeader() {
         </Link>
         <div className="flex flex-row gap-4 items-center text-muted-foreground">
           <div className="lg:hidden md:hidden">
-            {router.pathname === "/GasInsure" && (
-              <ConnectButton
-                showBalance={false}
-                chainStatus="none"
-                accountStatus="address"
-              />
-            )}
+            {router.pathname === "/GasInsure" && renderConnectButton()}
+            {router.pathname === "/mint" && renderConnectButton()}
           </div>
-          <div className="sm:hidden flex flex-1 items-center justify-end ">
+          <div className="sm:hidden flex flex-1 items-center justify-end">
             <button ref={navIconRef} onClick={toggleMenu}>
               {isMenuOpen ? (
                 <Cross1Icon className="h-8 w-8 text-[#57C5B6]" />
@@ -101,62 +149,14 @@ export function SiteHeader() {
                 className="z-30 bg-gray-200 dark:bg-[#1b1a33] top-16 fixed flex max-w-full inset-x-0 bottom-0 w-screen flex-col gap-2 overflow-y-auto"
               >
                 <div className="flex flex-col gap-2 px-6 mt-10 text-white">
-                  {router.pathname === "/" && (
-                    <>
-                      <Button
-                        variant="ghost"
-                        className="bg-[#57C5B6] transform hover:scale-105 hover:bg-[#159895]"
-                        onClick={() => {
-                          router.push("/GasInsure")
-                        }}
-                      >
-                        Launch App
-                      </Button>
-                      <Button
-                        className="w-full bg-[#57C5B6]"
-                        variant="ghost"
-                        size="icon"
-                        onClick={() =>
-                          window.open("https://twitter.com/gaslockr", "_blank")
-                        }
-                      >
-                        <TwitterLogoIcon className="h-6 w-6" />
-                      </Button>
-                      <Button
-                        className="w-full bg-[#57C5B6]"
-                        variant="ghost"
-                        size="icon"
-                        onClick={() =>
-                          window.open("https://discord.gg/DUZMwJzfsP", "_blank")
-                        }
-                      >
-                        <DiscordLogoIcon className="h-6 w-6" />
-                      </Button>
-                      <ModeToggle />
-                    </>
-                  )}
-
+                  {router.pathname === "/" && renderNavContent()}
                   {router.pathname === "/GasInsure" && (
                     <>
-                      <Button
-                        className="bg-[#57C5B6] transform hover:scale-105 hover:bg-[#159895]"
-                        onClick={() =>
-                          window.open(
-                            `${
-                              chain?.id === 534351
-                                ? "https://docs.scroll.io/en/user-guide/faucet"
-                                : "https://sepoliafaucet.com"
-                            }`,
-                            "_blank"
-                          )
-                        }
-                      >
-                        Faucet
-                      </Button>
-
-                      <ModeToggle />
+                      {renderFaucetButton()}
+                      {renderNavContent()}
                     </>
                   )}
+                  {router.pathname === "/mint" && renderNavContent()}
                 </div>
               </motion.div>
             )}
@@ -199,25 +199,44 @@ export function SiteHeader() {
 
             {router.pathname === "/GasInsure" && (
               <>
+                {renderFaucetButton()}
+                {renderConnectButton()}
+                <ModeToggle />
+              </>
+            )}
+
+            {router.pathname === "/mint" && (
+              <>
+                {renderConnectButton()}
                 <Button
-                  className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
+                  variant="ghost"
+                  size="icon"
                   onClick={() =>
-                    window.open(
-                      `${
-                        chain?.id === 534351
-                          ? "https://docs.scroll.io/en/user-guide/faucet"
-                          : "https://sepoliafaucet.com"
-                      }`,
-                      "_blank"
-                    )
+                    window.open("https://twitter.com/gaslockr", "_blank")
                   }
                 >
-                  Faucet
+                  <TwitterLogoIcon className="h-6 w-6" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() =>
+                    window.open("https://discord.gg/DUZMwJzfsP", "_blank")
+                  }
+                >
+                  <DiscordLogoIcon className="h-6 w-6" />
                 </Button>
 
-                <ConnectButton showBalance={false} accountStatus="address" />
-
                 <ModeToggle />
+
+                <Button
+                  className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
+                  onClick={() => {
+                    router.push("/GasInsure")
+                  }}
+                >
+                  Launch App
+                </Button>
               </>
             )}
           </div>

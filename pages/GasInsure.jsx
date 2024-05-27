@@ -2,9 +2,19 @@ import { Container } from "@/components/Container"
 import GasChart from "@/components/gasInsure/GasChart"
 import GasInsureList from "@/components/gasInsure/GasInsureList"
 import GasInsureOrder from "@/components/gasInsure/GasInsureOrder"
-import React from "react"
+import React, { useEffect } from "react"
+import { useNetwork, useSwitchNetwork } from "wagmi"
 
 const GasInsure = () => {
+  const { chain } = useNetwork()
+  const { switchNetwork } = useSwitchNetwork()
+
+  useEffect(() => {
+    if (chain?.id !== 11155111 && switchNetwork) {
+      switchNetwork(11155111) // Sepolia network ID
+    }
+  }, [chain, switchNetwork])
+
   return (
     <Container>
       <div className="flex flex-col gap-4 lg:flex-row mt-8">

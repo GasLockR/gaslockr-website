@@ -305,7 +305,8 @@ const InsuranceSheet = () => {
         </div>
         <SheetFooter>
           <Button
-            disabled={isDepositLoading}
+            disabled
+            // disabled={isDepositLoading}
             className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
             onClick={() => {
               clickBuy(address, insuredAddress, term)

@@ -31,7 +31,7 @@ const Features = () => {
             </p>
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
               <Button
-                // disabled={true}
+                disabled={true}
                 className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
                 onClick={() => {
                   router.push("/GasInsure")

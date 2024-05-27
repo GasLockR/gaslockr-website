@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Container } from "@/components/Container"
 import { useAccount } from "wagmi"
@@ -8,6 +8,7 @@ import { useContractWrite, useNetwork, useSwitchNetwork } from "wagmi"
 import { NFT_CONTRACT_ADDRESS } from "@/config/address"
 import { Alchemy, Network } from "alchemy-sdk"
 import Image from "next/image"
+import { Skeleton } from "@/components/ui/skeleton" // shadcn skeleton
 
 const Mint = () => {
   const { address } = useAccount()
@@ -34,7 +35,7 @@ const Mint = () => {
 
   const getUserNFT = async () => {
     const config = {
-      apiKey: "WvvnfE7_s16d21jxwbbC9IRf6jUdB6ii",
+      apiKey: process.env.NEXT_PUBLIC_POLYGON_PROVIDER_URL,
       network: Network.MATIC_MAINNET
     }
     const alchemy = new Alchemy(config)
@@ -48,11 +49,13 @@ const Mint = () => {
 
   useEffect(() => {
     if (address) {
+      setIsLoading(true)
       getUserNFT().then((response) => {
         if (response && response.ownedNfts.length > 0) {
           setTokenUri(response.ownedNfts[0].raw.metadata.image)
           setNftName(response.ownedNfts[0].raw.metadata.name)
         }
+        setIsLoading(false)
       })
     }
   }, [address])
@@ -125,7 +128,7 @@ const Mint = () => {
       <Container>
         <div className="mb-36">
           <div className="flex flex-col justify-center items-center gap-4">
-            <h1 className="font-bold text-4xl mb-20">
+            <h1 className="font-bold text-4xl mb-20 text-center">
               Collect GasLockR Badges Series 💎
             </h1>
           </div>
@@ -161,7 +164,8 @@ const Mint = () => {
                     variant="outline"
                     className="bg-[#57C5B6] text-white text-2xl p-8 transform hover:scale-105 hover:bg-[#159895]"
                     onClick={() => handleCheck()}
-                    disabled={isLoading}
+                    // disabled={isLoading}
+                    disabled
                   >
                     {isLoading ? "Loading..." : "Check Your Eligibility"}
                   </Button>
@@ -185,35 +189,29 @@ const Mint = () => {
             </div>
           </div>
 
-          <div className="flex flex-row">
-            <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-16">
-              <div className="w-2/3">
-                {tokenUri ? (
-                  <img src={tokenUri} />
-                ) : (
-                  <Image src="/block.jpg" alt="Logo" width={524} height={524} />
-                )}
+          <div className="flex flex-col sm:flex-row">
+            {[...Array(3)].map((_, index) => (
+              <div
+                key={index}
+                className="flex flex-col gap-4 items-center justify-center w-full sm:w-1/3 p-4"
+              >
+                <div className="w-2/3">
+                  {isLoading ? (
+                    <Skeleton className="w-full h-full" />
+                  ) : (
+                    <Image
+                      src={index === 0 && tokenUri ? tokenUri : "/block.jpg"}
+                      alt="Logo"
+                      width={524}
+                      height={524}
+                    />
+                  )}
+                </div>
+                <div className="text-center text-[#57C5B6]">
+                  {index === 0 && nftName ? nftName : "Coming Soon"}
+                </div>
               </div>
-              {nftName ? (
-                <div className="text-center text-[#57C5B6]">{nftName}</div>
-              ) : (
-                <div className="text-center text-[#57C5B6]">Coming Soon</div>
-              )}
-            </div>
-
-            <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-16">
-              <div className="w-2/3">
-                <Image src="/block.jpg" alt="Logo" width={524} height={524} />
-              </div>
-              <div className="text-center text-[#57C5B6]">Coming Soon</div>
-            </div>
-
-            <div className="flex flex-col gap-4 items-center justify-center w-1/3 p-16">
-              <div className="w-2/3">
-                <Image src="/block.jpg" alt="Logo" width={524} height={524} />
-              </div>
-              <div className="text-center text-[#57C5B6]">Coming Soon</div>
-            </div>
+            ))}
           </div>
         </div>
       </Container>

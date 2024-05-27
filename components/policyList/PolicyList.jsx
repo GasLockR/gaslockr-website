@@ -202,7 +202,8 @@ const PolicyList = ({ policies }) => {
             <Button
               className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
               variant="outline"
-              disabled={buttonDisabled}
+              disabled
+              // disabled={buttonDisabled}
               onClick={handleClick}
             >
               {buttonText}

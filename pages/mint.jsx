@@ -3,29 +3,31 @@ import { Button } from "@/components/ui/button"
 import { Container } from "@/components/Container"
 import { useAccount } from "wagmi"
 import verifyWhitelistAddress from "@/config/verifyWhitelistAddress"
+import verifyWhitelistAddress02 from "@/config/verifyWhitelistAddress02"
 import { useToast } from "@/components/ui/use-toast"
-import { useContractWrite, useNetwork, useSwitchNetwork } from "wagmi"
-import { NFT_CONTRACT_ADDRESS } from "@/config/address"
 import { Alchemy, Network } from "alchemy-sdk"
+import { ethers } from "ethers"
 import Image from "next/image"
-import { Skeleton } from "@/components/ui/skeleton" // shadcn skeleton
+import { Skeleton } from "@/components/ui/skeleton"
+import { useNetwork, useSwitchNetwork } from "wagmi"
 
 const Mint = () => {
   const { address } = useAccount()
   const { toast } = useToast()
   const [isWL, setIsWL] = useState(false)
+  const [isWL02, setIsWL02] = useState(false)
   const [Proof, setProof] = useState([])
+  const [Proof02, setProof02] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [tokenUri, setTokenUri] = useState("")
+  const [tokenUri02, setTokenUri02] = useState("")
   const [nftName, setNftName] = useState("")
+  const [nftName02, setNftName02] = useState("")
+  const [minting, setMinting] = useState(false)
+
+  const contractAddress = process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS
   const { chain } = useNetwork()
-  const {
-    chains,
-    error: switchNetWorkError,
-    isLoading: switchNetWorkLoading,
-    pendingChainId,
-    switchNetwork
-  } = useSwitchNetwork()
+  const { switchNetwork } = useSwitchNetwork()
 
   useEffect(() => {
     if (chain?.id !== 137 && switchNetwork) {
@@ -33,42 +35,11 @@ const Mint = () => {
     }
   }, [chain, switchNetwork])
 
-  const getUserNFT = async () => {
-    const config = {
-      apiKey: process.env.NEXT_PUBLIC_POLYGON_PROVIDER_URL,
-      network: Network.MATIC_MAINNET
-    }
-    const alchemy = new Alchemy(config)
-    const options = {
-      contractAddresses: [NFT_CONTRACT_ADDRESS]
-    }
-
-    const response = await alchemy.nft.getNftsForOwner(address, options)
-    return response
-  }
-
-  useEffect(() => {
-    if (address) {
-      setIsLoading(true)
-      getUserNFT().then((response) => {
-        if (response && response.ownedNfts.length > 0) {
-          setTokenUri(response.ownedNfts[0].raw.metadata.image)
-          setNftName(response.ownedNfts[0].raw.metadata.name)
-        }
-        setIsLoading(false)
-      })
-    }
-  }, [address])
-
-  const {
-    data,
-    isLoading: mintLoading,
-    isSuccess,
-    error,
-    write
-  } = useContractWrite({
-    address: NFT_CONTRACT_ADDRESS,
-    abi: [
+  const provider = new ethers.providers.Web3Provider(window.ethereum)
+  const signer = provider.getSigner()
+  const contract = new ethers.Contract(
+    contractAddress,
+    [
       {
         inputs: [
           {
@@ -83,45 +54,118 @@ const Mint = () => {
         type: "function"
       }
     ],
-    functionName: "mint"
-  })
+    signer
+  )
+
+  const getUserNFT = async () => {
+    const alchemy = new Alchemy({
+      apiKey: process.env.NEXT_PUBLIC_POLYGON_PROVIDER_URL,
+      network: Network.MATIC_MAINNET
+    })
+
+    const options = {
+      contractAddresses: [contractAddress]
+    }
+
+    const response = await alchemy.nft.getNftsForOwner(address, options)
+    return response
+  }
+
+  useEffect(() => {
+    if (address) {
+      setIsLoading(true)
+      getUserNFT().then((response) => {
+        if (response && response.ownedNfts.length > 0) {
+          const firstNFT = response.ownedNfts[0]
+          setTokenUri(firstNFT.raw.metadata.image)
+          setNftName(firstNFT.raw.metadata.name)
+
+          if (response.ownedNfts.length > 1) {
+            const secondNFT = response.ownedNfts[1]
+            setTokenUri02(secondNFT.raw.metadata.image)
+            setNftName02(secondNFT.raw.metadata.name)
+          }
+        }
+        setIsLoading(false)
+      })
+    }
+  }, [address])
 
   const handleCheck = () => {
     setIsLoading(true)
     const { isInWhitelist, proof } = verifyWhitelistAddress(address)
+    const { isInWhitelist: isInWhitelist02, proof: proof02 } =
+      verifyWhitelistAddress02(address)
 
     if (isInWhitelist) {
       setProof(proof)
       setIsWL(true)
-      setIsLoading(false)
-      toast({
-        title: "Congrats!",
-        description: "You are verified to mint the 1st tester NFT."
-      })
     } else {
       setIsWL(false)
-      setIsLoading(false)
-      toast({
-        title: "Sorry",
-        description: "You are not on the list."
-      })
     }
-  }
 
-  const handleMint = () => {
-    write({
-      args: [Proof]
+    if (isInWhitelist02) {
+      setProof02(proof02)
+      setIsWL02(true)
+    } else {
+      setIsWL02(false)
+    }
+
+    setIsLoading(false)
+
+    toast({
+      title: "Verification Complete",
+      description: isInWhitelist
+        ? "You are verified to mint the 1st tester NFT."
+        : "You are not on the list for the 1st NFT."
+    })
+
+    toast({
+      title: "Verification Complete",
+      description: isInWhitelist02
+        ? "You are verified to mint the 2nd tester NFT."
+        : "You are not on the list for the 2nd NFT."
     })
   }
 
-  useEffect(() => {
-    if (isSuccess) {
+  const handleMint = async (proof) => {
+    setMinting(true)
+    try {
+      const tx = await contract.mint(proof)
+      await tx.wait()
+      const txHashShort = `${tx.hash.substring(0, 8)}......${tx.hash.substring(
+        tx.hash.length - 8
+      )}`
       toast({
-        title: "Success",
-        description: "Mint Success."
+        title: "Mint successful",
+        description: (
+          <div className="flex flex-row gap-2">
+            <div>Transaction Hash:</div>
+            <div>
+              <a
+                href={`https://polygonscan.com/tx/${tx.hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#159895] underline"
+              >
+                {txHashShort}
+              </a>
+            </div>
+          </div>
+        ),
+        status: "success"
       })
+      getUserNFT()
+    } catch (error) {
+      toast({
+        title: "Mint failed",
+        description: error.message,
+        status: "error"
+      })
+    } finally {
+      setMinting(false)
     }
-  }, [isSuccess, toast])
+  }
 
   return (
     <div className="overflow-hidden h-full mb-20 py-20 sm:py-32 lg:pb-32 xl:pb-36">
@@ -133,14 +177,14 @@ const Mint = () => {
             </h1>
           </div>
           <div>
-            {isWL ? (
+            {isWL02 ? (
               <div className="flex flex-row gap-2 items-center justify-center">
                 <div>
-                  {tokenUri ? (
+                  {tokenUri02 ? (
                     <Button
                       variant="outline"
                       className="bg-[#57C5B6] text-white text-2xl p-8 transform hover:scale-105 hover:bg-[#159895]"
-                      onClick={handleMint}
+                      onClick={() => handleMint(Proof02)}
                       disabled
                     >
                       Already Minted in This Phase
@@ -149,10 +193,10 @@ const Mint = () => {
                     <Button
                       variant="outline"
                       className="bg-[#57C5B6] text-white text-2xl p-8 transform hover:scale-105 hover:bg-[#159895]"
-                      onClick={handleMint}
-                      disabled={mintLoading}
+                      onClick={() => handleMint(Proof02)}
+                      disabled={minting}
                     >
-                      {mintLoading ? "Transaction in progress.." : "Mint Now"}
+                      {minting ? "Transaction in progress.." : "Mint Now"}
                     </Button>
                   )}
                 </div>
@@ -163,7 +207,7 @@ const Mint = () => {
                   <Button
                     variant="outline"
                     className="bg-[#57C5B6] text-white text-2xl p-8 transform hover:scale-105 hover:bg-[#159895]"
-                    onClick={() => handleCheck()}
+                    onClick={handleCheck}
                     disabled={isLoading}
                   >
                     {isLoading ? "Loading..." : "Check Your Eligibility"}
@@ -189,28 +233,50 @@ const Mint = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row">
-            {[...Array(3)].map((_, index) => (
-              <div
-                key={index}
-                className="flex flex-col gap-4 items-center justify-center w-full sm:w-1/3 p-4"
-              >
-                <div className="w-2/3">
-                  {isLoading ? (
-                    <Skeleton className="w-full h-full" />
-                  ) : (
-                    <Image
-                      src={index === 0 && tokenUri ? tokenUri : "/block.jpg"}
-                      alt="Logo"
-                      width={524}
-                      height={524}
-                    />
-                  )}
-                </div>
-                <div className="text-center text-[#57C5B6]">
-                  {index === 0 && nftName ? nftName : "Coming Soon"}
-                </div>
+            <div className="flex flex-col gap-4 items-center justify-center w-full sm:w-1/3 p-4">
+              <div className="w-2/3">
+                {isLoading ? (
+                  <Skeleton className="w-full h-full" />
+                ) : (
+                  <Image
+                    src={tokenUri ? tokenUri : "/block.jpg"}
+                    alt="Logo"
+                    width={524}
+                    height={524}
+                  />
+                )}
               </div>
-            ))}
+              <div className="text-center text-[#57C5B6]">
+                {nftName ? nftName : "Coming Soon"}
+              </div>
+            </div>
+            <div className="flex flex-col gap-4 items-center justify-center w-full sm:w-1/3 p-4">
+              <div className="w-2/3">
+                {isLoading ? (
+                  <Skeleton className="w-full h-full" />
+                ) : (
+                  <Image
+                    src={tokenUri02 ? tokenUri02 : "/block.jpg"}
+                    alt="Logo"
+                    width={524}
+                    height={524}
+                  />
+                )}
+              </div>
+              <div className="text-center text-[#57C5B6]">
+                {nftName02 ? nftName02 : "Coming Soon"}
+              </div>
+            </div>
+            <div className="flex flex-col gap-4 items-center justify-center w-full sm:w-1/3 p-4">
+              <div className="w-2/3">
+                {isLoading ? (
+                  <Skeleton className="w-full h-full" />
+                ) : (
+                  <Image src="/block.jpg" alt="Logo" width={524} height={524} />
+                )}
+              </div>
+              <div className="text-center text-[#57C5B6]">Coming Soon</div>
+            </div>
           </div>
         </div>
       </Container>

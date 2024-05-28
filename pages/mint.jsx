@@ -10,9 +10,11 @@ import { ethers } from "ethers"
 import Image from "next/image"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useNetwork, useSwitchNetwork } from "wagmi"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
+import { Loader2 } from "lucide-react"
 
 const Mint = () => {
-  const { address } = useAccount()
+  const { address, isConnected } = useAccount()
   const { toast } = useToast()
   const [isWL, setIsWL] = useState(false)
   const [isWL02, setIsWL02] = useState(false)
@@ -170,115 +172,142 @@ const Mint = () => {
   return (
     <div className="overflow-hidden h-full mb-20 py-20 sm:py-32 lg:pb-32 xl:pb-36">
       <Container>
-        <div className="mb-36">
-          <div className="flex flex-col justify-center items-center gap-4">
-            <h1 className="font-bold text-4xl mb-20 text-center">
-              Collect GasLockR Badges Series 💎
-            </h1>
+        {isLoading && (
+          <div className="flex justify-center items-center h-screen">
+            <Loader2 className="animate-spin h-10 w-10 text-[#57C5B6]" />
           </div>
-          <div>
-            {isWL02 ? (
-              <div className="flex flex-row gap-2 items-center justify-center">
-                <div>
-                  {tokenUri02 ? (
-                    <Button
-                      variant="outline"
-                      className="bg-[#57C5B6] text-white text-2xl p-8 transform hover:scale-105 hover:bg-[#159895]"
-                      onClick={() => handleMint(Proof02)}
-                      disabled
-                    >
-                      Already Minted in This Phase
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="outline"
-                      className="bg-[#57C5B6] text-white text-2xl p-8 transform hover:scale-105 hover:bg-[#159895]"
-                      onClick={() => handleMint(Proof02)}
-                      disabled={minting}
-                    >
-                      {minting ? "Transaction in progress.." : "Mint Now"}
-                    </Button>
-                  )}
-                </div>
+        )}
+        {!isLoading && (
+          <>
+            <div className="mb-36">
+              <div className="flex flex-col justify-center items-center gap-4">
+                <h1 className="font-bold text-4xl mb-20 text-center">
+                  Collect GasLockR Badges Series 💎
+                </h1>
               </div>
-            ) : (
-              <div className="flex flex-row gap-2 items-center justify-center">
+              <div>
+                {isWL02 ? (
+                  <div className="flex flex-row gap-2 items-center justify-center">
+                    <div>
+                      {tokenUri02 ? (
+                        <Button
+                          variant="outline"
+                          className="bg-[#57C5B6] text-white text-2xl p-8 transform hover:scale-105 hover:bg-[#159895]"
+                          onClick={() => handleMint(Proof02)}
+                          disabled
+                        >
+                          Already Minted in This Phase
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          className="bg-[#57C5B6] text-white text-2xl p-8 transform hover:scale-105 hover:bg-[#159895]"
+                          onClick={() => handleMint(Proof02)}
+                          disabled={minting}
+                        >
+                          {minting ? (
+                            <div className="flex items-center gap-2">
+                              <Loader2 className="animate-spin h-6 w-6" />
+                              Transaction in progress..
+                            </div>
+                          ) : (
+                            "Mint Now"
+                          )}
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-row gap-2 items-center justify-center">
+                    {isConnected && (
+                      <div>
+                        <Button
+                          variant="outline"
+                          className="bg-[#57C5B6] text-white text-2xl p-8 transform hover:scale-105 hover:bg-[#159895]"
+                          onClick={handleCheck}
+                          disabled={isLoading}
+                        >
+                          {isLoading ? "Loading..." : "Check Your Eligibility"}
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="h-1/3 border border-[#57C5B6] rounded-lg relative">
+              <div className="flex flex-row justify-between w-full p-4">
+                <div></div>
                 <div>
-                  <Button
-                    variant="outline"
-                    className="bg-[#57C5B6] text-white text-2xl p-8 transform hover:scale-105 hover:bg-[#159895]"
-                    onClick={handleCheck}
-                    disabled={isLoading}
+                  <a
+                    className="text-[#57C5B6] underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://polygonscan.com/token/0x574d2e6a314a35692dfa839007da761e290417e3"
                   >
-                    {isLoading ? "Loading..." : "Check Your Eligibility"}
-                  </Button>
+                    Check on Polygon Scan
+                  </a>
                 </div>
               </div>
-            )}
-          </div>
-        </div>
-        <div className="h-1/3 border border-[#57C5B6] rounded-lg">
-          <div className="flex flex-row justify-between w-full p-4">
-            <div></div>
-            <div>
-              <a
-                className="text-[#57C5B6] underline"
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://polygonscan.com/token/0x574d2e6a314a35692dfa839007da761e290417e3"
-              >
-                Check on Polygon Scan
-              </a>
+              {!isConnected && (
+                <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center rounded-md z-10">
+                  <ConnectButton showBalance={false} accountStatus="address" />
+                </div>
+              )}
+              <div className="flex flex-col sm:flex-row">
+                <div className="flex flex-col gap-4 items-center justify-center w-full sm:w-1/3 p-4">
+                  <div className="w-2/3">
+                    {isLoading ? (
+                      <Skeleton className="w-full h-full" />
+                    ) : (
+                      <Image
+                        src={tokenUri ? tokenUri : "/block.jpg"}
+                        alt="Logo"
+                        width={524}
+                        height={524}
+                      />
+                    )}
+                  </div>
+                  <div className="text-center text-[#57C5B6]">
+                    {nftName ? nftName : "Coming Soon"}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4 items-center justify-center w-full sm:w-1/3 p-4">
+                  <div className="w-2/3">
+                    {isLoading ? (
+                      <Skeleton className="w-full h-full" />
+                    ) : (
+                      <Image
+                        src={tokenUri02 ? tokenUri02 : "/block.jpg"}
+                        alt="Logo"
+                        width={524}
+                        height={524}
+                      />
+                    )}
+                  </div>
+                  <div className="text-center text-[#57C5B6]">
+                    {nftName02 ? nftName02 : "Coming Soon"}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4 items-center justify-center w-full sm:w-1/3 p-4">
+                  <div className="w-2/3">
+                    {isLoading ? (
+                      <Skeleton className="w-full h-full" />
+                    ) : (
+                      <Image
+                        src="/block.jpg"
+                        alt="Logo"
+                        width={524}
+                        height={524}
+                      />
+                    )}
+                  </div>
+                  <div className="text-center text-[#57C5B6]">Coming Soon</div>
+                </div>
+              </div>
             </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row">
-            <div className="flex flex-col gap-4 items-center justify-center w-full sm:w-1/3 p-4">
-              <div className="w-2/3">
-                {isLoading ? (
-                  <Skeleton className="w-full h-full" />
-                ) : (
-                  <Image
-                    src={tokenUri ? tokenUri : "/block.jpg"}
-                    alt="Logo"
-                    width={524}
-                    height={524}
-                  />
-                )}
-              </div>
-              <div className="text-center text-[#57C5B6]">
-                {nftName ? nftName : "Coming Soon"}
-              </div>
-            </div>
-            <div className="flex flex-col gap-4 items-center justify-center w-full sm:w-1/3 p-4">
-              <div className="w-2/3">
-                {isLoading ? (
-                  <Skeleton className="w-full h-full" />
-                ) : (
-                  <Image
-                    src={tokenUri02 ? tokenUri02 : "/block.jpg"}
-                    alt="Logo"
-                    width={524}
-                    height={524}
-                  />
-                )}
-              </div>
-              <div className="text-center text-[#57C5B6]">
-                {nftName02 ? nftName02 : "Coming Soon"}
-              </div>
-            </div>
-            <div className="flex flex-col gap-4 items-center justify-center w-full sm:w-1/3 p-4">
-              <div className="w-2/3">
-                {isLoading ? (
-                  <Skeleton className="w-full h-full" />
-                ) : (
-                  <Image src="/block.jpg" alt="Logo" width={524} height={524} />
-                )}
-              </div>
-              <div className="text-center text-[#57C5B6]">Coming Soon</div>
-            </div>
-          </div>
-        </div>
+          </>
+        )}
       </Container>
     </div>
   )

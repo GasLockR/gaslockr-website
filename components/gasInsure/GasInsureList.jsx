@@ -219,13 +219,10 @@ const GasInsureList = () => {
       const signer = provider.getSigner()
       const contract = new ethers.Contract(contractAddress, contractABI, signer)
 
-      console.log(`Fetching policies for address: ${address}`)
       const policiesDetails = await contract.getPoliciesDetailsOfHolder(address)
-      console.log("Fetched policies details:", policiesDetails)
 
       const detailedPolicies = await Promise.all(
         policiesDetails.map(async (policy) => {
-          console.log(policy.cycleId.toString(), "policy.cycleId")
           const cycle = await contract.cycles(policy.cycleId)
           return {
             id: policy.id.toString(),
@@ -249,10 +246,7 @@ const GasInsureList = () => {
         (a, b) => parseInt(b.id) - parseInt(a.id)
       )
 
-      console.log("Detailed policies:", sortedPolicies)
-
       setPolicies(sortedPolicies)
-      console.log("Policies state updated:", sortedPolicies)
     } catch (error) {
       console.error(`Error fetching policies: ${error}`)
     } finally {
@@ -269,9 +263,6 @@ const GasInsureList = () => {
     const contract = new ethers.Contract(contractAddress, contractABI, provider)
 
     contract.on("PolicyPurchased", (policyId, holder, units) => {
-      console.log(
-        `Policy purchased: Policy ID: ${policyId}, Holder: ${holder}, Units: ${units}`
-      )
       if (holder.toLowerCase() === address.toLowerCase()) {
         setTimeout(() => {
           fetchPolicies(address)

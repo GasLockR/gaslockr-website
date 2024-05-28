@@ -157,7 +157,18 @@ const Mint = () => {
         ),
         status: "success"
       })
-      getUserNFT()
+      const response = await getUserNFT()
+      if (response && response.ownedNfts.length > 0) {
+        const firstNFT = response.ownedNfts[0]
+        setTokenUri(firstNFT.raw.metadata.image)
+        setNftName(firstNFT.raw.metadata.name)
+
+        if (response.ownedNfts.length > 1) {
+          const secondNFT = response.ownedNfts[1]
+          setTokenUri02(secondNFT.raw.metadata.image)
+          setNftName02(secondNFT.raw.metadata.name)
+        }
+      }
     } catch (error) {
       toast({
         title: "Mint failed",

@@ -113,9 +113,6 @@ export function SiteHeader() {
       <div className="flex h-16 items-center justify-between">
         <Link href="/" className="flex flex-row gap-2 items-center">
           <Image src="/logo.png" alt="Logo" width={48} height={48} />
-          <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#159895] to-[#1A5F7A]">
-            GasLockR
-          </div>
         </Link>
         <div className="flex flex-row gap-4 items-center text-muted-foreground">
           <div className="lg:hidden md:hidden">

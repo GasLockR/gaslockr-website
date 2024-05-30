@@ -16,7 +16,7 @@ const PrimaryFeatures = () => {
   const router = useRouter()
   return (
     <section className="bg-gray-900 py-20 sm:py-32">
-      <Container>
+      <Container className="max-w-7xl">
         <div className="flex flex-col items-center justify-center mb-12 text-center">
           <h2 className="text-4xl sm:text-5xl font-medium tracking-tight text-white">
             GasFi - A New Epoch in Blockchain Transactions

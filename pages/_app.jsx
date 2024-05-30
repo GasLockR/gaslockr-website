@@ -19,7 +19,9 @@ function MyApp({ Component, pageProps }) {
       <Web3Provider>
         <div>
           <SiteHeader />
-          <Component {...pageProps} />
+          <div className="my-20">
+            <Component {...pageProps} />
+          </div>
           <Toaster />
           <Analytics />
           <Footer />

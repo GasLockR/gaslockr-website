@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Moon, Sun } from "lucide-react"
+import { SunIcon, MoonIcon } from "@radix-ui/react-icons"
 import { useTheme } from "next-themes"
 
 import { Button } from "@/components/ui/button"
@@ -20,13 +20,18 @@ export function ModeToggle() {
 
   const icon =
     currentTheme === "light" ? (
-      <Moon className="h-[1.2rem] w-[1.2rem]" />
+      <SunIcon className="h-6 w-6" />
     ) : (
-      <Sun className="h-[1.2rem] w-[1.2rem]" />
+      <MoonIcon className="h-6 w-6" />
     )
 
   return (
-    <Button variant="outline" size="icon" onClick={toggleTheme}>
+    <Button
+      className="w-full bg-[#57C5B6] md:bg-transparent md:w-auto"
+      variant="ghost"
+      size="icon"
+      onClick={toggleTheme}
+    >
       {icon}
       <span className="sr-only">Toggle theme</span>
     </Button>

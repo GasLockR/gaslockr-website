@@ -17,11 +17,11 @@ const GasInsure = () => {
 
   return (
     <Container>
-      <div className="flex flex-col gap-4 lg:flex-row mt-8">
-        <div className="flex-1 md:w-10/12">
+      <div className="flex flex-col lg:flex-row gap-4 mt-8">
+        <div className="flex-1 w-full lg:w-3/4">
           <GasChart />
         </div>
-        <div className="w-full md:w-2/12">
+        <div className="w-full lg:w-1/4">
           <GasInsureOrder />
         </div>
       </div>

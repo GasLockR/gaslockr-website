@@ -376,7 +376,7 @@ const GasInsureList = () => {
     }, 0)
   }
 
-  const totalPoints = calculatePoints(finishedPolicies)
+  const totalPoints = calculatePoints(finishedPolicies).toLocaleString()
 
   return (
     <>

@@ -168,6 +168,7 @@ const GasInsureOrder = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true)
   const [currentCycleId, setCurrentCycleId] = useState(0)
   const [benefitCap, setBenefitCap] = useState("0")
+  const [lockGas, setLockGas] = useState(0)
 
   const { address, isConnected } = useAccount()
   const { toast } = useToast()
@@ -195,6 +196,16 @@ const GasInsureOrder = () => {
     const claimPoolRatio = await contract.claimPoolRatio()
     const cap = totalInsurancePool.mul(claimPoolRatio).div(100)
     setBenefitCap(ethers.utils.formatEther(cap))
+  }
+
+  const fetchLockGas = async () => {
+    try {
+      const response = await fetch("/api/latest-lockgas")
+      const data = await response.json()
+      setLockGas(parseFloat(data.lockgas).toFixed(6))
+    } catch (error) {
+      console.error("Failed to fetch lockgas data:", error)
+    }
   }
 
   const fetchBlockNumber = async () => {
@@ -232,6 +243,7 @@ const GasInsureOrder = () => {
     if (isConnected) {
       fetchCycleInfo()
       fetchBenefitCap()
+      fetchLockGas()
     }
   }, [isConnected])
 
@@ -254,6 +266,11 @@ const GasInsureOrder = () => {
     const totalCostInWei = premiumPerUnit.mul(units)
     setTotalCost(ethers.utils.formatEther(totalCostInWei))
   }, [premiumPerUnit, units])
+
+  useEffect(() => {
+    const interval = setInterval(fetchLockGas, 10000)
+    return () => clearInterval(interval)
+  }, [])
 
   const handleUnitsChange = (e) => {
     let value = e.target.value
@@ -389,7 +406,7 @@ const GasInsureOrder = () => {
             </TooltipProvider>
           </div>
           <div className="text-[#159895] flex flex-row gap-2 mt-2 sm:mt-0">
-            <div>60</div>
+            <div>{lockGas}</div>
             <div>Gwei</div>
           </div>
         </div>

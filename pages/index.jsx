@@ -15,7 +15,7 @@ const Home = () => {
       </Head>
       <Features />
       <PrimaryFeatures />
-      {/* <PartnerLogos /> */}
+      <PartnerLogos />
       {/* <Teams /> */}
       {/* <TimeLine /> */}
     </div>

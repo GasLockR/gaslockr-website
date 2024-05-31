@@ -263,7 +263,7 @@ const GasInsureOrder = () => {
   }, [isInitialLoading, isConnected])
 
   useEffect(() => {
-    const totalCostInWei = premiumPerUnit.mul(units)
+    const totalCostInWei = premiumPerUnit.mul(Number(units) || 0)
     setTotalCost(ethers.utils.formatEther(totalCostInWei))
   }, [premiumPerUnit, units])
 
@@ -274,10 +274,8 @@ const GasInsureOrder = () => {
 
   const handleUnitsChange = (e) => {
     let value = e.target.value
-    if (value === "") {
-      setUnits(1)
-    } else if (Number(value) >= 0 && /^\d+$/.test(value)) {
-      setUnits(Number(value.replace(/^0+/, "")))
+    if (value === "" || (Number(value) >= 0 && /^\d+$/.test(value))) {
+      setUnits(value)
     }
   }
 

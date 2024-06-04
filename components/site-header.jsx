@@ -236,6 +236,41 @@ export function SiteHeader() {
                 </Button>
               </>
             )}
+
+            {router.pathname === "/leaderboard" && (
+              <>
+                {renderConnectButton()}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() =>
+                    window.open("https://twitter.com/gaslockr", "_blank")
+                  }
+                >
+                  <TwitterLogoIcon className="h-6 w-6" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() =>
+                    window.open("https://discord.gg/DUZMwJzfsP", "_blank")
+                  }
+                >
+                  <DiscordLogoIcon className="h-6 w-6" />
+                </Button>
+
+                <ModeToggle />
+
+                <Button
+                  className="bg-[#57C5B6] text-white transform hover:scale-105 hover:bg-[#159895]"
+                  onClick={() => {
+                    router.push("/GasInsure")
+                  }}
+                >
+                  Launch App
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>

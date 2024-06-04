@@ -30,6 +30,9 @@ const Footer = () => {
             <Link className="hover:text-[#57C5B6]" href="/mint">
               Badge
             </Link>
+            <Link className="hover:text-[#57C5B6]" href="/leaderboard">
+              Leaderboard
+            </Link>
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-xl">Contact Us</p>

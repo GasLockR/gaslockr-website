@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     const paginatedData = filteredData.slice(start, end).map((row) => ({
       rank: row.rank,
       formattedAddress: `${row.From.slice(0, 6)}...${row.From.slice(-4)}`,
-      points: row.points
+      points: row.points_rounded
     }))
 
     res.status(200).json({

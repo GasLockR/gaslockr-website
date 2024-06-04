@@ -18,6 +18,9 @@ import {
   TableRow
 } from "@/components/ui/table"
 import { useDebounce } from "use-debounce"
+import { Loader2 } from "lucide-react"
+import { Container } from "@/components/Container"
+import { PersonIcon } from "@radix-ui/react-icons"
 
 const fetchData = async (page, pageSize, searchTerm) => {
   const response = await fetch(
@@ -90,15 +93,29 @@ const Leaderboard = () => {
   })
 
   return (
-    <div className="p-4">
-      <div className="flex justify-between mb-4">
-        <Input
-          placeholder="Search by address"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+    <Container className="p-4 max-w-7xl">
+      <div className="flex justify-center items-center">
+        <h1 className="text-3xl font-bold mb-4">Leaderboard</h1>
       </div>
-      <div className="rounded-md border">
+      <div className="flex justify-between mb-4">
+        <div className="flex flex-row gap-2 items-center p-2">
+          <PersonIcon className="text-[#57C5B6] h-8 w-8" />
+          <div className="text-[#57C5B6] text-2xl">{totalRows}</div>
+        </div>
+        <div className="flex items-center">
+          <Input
+            placeholder="Search by address"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+      <div className="relative overflow-auto rounded-md border h-[600px]">
+        {loading && (
+          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center rounded-md z-10">
+            <Loader2 className="animate-spin h-10 w-10 text-[#159895]" />
+          </div>
+        )}
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -117,16 +134,7 @@ const Leaderboard = () => {
             ))}
           </TableHeader>
           <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  Loading...
-                </TableCell>
-              </TableRow>
-            ) : table.getRowModel().rows.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
@@ -178,7 +186,7 @@ const Leaderboard = () => {
           Next
         </Button>
       </div>
-    </div>
+    </Container>
   )
 }
 

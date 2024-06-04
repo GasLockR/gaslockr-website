@@ -76,25 +76,6 @@
 		"type": "function"
 	},
 	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "cycleId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "bool",
-				"name": "isClaimable",
-				"type": "bool"
-			}
-		],
-		"name": "CycleEnded",
-		"type": "event"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -110,13 +91,6 @@
 		"name": "endCurrentCycle",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "fundInsurancePool",
-		"outputs": [],
-		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -138,6 +112,138 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "_claimableCycleIds",
+				"type": "uint256[]"
+			}
+		],
+		"name": "migrateClaimableCycleIds",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startBlock",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "endBlock",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "coverBlock",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "premiumPerUnit",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "benefitPerUnit",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "policyIds",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "units",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isActive",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "isClaimable",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "boost",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct GasInsureV2.Cycle[]",
+				"name": "_cycles",
+				"type": "tuple[]"
+			}
+		],
+		"name": "migrateCycles",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "units",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "holder",
+				"type": "address"
+			}
+		],
+		"name": "purchase",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "ReentrancyGuardReentrantCall",
+		"type": "error"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "cycleId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "isClaimable",
+				"type": "bool"
+			}
+		],
+		"name": "CycleEnded",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "fundInsurancePool",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -155,6 +261,51 @@
 		],
 		"name": "InsurancePoolFunded",
 		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "cycleId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "units",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "holder",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startBlock",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isClaimed",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct GasInsureV2.Policy[]",
+				"name": "_policies",
+				"type": "tuple[]"
+			}
+		],
+		"name": "migratePolicies",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"anonymous": false,
@@ -243,24 +394,6 @@
 		],
 		"name": "PolicyPurchased",
 		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "units",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "holder",
-				"type": "address"
-			}
-		],
-		"name": "purchase",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
 	},
 	{
 		"anonymous": false,
@@ -670,6 +803,19 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "getAllClaimableCycles",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -936,6 +1082,19 @@
 	},
 	{
 		"inputs": [],
+		"name": "totalClaimedAmount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "totalInsurancePool",
 		"outputs": [
 			{
@@ -950,6 +1109,19 @@
 	{
 		"inputs": [],
 		"name": "totalManagementFees",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalPurchasedPolicyAmount",
 		"outputs": [
 			{
 				"internalType": "uint256",

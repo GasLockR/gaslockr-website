@@ -27,8 +27,9 @@ export default async function handler(req, res) {
         row.From && row.From.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
-    const totalRows = filteredData.length
-    const totalPages = Math.ceil(totalRows / pageSize)
+    const totalRows = data.length
+    const filteredTotalRows = filteredData.length
+    const totalPages = Math.ceil(filteredTotalRows / pageSize)
     const start = page * pageSize
     const end = start + parseInt(pageSize)
 
@@ -41,6 +42,7 @@ export default async function handler(req, res) {
     res.status(200).json({
       data: paginatedData,
       totalRows,
+      filteredTotalRows,
       totalPages
     })
   } catch (error) {

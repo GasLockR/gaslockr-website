@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import {
-  ColumnDef,
   useReactTable,
   getCoreRowModel,
   getPaginationRowModel,
@@ -37,16 +36,23 @@ const Leaderboard = () => {
   const [debouncedSearchTerm] = useDebounce(searchTerm, 300)
   const [sorting, setSorting] = useState([])
   const [totalRows, setTotalRows] = useState(0)
+  const [filteredTotalRows, setFilteredTotalRows] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
   const [loading, setLoading] = useState(false)
 
-  const loadData = async () => {
+  const loadData = async (
+    newPage = page,
+    newSearchTerm = debouncedSearchTerm
+  ) => {
     setLoading(true)
     try {
-      const result = await fetchData(page, pageSize, debouncedSearchTerm)
+      const result = await fetchData(newPage, pageSize, newSearchTerm)
       setData(result.data)
-      setTotalRows(result.totalRows)
+      setFilteredTotalRows(result.filteredTotalRows)
       setTotalPages(result.totalPages)
+      if (totalRows === 0) {
+        setTotalRows(result.totalRows)
+      }
       console.log(result.data, "data")
     } catch (error) {
       console.error("Failed to load data", error)
@@ -58,6 +64,11 @@ const Leaderboard = () => {
   useEffect(() => {
     loadData()
   }, [page, debouncedSearchTerm])
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value)
+    setPage(0)
+  }
 
   const columns = [
     {
@@ -82,7 +93,7 @@ const Leaderboard = () => {
       sorting,
       pagination: { pageIndex: page, pageSize }
     },
-    manualPagination: true, // 这里设置为手动分页
+    manualPagination: true,
     onPaginationChange: (pagination) => {
       setPage(pagination.pageIndex)
     },
@@ -106,7 +117,7 @@ const Leaderboard = () => {
           <Input
             placeholder="Search by address"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearch}
           />
         </div>
       </div>
@@ -177,11 +188,13 @@ const Leaderboard = () => {
           variant="outline"
           size="sm"
           onClick={() => {
-            if (page < totalPages - 1) {
+            if (page < Math.ceil(filteredTotalRows / pageSize) - 1) {
               setPage(page + 1)
             }
           }}
-          disabled={page >= totalPages - 1 || loading}
+          disabled={
+            page >= Math.ceil(filteredTotalRows / pageSize) - 1 || loading
+          }
         >
           Next
         </Button>

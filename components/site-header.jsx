@@ -154,6 +154,7 @@ export function SiteHeader() {
                     </>
                   )}
                   {router.pathname === "/mint" && renderNavContent()}
+                  {router.pathname === "/leaderboard" && renderNavContent()}
                 </div>
               </motion.div>
             )}

@@ -106,7 +106,7 @@ const Leaderboard = () => {
   return (
     <Container className="p-4 max-w-7xl">
       <div className="flex justify-center items-center">
-        <h1 className="text-3xl font-bold mb-4">Leaderboard</h1>
+        <h1 className="text-4xl font-bold mb-4">GasInsure V1 Leaderboard</h1>
       </div>
       <div className="flex justify-between mb-4">
         <div className="flex flex-row gap-2 items-center p-2">
@@ -171,33 +171,39 @@ const Leaderboard = () => {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => {
-            if (page > 0) {
-              setPage(page - 1)
+      <div className="flex items-center justify-between">
+        <div className="text-xs text-gray-500">
+          *The leaderboard ranks users by points earned from converted payouts
+          during GasInsure's last test period (12/18/23 - 05/27/24).
+        </div>
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              if (page > 0) {
+                setPage(page - 1)
+              }
+            }}
+            disabled={page === 0 || loading}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              if (page < Math.ceil(filteredTotalRows / pageSize) - 1) {
+                setPage(page + 1)
+              }
+            }}
+            disabled={
+              page >= Math.ceil(filteredTotalRows / pageSize) - 1 || loading
             }
-          }}
-          disabled={page === 0 || loading}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => {
-            if (page < Math.ceil(filteredTotalRows / pageSize) - 1) {
-              setPage(page + 1)
-            }
-          }}
-          disabled={
-            page >= Math.ceil(filteredTotalRows / pageSize) - 1 || loading
-          }
-        >
-          Next
-        </Button>
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </Container>
   )

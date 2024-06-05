@@ -224,6 +224,10 @@ const GasInsureList = () => {
       const detailedPolicies = await Promise.all(
         policiesDetails.map(async (policy) => {
           const cycle = await contract.cycles(policy.cycleId)
+          const benefit = ethers.utils.formatEther(
+            ethers.BigNumber.from(policy.units).mul(cycle.benefitPerUnit)
+          )
+          const formattedBenefit = parseFloat(benefit).toFixed(5)
           return {
             id: policy.id.toString(),
             cycleId: policy.cycleId.toString(),
@@ -237,7 +241,8 @@ const GasInsureList = () => {
             ),
             isActive: cycle.isActive,
             isClaimable: cycle.isClaimable,
-            highRisk: cycle.boost
+            highRisk: cycle.boost,
+            benefit: formattedBenefit === "0.00000" ? "0" : formattedBenefit
           }
         })
       )
@@ -539,6 +544,7 @@ const GasInsureList = () => {
                         </TooltipProvider>
                       </div>
                     </TableHead>
+                    <TableHead className="w-[120px]">Benefit</TableHead>
                     <TableHead className="w-[120px]"></TableHead>
                   </TableRow>
                 </TableHeader>
@@ -579,6 +585,12 @@ const GasInsureList = () => {
                       </TableCell>
                       <TableCell className="w-[120px]">
                         {policy.highRisk ? "Yes" : "No"}
+                      </TableCell>
+                      <TableCell className="w-[120px]">
+                        <div className="flex flex-row gap-2">
+                          <div className="text-[#57C5B6]">{policy.benefit}</div>
+                          <div>ETH</div>
+                        </div>
                       </TableCell>
                       <TableCell className="w-[120px]">
                         <Button

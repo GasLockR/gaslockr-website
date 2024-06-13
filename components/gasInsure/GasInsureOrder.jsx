@@ -195,7 +195,7 @@ const GasInsureOrder = () => {
     const totalInsurancePool = await contract.totalInsurancePool()
     const claimPoolRatio = await contract.claimPoolRatio()
     const cap = totalInsurancePool.mul(claimPoolRatio).div(100)
-    setBenefitCap(ethers.utils.formatEther(cap))
+    setBenefitCap(parseFloat(ethers.utils.formatEther(cap)).toFixed(5))
   }
 
   const fetchLockGas = async () => {
